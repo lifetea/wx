@@ -329,14 +329,14 @@ input, select {
 		(function(){
 			function setNum(src,pos){  
 				var ran = Math.round(Math.random(0,1)*10)/10;
-				if (ran == 0) ran + 0.1;
+				if (ran == 0) ran += 0.1;
             	var str = ran.toString();
             	var rs = str.indexOf('.'); 
             	if (rs == -1){
 					str+=".0"      		
             	}
             	var arr = str.split(".");
-            	$("int").addClass("num"+arr[0]);
+            	$("#int").addClass("num"+arr[0]);
             	$("#dec").addClass("num"+arr[1]);
         	}  
 			var num  = setNum();
