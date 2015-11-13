@@ -19,7 +19,7 @@ class IndexController extends Controller
     public function cert()
     {
 		
-		$wechatObj = new Lib\WebChat();
+		$wechatObj = new Lib\WeChat();
 		if (isset($_GET['echostr'])) {
 			$wechatObj->valid();
 		}else{
