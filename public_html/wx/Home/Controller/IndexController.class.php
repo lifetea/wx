@@ -27,7 +27,7 @@ class IndexController extends Controller
 		}
    	}  	
    	public function menu(){
-   		$sdk = new Org\JSSDK();
+   		$sdk = new Util\JSSDK();
    		$ticket  = $sdk->getJsApiTicket();
    		var_dump($ticket);
    		//$wechatObj = new Lib\WeChat();
