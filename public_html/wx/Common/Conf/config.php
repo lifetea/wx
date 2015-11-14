@@ -32,7 +32,7 @@ return array(
 		            },
 		            {
 		               "type":"click",
-		               "name":"避免爱车刮伤",
+		               "name":"避免刮伤",
 		               "key":"刮伤"
 		            },
 		            {
@@ -51,7 +51,7 @@ return array(
 		            },
 		            {
 		               "type":"click",
-		               "name":"避免爱车刮伤",
+		               "name":"避免刮伤",
 		               "key":"刮伤"
 		            },
 		            {
