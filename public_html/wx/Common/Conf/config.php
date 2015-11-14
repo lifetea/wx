@@ -4,7 +4,7 @@ return array(
 	'menuJson'=>'{
 		      "button":[
 		      {
-		           "name":"天气预报",
+		           "name":"途虎商城",
 		           "sub_button":[
 		            {
 		               "type":"click",
@@ -21,8 +21,6 @@ return array(
 		                "name":"本地天气",
 		                "url":"http://m.hao123.com/a/tianqi"
 		            }]
-		      
-
 		       },
 		       {
 		           "name":"车侣威擎",
@@ -42,8 +40,26 @@ return array(
 		                "name":"讲个笑话",
 		                "key":"笑话"
 		            }]
-		       
-
-		       }]
+		       },		       
+		       {
+		           "name":"更多",
+		           "sub_button":[
+		            {
+		               "type":"click",
+		               "name":"违章查询",
+		               "key":"violation"
+		            },
+		            {
+		               "type":"click",
+		               "name":"避免爱车刮伤",
+		               "key":"刮伤"
+		            },
+		            {
+		                "type":"click",
+		                "name":"讲个笑话",
+		                "key":"笑话"
+		            }]
+		       }
+		      ]
 		 }',
 );

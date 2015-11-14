@@ -83,6 +83,12 @@ class WeChat
                         "PicUrl" =>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", 
                         "Url" =>"weixin://addfriend/pondbaystudio");
                         break;
+                    case "violation":
+                        $contentStr[] = array("Title" =>"公司简介", 
+                        "Description" =>"方倍工作室提供移动互联网相关的产品及服务", 
+                        "PicUrl" =>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", 
+                        "Url" =>"weixin://addfriend/pondbaystudio");
+                        break;                        
                     case "刮伤":
                         $contentStr[] = array("Title" =>"公司简介", 
                         "Description" =>"方倍工作室提供移动互联网相关的产品及服务", 
