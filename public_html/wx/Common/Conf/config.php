@@ -50,14 +50,14 @@ return array(
 		               "url":"http://t.cn/RvDTIdz"
 		            },
 		            {
-		               "type":"click",
-		               "name":"避免刮伤",
-		               "key":"刮伤"
+		               "type":"view",
+		               "name":"高速路况",
+		               "url":"http://t.cn/Rykc5qP"
 		            },
 		            {
-		                "type":"click",
-		                "name":"讲个笑话",
-		                "key":"笑话"
+		                "type":"view",
+		                "name":"各地天气",
+		                "url":"http://t.cn/RykccaW"
 		            }]
 		       }
 		      ]
