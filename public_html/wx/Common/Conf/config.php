@@ -45,7 +45,7 @@ return array(
 		           "name":"更多",
 		           "sub_button":[
 		            {
-		               "type":"click",
+		               "type":"view",
 		               "name":"违章查询",
 		               "url":"http://t.cn/RvDTIdz"
 		            },
