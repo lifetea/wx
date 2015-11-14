@@ -4,7 +4,7 @@ return array(
 	'menuJson'=>'{
 		      "button":[
 		      {
-		           "name":"途虎商城",
+		           "name":"在线商城",
 		           "sub_button":[
 		            {
 		               "type":"click",
