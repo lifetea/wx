@@ -83,10 +83,16 @@ class WeChat
                         "PicUrl" =>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", 
                         "Url" =>"weixin://addfriend/pondbaystudio");
                         break;
+                    case "刮伤":
+                        $contentStr[] = array("Title" =>"公司简介", 
+                        "Description" =>"方倍工作室提供移动互联网相关的产品及服务", 
+                        "PicUrl" =>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", 
+                        "Url" =>"http://mp.weixin.qq.com/s?__biz=MzA4MzI0NjA1Mg==&mid=400141789&idx=1&sn=4c23f0f731b24d47cce8392412fbd46f#rd");
+                        break;                        
                     default:
                         $contentStr[] = array("Title" =>"默认菜单回复", 
-                        "Description" =>"您正在使用的是方倍工作室的自定义菜单测试接口", 
-                        "PicUrl" =>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", 
+                        "Description" =>"您正在使用的是威擎网络科技有限公司的自定义菜单测试接口", 
+                        "PicUrl" =>"https://mmbiz.qlogo.cn/mmbiz/DU2ARFDwyYJJXTicf51sNJ8EuwicuqUccMaujB0vqibxd3I5VcCsQu1wfibQCpZv4X1VE3O2R75wx8Uia7qpiceEVn3g/0?wx_fmt=jpeg", 
                         "Url" =>"weixin://addfriend/pondbaystudio");
                         break;
                 }

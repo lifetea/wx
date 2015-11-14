@@ -34,8 +34,8 @@ return array(
 		            },
 		            {
 		               "type":"click",
-		               "name":"趣味游戏",
-		               "key":"游戏"
+		               "name":"避免爱车刮伤",
+		               "key":"刮伤"
 		            },
 		            {
 		                "type":"click",
