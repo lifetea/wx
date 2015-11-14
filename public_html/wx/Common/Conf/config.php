@@ -47,7 +47,7 @@ return array(
 		            {
 		               "type":"click",
 		               "name":"违章查询",
-		               "key":"violation"
+		               "url":"http://t.cn/RvDTIdz"
 		            },
 		            {
 		               "type":"click",
