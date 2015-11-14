@@ -20,18 +20,19 @@ class IndexController extends Controller
     {
 		
 		$wechatObj = new Lib\WeChat();
-		if (isset($_GET['echostr'])) {
-			$wechatObj->valid();
-		}else{
-			$wechatObj->responseMsg();
-		}
+  		if (isset($_GET['echostr'])) {
+  			$wechatObj->valid();
+  		}else{
+  			$wechatObj->responseMsg();
+  		}
    	}  	
    	public function menu(){
-		$jsonmenu = C("menuJson");  		
+		  $jsonmenu = C("menuJson");  		
    		$sdk = new Util\JSSDK();
    		$access_token  = $sdk->getAccessToken();
+      var_dump($access_token);
    		$url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$access_token;
-		$result = $sdk->https_request($url, $jsonmenu);
-		var_dump($result);
+		  $result = $sdk->https_request($url, $jsonmenu);
+		  var_dump($result);
    	}
 }
