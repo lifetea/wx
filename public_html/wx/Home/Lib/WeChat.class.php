@@ -71,7 +71,7 @@ class WeChat
         switch ($object->Event)
         {
             case "subscribe":
-                $contentStr = "欢迎关注方倍工作室";
+                $contentStr = "车侣威擎";
             case "unsubscribe":
                 break;
             case "CLICK":
@@ -79,19 +79,19 @@ class WeChat
                 {
                     case "company":
                         $contentStr[] = array("Title" =>"公司简介", 
-                        "Description" =>"方倍工作室提供移动互联网相关的产品及服务", 
+                        "Description" =>"车侣威擎提供移动互联网相关的产品及服务", 
                         "PicUrl" =>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", 
                         "Url" =>"weixin://addfriend/pondbaystudio");
                         break;
                     case "violation":
                         $contentStr[] = array("Title" =>"公司简介", 
-                        "Description" =>"方倍工作室提供移动互联网相关的产品及服务", 
+                        "Description" =>"车侣威擎提供移动互联网相关的产品及服务", 
                         "PicUrl" =>"http://discuz.comli.com/weixin/weather/icon/cartoon.jpg", 
                         "Url" =>"weixin://addfriend/pondbaystudio");
                         break;                        
                     case "刮伤":
                         $contentStr[] = array("Title" =>"公司简介", 
-                        "Description" =>"方倍工作室提供移动互联网相关的产品及服务", 
+                        "Description" =>"车侣威擎提供移动互联网相关的产品及服务", 
                         "PicUrl" =>"http://t.cn/RUYqefc", 
                         "Url" =>"http://t.cn/RUYqFF7");
                         break;                        
