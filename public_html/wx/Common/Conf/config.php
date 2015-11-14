@@ -9,7 +9,7 @@ return array(
 		            {
 		               "type":"click",
 		               "name":"北京天气",
-		               "key":"天气北京"
+		               "url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd2e82d66cc76016c&redirect_uri=http://wx.vlegend.cn/oauth2&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect"
 		            },
 		            {
 		               "type":"click",

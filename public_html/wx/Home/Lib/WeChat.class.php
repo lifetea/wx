@@ -71,7 +71,8 @@ class WeChat
         switch ($object->Event)
         {
             case "subscribe":
-                $contentStr = "车侣威擎";
+                //关注后发送的消息
+                $contentStr = "欢迎订阅车侣威擎";
             case "unsubscribe":
                 break;
             case "CLICK":

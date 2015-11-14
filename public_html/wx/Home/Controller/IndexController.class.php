@@ -35,4 +35,11 @@ class IndexController extends Controller
 		  $result = $sdk->https_request($url, $jsonmenu);
 		  var_dump($result);
    	}
+    public function oauth2(){
+      if (isset($_GET['code'])){
+          echo $_GET['code'];
+      }else{
+          echo "NO CODE";
+      }
+    }
 }
