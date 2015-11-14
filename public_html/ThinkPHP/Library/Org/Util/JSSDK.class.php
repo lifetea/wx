@@ -69,7 +69,9 @@ class JSSDK {
     if (!$token) {
       $appId = $this->appId;
       $secret = $this->appSecret;
-    	$res = file_get_contents('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appId&secret=$secret');
+      $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appId&secret=$secret';
+    	var_dump($url);
+      $res = file_get_contents($url);
     	$res = json_decode($res, true);
     	$token = $res['access_token'];
     	// 注意：这里需要将获取到的token缓存起来（或写到数据库中）
