@@ -79,7 +79,7 @@ class WeChat
                 switch ($object->EventKey)
                 {
                     case "hongbao":
-                        $contentStr ="OAuth2.0网页授权演示 <a href=\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8888888888888888&redirect_uri=http://mascot.duapp.com/oauth2.php&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect\">点击这里体验</a>技术支持 方倍工作室"; 
+                        $contentStr ="OAuth2.0网页授权演示 <a href=\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd2e82d66cc76016c&redirect_uri=http://wx.vlegend.cn/oauth2&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect\">点击这里体验</a>技术支持 车侣威擎"; 
                         break;                    
                     case "company":
                         $contentStr[] = array("Title" =>"公司简介", 
