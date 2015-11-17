@@ -87,19 +87,28 @@ class JSSDK {
 
   public function getUserAccessToken($code) {
     //$token = S('access_token');
-    if (!$token) {
-      $appId = $this->appId;
-      $secret = $this->appSecret;
-      var_dump($code);
-      $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$appId}&secret={$secret}&code={$code}&grant_type=authorization_code";
-      $res = file_get_contents($url);
-      $res = json_decode($res, true);
-      $token = $res['access_token'];
-      var_dump($res);
-      //S('access_token', $token, 7000);
-    }
-    return $token;
+    $appId = $this->appId;
+    $secret = $this->appSecret;
+    $url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$appId}&secret={$secret}&code={$code}&grant_type=authorization_code";
+    $res = file_get_contents($url);
+    $res = json_decode($res, true);
+    //var_dump($res);
+    //S('access_token', $token, 7000);
+    return $res;
   }  
+
+  public function getUserInfo($res) {
+    //$token = S('access_token');
+    $userToken = $res['access_token'];
+    $openId = $res['openid'];
+    $url = "https://api.weixin.qq.com/sns/userinfo?access_token={$userToken}&openid={$openId}&lang=zh_CN";
+    $res = file_get_contents($url);
+    $res = json_decode($res, true);
+    //$token = $res['access_token'];
+    var_dump($res);
+    //S('access_token', $token, 7000);
+  }  
+
 
   public function hello() {
   	return "test";

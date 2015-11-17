@@ -40,7 +40,8 @@ class IndexController extends Controller
           echo $_GET['code'];
           $code = $_GET['code'];
           $sdk = new Util\JSSDK();
-          $sdk->getUserAccessToken($code);
+          $res = $sdk->getUserAccessToken($code);
+          $sdk->getUserInfo($res);
       }else{
           echo "NO CODE";
       }
