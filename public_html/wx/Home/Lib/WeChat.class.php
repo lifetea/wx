@@ -78,6 +78,12 @@ class WeChat
             case "CLICK":
                 switch ($object->EventKey)
                 {
+                    case "hongbao":
+                        $contentStr = array("Title" =>"公司简介", 
+                        "Description" =>"OAuth2.0网页授权演示 <a href=\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8888888888888888&redirect_uri=http://mascot.duapp.com/oauth2.php&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect\">点击这里体验</a>
+技术支持 方倍工作室", 
+                        break;                    
+                        
                     case "company":
                         $contentStr[] = array("Title" =>"公司简介", 
                         "Description" =>"车侣威擎提供移动互联网相关的产品及服务", 

@@ -7,9 +7,9 @@ return array(
 		           "name":"在线商城",
 		           "sub_button":[
 		            {
-		               "type":"view",
+		               "type":"click",
 		               "name":"红包",
-		               "url":"http://t.cn/RUYY4tl"
+		               "key":"hongbao"
 		            },
 		            {
 		               "type":"click",
