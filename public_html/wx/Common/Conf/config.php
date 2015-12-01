@@ -4,26 +4,27 @@ return array(
 	'menuJson'=>'{
 		      "button":[
 		      {
-		           "name":"在线商城",
+		           "name":"关于爱车",
 		           "sub_button":[
 		            {
 		               "type":"click",
-		               "name":"红包",
+		               "name":"我要硬件",
 		               "key":"hongbao"
 		            },
 		            {
 		               "type":"click",
-		               "name":"深圳天气",
+		               "name":"我要软件",
 		               "key":"天气深圳"
 		            },
 		            {
-		                "type":"view",
-		                "name":"本地天气",
-		                "url":"http://m.hao123.com/a/tianqi"
-		            }]
+		               "type":"view",
+		               "name":"违章查询",
+		               "url":"http://t.cn/RvDTIdz"
+		            }
+		            ]
 		       },
 		       {
-		           "name":"车侣威擎",
+		           "name":"来玩我",
 		           "sub_button":[
 		            {
 		               "type":"click",
@@ -42,21 +43,36 @@ return array(
 		            }]
 		       },		       
 		       {
-		           "name":"更多",
+		           "name":"积分兑换",
 		           "sub_button":[
 		            {
 		               "type":"view",
-		               "name":"违章查询",
+		               "name":"规则",
 		               "url":"http://t.cn/RvDTIdz"
 		            },
 		            {
 		               "type":"view",
-		               "name":"高速路况",
+		               "name":"签到",
 		               "url":"http://t.cn/Rykc5qP"
 		            },
 		            {
 		                "type":"view",
-		                "name":"各地天气",
+		                "name":"积分排名",
+		                "url":"http://t.cn/RykccaW"
+		            }，
+		            {
+		                "type":"view",
+		                "name":"积分排名",
+		                "url":"http://t.cn/RykccaW"
+		            },
+		            {
+		                "type":"view",
+		                "name":"我要打榜",
+		                "url":"http://t.cn/RykccaW"
+		            },
+					{
+		                "type":"view",
+		                "name":"兑换",
 		                "url":"http://t.cn/RykccaW"
 		            }]
 		       }
