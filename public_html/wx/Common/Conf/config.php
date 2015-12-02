@@ -1,6 +1,9 @@
 <?php
 return array(
 	//'配置项'=>'配置值'
+	//
+	'SRC'=>"http://wx.vlegend.cn/Public",
+	//微信菜单
 	'menuJson'=>'{
 		      "button":[
 		      {
@@ -24,23 +27,9 @@ return array(
 		            ]
 		       },
 		       {
-		           "name":"来玩我",
-		           "sub_button":[
-		            {
-		               "type":"click",
-		               "name":"公司简介",
-		               "key":"company"
-		            },
-		            {
-		               "type":"click",
-		               "name":"避免刮伤",
-		               "key":"刮伤"
-		            },
-		            {
-		                "type":"click",
-		                "name":"讲个笑话",
-		                "key":"笑话"
-		            }]
+				"type":"view",
+				"name":"讲个笑话",
+				"url":"笑话"
 		       },		       
 		       {
 		           "name":"积分兑换",
@@ -48,7 +37,7 @@ return array(
 		            {
 		               "type":"view",
 		               "name":"规则",
-		               "url":"http://t.cn/RvDTIdz"
+		               "url":"http://t.cn/RUDmi8I"
 		            },
 		            {
 		               "type":"view",
