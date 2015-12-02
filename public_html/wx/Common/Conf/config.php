@@ -29,7 +29,7 @@ return array(
 		       {
 				"type":"view",
 				"name":"讲个笑话",
-				"url":"笑话"
+				"url":"http://t.cn/RUDmi8I"
 		       },		       
 		       {
 		           "name":"积分兑换",
@@ -37,7 +37,7 @@ return array(
 		            {
 		               "type":"view",
 		               "name":"规则",
-		               "url":"http://t.cn/RUDmi8I"
+		               "url":"http://t.cn/RvDTIdz"
 		            },
 		            {
 		               "type":"view",
