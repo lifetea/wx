@@ -15,9 +15,9 @@ return array(
 		           "name":"关于爱车",
 		           "sub_button":[
 		            {
-		               "type":"click",
+		               "type":"view",
 		               "name":"我要硬件",
-		               "key":"hongbao"
+		               "url":"http://t.cn/RUFWwMN"
 		            },
 		            {
 		               "type":"click",
@@ -47,7 +47,7 @@ return array(
 		                "type":"view",
 		                "name":"积分排名",
 		                "url":"http://t.cn/RykccaW"
-		            }，
+		            },
 					{
 		                "type":"view",
 		                "name":"兑换奖品",
