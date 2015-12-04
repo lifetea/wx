@@ -4,6 +4,11 @@ return array(
 	//
 	'SRC'=>"http://wx.vlegend.cn/Public",
 	//微信菜单
+			           //  {
+		            //    "type":"view",
+		            //    "name":"违章查询",
+		            //    "url":"http://t.cn/RvDTIdz"
+		            // }
 	'menuJson'=>'{
 		      "button":[
 		      {
@@ -18,17 +23,11 @@ return array(
 		               "type":"click",
 		               "name":"我要软件",
 		               "key":"天气深圳"
-		            },
-		            {
-		               "type":"view",
-		               "name":"违章查询",
-		               "url":"http://t.cn/RvDTIdz"
-		            }
-		            ]
+		            }]
 		       },
 		       {
 				"type":"view",
-				"name":"讲个笑话",
+				"name":"来玩我",
 				"url":"http://t.cn/RUDmi8I"
 		       },		       
 		       {
