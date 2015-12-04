@@ -48,16 +48,6 @@ return array(
 		                "name":"积分排名",
 		                "url":"http://t.cn/RykccaW"
 		            }，
-		            {
-		                "type":"view",
-		                "name":"积分排名",
-		                "url":"http://t.cn/RykccaW"
-		            },
-		            {
-		                "type":"view",
-		                "name":"我要打榜",
-		                "url":"http://t.cn/RykccaW"
-		            },
 					{
 		                "type":"view",
 		                "name":"兑换",
