@@ -35,12 +35,12 @@ return array(
 		           "sub_button":[
 		            {
 		               "type":"view",
-		               "name":"规则",
+		               "name":"积分规则",
 		               "url":"http://t.cn/RvDTIdz"
 		            },
 		            {
 		               "type":"view",
-		               "name":"签到",
+		               "name":"每日签到",
 		               "url":"http://t.cn/Rykc5qP"
 		            },
 		            {
@@ -50,7 +50,7 @@ return array(
 		            }，
 					{
 		                "type":"view",
-		                "name":"兑换",
+		                "name":"兑换奖品",
 		                "url":"http://t.cn/RykccaW"
 		            }]
 		       }
