@@ -22,7 +22,7 @@ return array(
 		            {
 		               "type":"click",
 		               "name":"我要软件",
-		               "key":"天气深圳"
+		               "key":"hongbao"
 		            }]
 		       },
 		       {
