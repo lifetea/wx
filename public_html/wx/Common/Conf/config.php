@@ -36,7 +36,7 @@ return array(
 		            {
 		               "type":"view",
 		               "name":"积分规则",
-		               "url":"http://t.cn/RvDTIdz"
+		               "url":"http://t.cn/RUsifc2"
 		            },
 		            {
 		               "type":"view",
