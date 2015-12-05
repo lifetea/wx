@@ -129,6 +129,8 @@ input, select {
 	}
 	.t-1{font-family: "微软雅黑";font-size: 103%;}
 	.t-2{font-family: "微软雅黑";color: #d81313;font-size: 103%;}
+	.content{padding-left:10px;}
+	.img{height:80%;margin-top:6%;margin-left:15%;}
   	@media screen and (min-height:736px){
 		 		
   	}
@@ -145,17 +147,17 @@ input, select {
 		<ul class="list">
 			<li>
 				<div class="col-45">
-					<div style="height:80%;margin-top:6%;margin-left:15%">
+					<div class="img">
 						<img style="vertical-align:middle;height:100%" src="{$Think.config.SRC}/img/134.png">
 					</div>
 					
 				</div>
 				<div class="col-55">
-					<div style="padding-left:10px">
-						<div style="padding-top:20%">
+					<div class="content">
+						<div class="pt20">
 							<span class="t-1">【16寸白底镀黑面轮毂】134</span>
 						</div>
-						<div style="padding-top:20%">
+						<div class="pt20">
 							<span class="t-2">￥2066 (积分：206600)</span>
 						</div>					
 					</div>
@@ -163,17 +165,17 @@ input, select {
 			</li>								
 			<li>
 				<div class="col-45">
-					<div style="height:80%;margin-top:6%;margin-left:15%">
+					<div class="img">
 						<img style="vertical-align:middle;height:100%" src="{$Think.config.SRC}/img/144-h-c.png">
 					</div>
 					
 				</div>
 				<div class="col-55">
-					<div style="padding-left:10px">
-						<div style="padding-top:20%">
+					<div class="content">
+						<div class="pt20">
 							<span class="t-1">【17寸黑色车面轮毂】144</span>
 						</div>
-						<div style="padding-top:20%">
+						<div class="pt20">
 							<span class="t-2">￥2066 (积分：206600)</span>
 						</div>					
 					</div>
@@ -181,17 +183,17 @@ input, select {
 			</li>
 			<li>
 				<div class="col-45">
-					<div style="height:80%;margin-top:6%;margin-left:15%">
+					<div class="img">
 						<img style="vertical-align:middle;height:100%" src="{$Think.config.SRC}/img/221-y-d-h.png">
 					</div>
 					
 				</div>
 				<div class="col-55">
-					<div style="padding-left:10px">
-						<div style="padding-top:20%">
+					<div class="content">
+						<div class="pt20">
 							<span class="t-1">【17寸银色镀黑面轮毂】221</span>
 						</div>
-						<div style="padding-top:20%">
+						<div class="pt20">
 							<span class="t-2">￥2066 (积分：206600)</span>
 						</div>					
 					</div>
@@ -199,17 +201,17 @@ input, select {
 			</li>
 			<li>
 				<div class="col-45">
-					<div style="height:80%;margin-top:6%;margin-left:15%">
+					<div class="img">
 						<img style="vertical-align:middle;height:100%" src="{$Think.config.SRC}/img/289-b-y-h.png">
 					</div>
 					
 				</div>
 				<div class="col-55">
-					<div style="padding-left:10px">
-						<div style="padding-top:20%">
+					<div class="content">
+						<div class="pt20">
 							<span class="t-1">【17寸半亚黑轮毂】289</span>
 						</div>
-						<div style="padding-top:20%">
+						<div class="pt20">
 							<span class="t-2">￥2066 (积分：206600)</span>
 						</div>					
 					</div>
@@ -223,7 +225,8 @@ input, select {
 		(function(){
 			var winH = window.innerHeight;
 			var colH = parseInt(winH/4);
-			var cssNode = document.createTextNode(".list li{height:"+colH+"px;}"); 
+			var pt20 = parseInt(colH*0.25);
+			var cssNode = document.createTextNode(".list li{height:"+colH+"px;} .pt20{padding-top:"+pt20+"px;}"); 
 			var style = document.createElement("style"); 
 			style.type = "text/css"; 
 			style.appendChild(cssNode);
