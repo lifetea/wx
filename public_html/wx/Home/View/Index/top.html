@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>积分排行|车侣威擎</title>
 <style type="text/css">
 /* 
 html5doctor.com Reset Stylesheet
@@ -110,9 +111,64 @@ input, select {
 <style type="text/css">
 	html,body,.main{height: 100%;}
 	body{
-		background:#ffdc7e;
+		background:#bbbcc0;
 	}
+    ul{list-style: none;}
+    .left{float: left;}
+    .list li{
+        background: #dbe2f3;
+        margin-bottom: 1px;
+    }
+    .list li.first{
+        margin-bottom: 8px;
+    }
+    .list .order{
+        text-align: center;
+        vertical-align: middle;
+        #padding-top: 15%;
+    }
+    .order span{
+        font-family: "微软雅黑";
+        font-size: 180%;
+        text-align: center;
+    }
+    .col-15{
+        width: 16%;
+        float: left;
+    }
+    .avatar{
+        float: left;
+    }
+    .avatar div{
+        border-radius: 50% 50% 50% 50%;
+        overflow: hidden;
+    }
+    .radius{
+
+    }
+    .avatar img{
+        width: 100%;
+    }
     .header,.header img{width: 100%;}
+    .name{
+        width: 120px;
+        text-align: center;
+        #padding-top: 16%;
+    }
+    .name span{
+        font-family: "微软雅黑";
+        font-size: 130%;
+        
+    }
+    .sore{
+        padding-left: 8%;
+        #padding-top: 15%;
+    }
+    .sore span{
+        font-family: "微软雅黑";
+        font-size: 180%;
+        color: #0daf70;
+    }    
   	@media screen and (min-height:736px){
 		 		
   	}
@@ -129,15 +185,106 @@ input, select {
 		<div class="header">
 			<img src="{$Think.config.SRC}/header.jpg">
 		</div>
+        <ul class="list">
+            <li class="first">
+                <div class="order col-15">
+                    <span>1</span>
+                </div>
+                <div class="avatar">
+                    <div class="radius">
+                        <img src="{$Think.config.SRC}/avatar/1.jpg">
+                    </div>
+                </div>
+                <div class="name left">
+                    <span>lifetea</span>
+                </div>
+                <div class="sore left">
+                    <span>3200</span>
+                </div>                
+            </li>
+            <li>
+                <div class="order col-15">
+                    <span>1</span>
+                </div>
+                <div class="avatar">
+                    <div class="radius">
+                        <img src="{$Think.config.SRC}/avatar/1.jpg">
+                    </div>
+                </div>
+                <div class="name left">
+                    <span>lifetea</span>
+                </div>
+                <div class="sore left">
+                    <span>3200</span>
+                </div>                
+            </li>
+            <li>
+                <div class="order col-15">
+                    <span>2</span>
+                </div>
+                <div class="avatar">
+                    <div class="radius">
+                        <img src="{$Think.config.SRC}/avatar/1.jpg">
+                    </div>
+                </div>
+                <div class="name left">
+                    <span>lifetea</span>
+                </div>
+                <div class="sore left">
+                    <span>3200</span>
+                </div>                
+            </li>
+            <li>
+                <div class="order col-15">
+                    <span>3</span>
+                </div>
+                <div class="avatar">
+                    <div class="radius">
+                        <img src="{$Think.config.SRC}/avatar/1.jpg">
+                    </div>
+                </div>
+                <div class="name left">
+                    <span>lifetea</span>
+                </div>
+                <div class="sore left">
+                    <span>3200</span>
+                </div>                
+            </li>
+            <li>
+                <div class="order col-15">
+                    <span>4</span>
+                </div>
+                <div class="avatar">
+                    <div class="radius">
+                        <img src="{$Think.config.SRC}/avatar/1.jpg">
+                    </div>
+                </div>
+                <div class="name left">
+                    <span>lifetea</span>
+                </div>
+                <div class="sore left">
+                    <span>3200</span>
+                </div>                
+            </li>                     
+        </ul>
 	</div>
 
 	<script type="text/javascript">
-		(function(){
- 
+        (function(){
+            var winH = window.innerHeight;
+            var winW = window.innerWidth;
+            var colH = parseInt(winH*0.7/4);
+            var pH   = parseInt(colH*0.40);
+            var aH   = parseInt(colH*0.28);
+            var aW   = parseInt(winW*0.14);
+            // var pt20 = parseInt(colH*0.25);
+            var cssNode = document.createTextNode(".list li{height:"+colH+"px;} .order{padding-top:"+pH+"px;} .name{padding-top:"+(pH+6)+"px;}  .sore{padding-top:"+pH+"px;} .avatar{padding-top:"+aH+"px; width:"+aW+"px;} .radius{height:"+aW+"px;width:"+aW+"px;}"); 
+            var style = document.createElement("style"); 
+            style.type = "text/css"; 
+            style.appendChild(cssNode);
+            document.head.appendChild(style);    
 
-		})();
-
-
+        })();
 	</script>
 </body>
 </html>

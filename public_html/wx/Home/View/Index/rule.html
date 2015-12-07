@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>积分规则|车侣威擎</title>
 <style type="text/css">
 /* 
 html5doctor.com Reset Stylesheet
@@ -109,7 +110,7 @@ input, select {
 </style>
 <style type="text/css">
 	html,body,.main{width:100%;}
-	body{
+	.main{
 		background:#ffdc7e;
 	}
   	@media screen and (min-height:736px){
@@ -130,7 +131,14 @@ input, select {
 
 	<script type="text/javascript">
 		(function(){
- 
+			var winH = window.innerHeight;
+			// var colH = parseInt(winH/4);
+			// var pt20 = parseInt(colH*0.25);
+			var cssNode = document.createTextNode(".main{height:"+winH+"px;} "); 
+			var style = document.createElement("style"); 
+			style.type = "text/css"; 
+			style.appendChild(cssNode);
+			document.head.appendChild(style);    
 
 		})();
 
