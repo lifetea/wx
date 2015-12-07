@@ -39,14 +39,14 @@ return array(
 		               "url":"http://t.cn/RUsifc2"
 		            },
 		            {
-		               "type":"view",
+		               "type":"click",
 		               "name":"每日签到",
-		               "url":"http://t.cn/Rykc5qP"
+		               "key":"qiandao"
 		            },
 		            {
 		                "type":"view",
 		                "name":"积分排名",
-		                "url":"http://t.cn/RykccaW"
+		                "url":"http://wx.vlegend.cn/top"
 		            },
 					{
 		                "type":"view",
