@@ -37,7 +37,7 @@ class IndexController extends Controller
    	}
     public function oauth2(){
       if (isset($_GET['code'])){
-          echo $_GET['code'];
+          //echo $_GET['code'];
           $code = $_GET['code'];
           $sdk = new Util\JSSDK();
           $res = $sdk->getUserAccessToken($code);
@@ -45,7 +45,7 @@ class IndexController extends Controller
       }else{
           echo "NO CODE";
       }
-    }
+    }   
     public function intro(){
       $id = I('get.id');
       $this->assign('id',$id);
