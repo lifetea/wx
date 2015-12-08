@@ -16,16 +16,26 @@ class IndexController extends Controller
     {
        $this->display();
    	}
+    //订阅号认证
     public function cert()
     {
-		
-		$wechatObj = new Lib\WeChat();
-  		if (isset($_GET['echostr'])) {
-  			$wechatObj->valid();
-  		}else{
-  			$wechatObj->responseMsg();
-  		}
-   	}  	
+  		$wechatObj = new Lib\WeChat();
+    		if (isset($_GET['echostr'])) {
+    			$wechatObj->valid();
+    		}else{
+    			$wechatObj->responseMsg();
+    	}
+   	}
+    //服务号认证
+    public function certFuWu()
+    {
+      $fuWu = new Lib\FuWu();
+        if (isset($_GET['echostr'])) {
+          $fuWu->valid();
+        }else{
+          $fuWu->responseMsg();
+      }
+    }     	
    	public function menu(){
 		  $jsonmenu = C("menuJson");  		
    		$sdk = new Util\JSSDK();
