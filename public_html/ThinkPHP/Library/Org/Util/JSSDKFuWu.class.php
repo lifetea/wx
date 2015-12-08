@@ -31,7 +31,7 @@ class JSSDKFuWu {
       "url"       => $url,
       "signature" => $signature,
       "rawString" => $string,
-      "jsapi_ticket" => S('jsapi_ticket')
+      "jsapi_ticket" => S('jsapi_ticket_fuwu')
     );
     return $signPackage; 
   }
@@ -46,7 +46,7 @@ class JSSDKFuWu {
   }
 
   public function getJsApiTicket() {
-  	$ticket = S('jsapi_ticket');
+  	$ticket = S('jsapi_ticket_fuwu');
   	if (!$ticket) {
   		$accessToken = $this->getAccessToken();
   		$url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=$accessToken";
@@ -59,7 +59,7 @@ class JSSDKFuWu {
   		// 因此，这里将token值缓存1小时，比2小时小。缓存失效后，再从接口获取新的token，这样
   		// 就可以避免token失效。
   		// S()是ThinkPhp的缓存函数，如果使用的是不ThinkPhp框架，可以使用你的缓存函数，或使用数据库来保存。
-  		S('jsapi_ticket', $ticket, 7000);
+  		S('jsapi_ticket_fuwu', $ticket, 7000);
   	}
   	return $ticket;  	
   }
