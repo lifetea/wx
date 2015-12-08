@@ -51,7 +51,7 @@ return array(
 					{
 		                "type":"view",
 		                "name":"兑换奖品",
-		                "url":"http://t.cn/RykccaW"
+		                "url":"http://wx.vlegend.cn/gift"
 		            }]
 		       }
 		      ]
