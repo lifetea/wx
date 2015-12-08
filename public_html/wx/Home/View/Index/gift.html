@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>积分排行|车侣威擎</title>
+<title>积分兑换|车侣威擎</title>
 <style type="text/css">
 /* 
 html5doctor.com Reset Stylesheet
@@ -111,52 +111,49 @@ input, select {
 <style type="text/css">
 	html,body,.main{height: 100%;}
 	body{
-		background:#bbbcc0;
+		background:#ffc446;;
 	}
+    img {border:none;} 
     ul{list-style: none;}
-    .clearfix:after {
-      content: " ";
-      display: block;
-      clear: both;
-      height: 0;
-    }
-    .clearfix {
-      zoom: 1;
-    }    
     .left{float: left;}
     .list li{
-        background: #dbe2f3;
-        margin-bottom: 1px;
-    }
-    .list li.first{
-        margin-bottom: 8px;
+        background: #ffc446;
+        border-bottom: 1px solid #d1a13a;
     }
     .list .order{
         text-align: center;
         vertical-align: middle;
         #padding-top: 15%;
     }
+    h3{
+        font-family: "微软雅黑";
+        text-align: center;
+        font-weight: normal;
+        font-size: 160%;
+        line-height: 220%;     
+    }
+    .score p{
+        font-family: "微软雅黑";
+        text-align: center;
+        color: #ad1919;
+        font-size: 160%;
+        line-height: 200%;           
+    }
     .order span{
         font-family: "微软雅黑";
         font-size: 180%;
         text-align: center;
     }
-    .col-15{
-        width: 16%;
+    .col-30{
+        #width: 30%;
         float: left;
     }
     .avatar{
         float: left;
     }
-    .avatar div{
-        border-radius: 50% 50% 50% 50%;
-        overflow: hidden;
-    }
-    .radius{
-
-    }
-    .avatar img{
+    .pic img{
         width: 100%;
+        border: 3px solid #e1baaa;
     }
     .header,.header img{width: 100%;}
     .name{
@@ -177,7 +174,20 @@ input, select {
         font-family: "微软雅黑";
         font-size: 180%;
         color: #0daf70;
-    }    
+    }
+    a{
+        text-decoration:none;
+    }
+    .exchange .btn{
+        width: 120px;
+        height: 30px;
+        border-radius: 5px;
+        background: #ffc446;
+        border: 1px solid #fff;
+        color: #fff;
+        padding: 6px 18px 6px 18px;
+    }
+
   	@media screen and (min-height:736px){
 		 		
   	}
@@ -192,89 +202,57 @@ input, select {
 <body>
 	<div class="main">
 		<div class="header">
-			<img src="{$Think.config.SRC}/header.jpg">
+			<img src="{$Think.config.SRC}/gift-h.jpg">
 		</div>
         <ul class="list">
-            <li class="first clearfix">
-                <div class="order col-15">
-                    <span>1</span>
+            <li>
+                <div class="pic col-30">
+                        <img src="{$Think.config.SRC}/gift/1.jpg">
                 </div>
-                <div class="avatar">
-                    <div class="radius">
-                        <img src="{$Think.config.SRC}/avatar/1.jpg">
-                    </div>
+                <div class="score left">
+                    <h3>积分</h3>
+                    <p>40000</p>
                 </div>
-                <div class="name left">
-                    <span>lifetea</span>
-                </div>
-                <div class="sore left">
-                    <span>3200</span>
+                <div class="exchange left">
+                    <a class="btn" href="javascript:">兑换</a>
                 </div>                
             </li>
-            <li class="clearfix">
-                <div class="order col-15">
-                    <span>1</span>
+            <li>
+                <div class="pic col-30">
+                        <img src="{$Think.config.SRC}/gift/1.jpg">
                 </div>
-                <div class="avatar">
-                    <div class="radius">
-                        <img src="{$Think.config.SRC}/avatar/1.jpg">
-                    </div>
+                <div class="score left">
+                    <h3>积分</h3>
+                    <p>40000</p>
                 </div>
-                <div class="name left">
-                    <span>lifetea</span>
-                </div>
-                <div class="sore left">
-                    <span>3200</span>
+                <div class="exchange left">
+                    <a class="btn" href="javascript:">兑换</a>
                 </div>                
             </li>
-            <li class="clearfix">
-                <div class="order col-15">
-                    <span>2</span>
+            <li>
+                <div class="pic col-30">
+                        <img src="{$Think.config.SRC}/gift/1.jpg">
                 </div>
-                <div class="avatar">
-                    <div class="radius">
-                        <img src="{$Think.config.SRC}/avatar/1.jpg">
-                    </div>
+                <div class="score left">
+                    <h3>积分</h3>
+                    <p>40000</p>
                 </div>
-                <div class="name left">
-                    <span>lifetea</span>
-                </div>
-                <div class="sore left">
-                    <span>3200</span>
+                <div class="exchange left">
+                    <a class="btn" href="javascript:">兑换</a>
                 </div>                
             </li>
-            <li class="clearfix">
-                <div class="order col-15">
-                    <span>3</span>
+            <li>
+                <div class="pic col-30">
+                        <img src="{$Think.config.SRC}/gift/1.jpg">
                 </div>
-                <div class="avatar">
-                    <div class="radius">
-                        <img src="{$Think.config.SRC}/avatar/1.jpg">
-                    </div>
+                <div class="score left">
+                    <h3>积分</h3>
+                    <p>40000</p>
                 </div>
-                <div class="name left">
-                    <span>lifetea</span>
-                </div>
-                <div class="sore left">
-                    <span>3200</span>
+                <div class="exchange left">
+                    <a class="btn" href="javascript:">兑换</a>
                 </div>                
-            </li>
-            <li class="clearfix">
-                <div class="order col-15">
-                    <span>4</span>
-                </div>
-                <div class="avatar">
-                    <div class="radius">
-                        <img src="{$Think.config.SRC}/avatar/1.jpg">
-                    </div>
-                </div>
-                <div class="name left">
-                    <span>lifetea</span>
-                </div>
-                <div class="sore left">
-                    <span>3200</span>
-                </div>                
-            </li>                     
+            </li>                                                      
         </ul>
 	</div>
 
@@ -282,12 +260,15 @@ input, select {
         (function(){
             var winH = window.innerHeight;
             var winW = window.innerWidth;
-            var colH = parseInt(winH*0.7/4);
+            var colH = parseInt(winH*0.8/4);
             var pH   = parseInt(colH*0.40);
             var aH   = parseInt(colH*0.28);
-            var aW   = parseInt(winW*0.14);
+            var pW   = parseInt(winW*0.28);
+            var sW   = parseInt(winW*0.32);
+            var wW   = parseInt(winW*0.4*0.3);
+            var tH   = (colH - pW)/2;
             // var pt20 = parseInt(colH*0.25);
-            var cssNode = document.createTextNode(".list li{height:"+colH+"px;} .order{padding-top:"+pH+"px;} .name{padding-top:"+(pH+6)+"px;}  .sore{padding-top:"+pH+"px;} .avatar{padding-top:"+aH+"px; width:"+aW+"px;} .radius{height:"+aW+"px;width:"+aW+"px;}"); 
+            var cssNode = document.createTextNode(".list li{height:"+colH+"px;} .pic{width:"+pW+"px;padding-top:"+tH+"px;padding-left:"+tH+"px;} .score{width:"+sW+"px;padding-top:"+tH+"px;} .exchange{padding-top:"+pH+"px;padding-left:"+wW+"px;}"); 
             var style = document.createElement("style"); 
             style.type = "text/css"; 
             style.appendChild(cssNode);
