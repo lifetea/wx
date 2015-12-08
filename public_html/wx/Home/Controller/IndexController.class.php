@@ -46,4 +46,10 @@ class IndexController extends Controller
           echo "NO CODE";
       }
     }
+    public function intro(){
+      $id = I('get.id');
+      $this->assign('id',$id);
+      //var_dump($id);
+      $this->display();
+    }    
 }
