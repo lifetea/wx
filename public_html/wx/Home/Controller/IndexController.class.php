@@ -60,7 +60,7 @@ class IndexController extends Controller
       $result = $sdk->https_request($url, $jsonmenu);
       var_dump($result);
     }
-    //    
+    //订阅号oauth2 
     public function oauth2(){
       if (isset($_GET['code'])){
           echo $_GET['code'];
@@ -71,7 +71,19 @@ class IndexController extends Controller
       }else{
           echo "NO CODE";
       }
-    }   
+    }
+    //服务号oauth2 
+    public function oauth2FuWu(){
+      if (isset($_GET['code'])){
+          echo $_GET['code'];
+          $code = $_GET['code'];
+          $sdk  = new Util\JSSDKFuWu();
+          $res  = $sdk->getUserAccessToken($code);
+          $sdk->getUserInfo($res);
+      }else{
+          echo "NO CODE";
+      }
+    }     
     public function intro(){
       $id = I('get.id');
       $this->assign('id',$id);
