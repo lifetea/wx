@@ -35,9 +35,12 @@ class IndexController extends Controller
         }else{
           $fuWu->responseMsg();
       }
-    }     	
+    }
+    //订阅号菜单  	
    	public function menu(){
-		  $jsonmenu = C("menuJson");  		
+		  $jsonmenu  = C("menuJson");  
+      $appId     = "wx85eea0cbf0d30d65";
+      $appSecret = "7fd7e90c834f1d29c8bae9b484a9a72d";		
    		$sdk = new Util\JSSDK();
    		$access_token  = $sdk->getAccessToken();
       var_dump($access_token);
@@ -45,6 +48,19 @@ class IndexController extends Controller
 		  $result = $sdk->https_request($url, $jsonmenu);
 		  var_dump($result);
    	}
+    //服务号菜单
+    public function menuFuWu(){
+      $jsonmenu  = C("menuJson");
+      $appId     = "wxd2e82d66cc76016c";
+      $appSecret = "7d2d31c0120ad6812a7403a87403825b";
+      $sdk = new Util\JSSDKFuWu();
+      $access_token  = $sdk->getAccessToken();
+      var_dump($access_token);
+      $url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$access_token;
+      $result = $sdk->https_request($url, $jsonmenu);
+      var_dump($result);
+    }
+    //    
     public function oauth2(){
       if (isset($_GET['code'])){
           echo $_GET['code'];
