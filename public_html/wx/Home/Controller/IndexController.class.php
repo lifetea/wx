@@ -3,6 +3,7 @@ namespace Home\Controller;
 
 use Think\Controller;
 use Home\Lib;
+use Home\Model;
 use Org\Util;
 
 class IndexController extends Controller
@@ -84,11 +85,11 @@ class IndexController extends Controller
           $unionid = $arr["unionid"];
           $result = $user->where("unionid='{$unionid}'")->find();
           if (!$result) {
-            $user->data($arr)->add();
+            $result = $user->data($arr)->add();
           }
-          //var_dump($result);
+          //cookie('unionid',$unionid,7200);
+          var_dump($result);
           //$data = array('' => , );
-          
       }else{
           echo "NO CODE";
       }
@@ -100,6 +101,12 @@ class IndexController extends Controller
       $this->display();
     }
     public function top(){
+
+      $unionid = cookie('unionid');
+      //$us   = M("Log")->field("Sum(score) as sum")->where("");
+      $list = D("ScoreView")->field('Sum(score) as sum,nickname,headimgurl')->group('user.id')->order('sum DESC')->select();
+      //var_dump($list);
+      $this->assign("list",$list);
       $this->display();
     }      
 }
