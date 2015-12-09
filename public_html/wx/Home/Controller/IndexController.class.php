@@ -14,7 +14,7 @@ class IndexController extends Controller
 
    	public function test()
     {
-       $this->display();
+      $this->display();
    	}
     //订阅号认证
     public function cert()
@@ -63,7 +63,7 @@ class IndexController extends Controller
     //订阅号oauth2 
     public function oauth2(){
       if (isset($_GET['code'])){
-          echo $_GET['code'];
+          //echo $_GET['code'];
           $code = $_GET['code'];
           $sdk = new Util\JSSDK();
           $res = $sdk->getUserAccessToken($code);
