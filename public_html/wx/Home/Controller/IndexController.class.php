@@ -74,20 +74,32 @@ class IndexController extends Controller
     }
     //服务号oauth2 
     public function oauth2FuWu(){
-      if (isset($_GET['code'])){
-          echo $_GET['code'];
-          $code = $_GET['code'];
+      if (isset($_GET["code"])){
+          $user = M("user");
+          //echo $_GET["code"];
+          $code = $_GET["code"];
           $sdk  = new Util\JSSDKFuWu();
           $res  = $sdk->getUserAccessToken($code);
-          $sdk->getUserInfo($res);
+          $arr  = $sdk->getUserInfo($res);
+          $unionid = $arr["unionid"];
+          $result = $user->where("unionid='{$unionid}'")->find();
+          if (!$result) {
+            $user->data($arr)->add();
+          }
+          //var_dump($result);
+          //$data = array('' => , );
+          
       }else{
           echo "NO CODE";
       }
     }     
     public function intro(){
-      $id = I('get.id');
-      $this->assign('id',$id);
+      $id = I("get.id");
+      $this->assign("id",$id);
       //var_dump($id);
       $this->display();
-    }    
+    }
+    public function top(){
+      $this->display();
+    }      
 }

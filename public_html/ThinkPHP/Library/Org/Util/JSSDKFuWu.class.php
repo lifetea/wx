@@ -104,8 +104,9 @@ class JSSDKFuWu {
     $url = "https://api.weixin.qq.com/sns/userinfo?access_token={$userToken}&openid={$openId}&lang=zh_CN";
     $res = file_get_contents($url);
     $res = json_decode($res, true);
+    return $res;
     //$token = $res['access_token'];
-    var_dump($res);
+    //var_dump($res);
     //S('access_token', $token, 7000);
   }  
 
