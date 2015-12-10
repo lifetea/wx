@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>闪躲高手-玩游戏</title>
+    <link rel="icon" type="image/GIF" href=""/>
+    <base href="http://wx.vlegend.cn/sdgs/" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="full-screen" content="yes"/>
+    <meta name="screen-orientation" content="portrait"/>
+    <meta name="x5-fullscreen" content="true"/>
+    <meta name="360-fullscreen" content="true"/>
+    <style>
+        body, canvas, div {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            -khtml-user-select: none;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+
+        #orientationchangeImg, #notSupportedImg {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            display: none;
+        }
+
+        #ad_container {
+            background-color: white;
+            position: fixed;
+            left:0;
+            bottom:0px;
+            width:100%;
+            z-index: 9999;
+        }
+    </style>
+	<link rel="stylesheet" type="text/css" href="game9g.css">
+	<script src="game9g.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+</head>
+<body style="padding:0; margin: 0; background: #000000;">
+<canvas id="gameCanvas" width="320" height="480"></canvas>
+<img id="orientationchangeImg" src="res/orientationchange.jpg" style="z-index: 10000" />
+<img id="notSupportedImg" src="res/notSupportedImg.jpg" style="z-index: 9999" />
+
+<script src="jquery-1.7.1.min.js"></script>
+<script src="game.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var sWidth = Math.min(window.screen.availWidth, window.screen.width);
+        var sHeight = Math.min(window.screen.availHeight, window.screen.height);
+
+        var coefficientHeight =  sHeight / 960;
+        var coefficientWidth = sWidth / 640;
+        var coefficient = coefficientHeight < coefficientWidth ? coefficientHeight : coefficientWidth;
+       
+
+        var imgMask = document.getElementById("orientationchangeImg");
+        window.addEventListener("orientationchange",function(){
+            switch(window.orientation)
+            {
+                case 0:
+                    imgMask.style.display = "none";
+                    document.addEventListener('touchmove', function(evt){}, false);
+                    break;
+                case 90:
+                case -90:
+                    imgMask.style.display = "block";
+                    document.addEventListener('touchmove', function(evt){ evt.preventDefault(); }, false);
+                    break;
+            }
+        }, false);
+
+        switch(window.orientation)
+        {
+            case 0:
+                imgMask.style.display = "none";
+                break;
+            case 90:
+            case -90:
+                imgMask.style.display = "block";
+                break;
+        }
+
+        var ua = navigator.userAgent.toLowerCase();
+        var index = ua.indexOf("android"); 
+        if(index > -1) {
+            var version = parseFloat(ua.slice(index + 8));
+            if(version < 4){
+                notSupportedImg = document.getElementById("notSupportedImg");
+                if(notSupportedImg){
+                    notSupportedImg.style.display = "block";
+                }
+            }
+        }
+    });
+</script>
+<script type="text/javascript">
+		var game9g = new Game9G("sdgs");
+        game9g.shareData.title = "闪躲高手-玩游戏";
+        game9g.shareData.content = "闪躲高手-玩游戏";
+		function goHome(){
+			window.location=game9g.homeurl;
+		}
+		function clickMore(){
+			 window.location=game9g.moreurl;
+		}
+		function dp_share(){
+			game9g.share();
+		}
+		function dp_Ranking(){
+			window.location=game9g.rankurl;
+		}
+
+		function showAd(){
+		}
+		function hideAd(){
+		}
+		function dp_submitScore(score){
+			if(score>0){
+				game9g.score =parseInt(score*100);
+				game9g.scoreName = "坚持了"+score+"秒";
+				game9g.shareData.title ="我在闪躲高手中坚持了"+score+"秒,你也来试试看吧！-玩游戏";
+                var credits = 0;
+                if (score > 15) {
+                    credits = 5;
+                }
+                if (score > 25) {
+                    credits = 10;
+                };
+				game9g.utils.shareConfirm("你闪躲高手中坚持了"+score+"秒获得了"+credits+"点积分,快告诉你的小伙伴们吧！",dp_share);
+			}
+			
+		}
+	</script>
+</body>
+</html>
