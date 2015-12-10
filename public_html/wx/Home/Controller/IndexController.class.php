@@ -15,7 +15,10 @@ class IndexController extends Controller
 
    	public function test()
     {
-      $this->display();
+      $sdk = new Util\JSSDKFuWu();
+      $access_token  = $sdk->getAccessToken();
+      var_dump($access_token);
+      //$this->display();
    	}
     //订阅号认证
     public function cert()
@@ -86,9 +89,20 @@ class IndexController extends Controller
           $result = $user->where("unionid='{$unionid}'")->find();
           if (!$result) {
             $result = $user->data($arr)->add();
+            cookie('userId',$result);
+          }else{
+            cookie('userId',$result["id"]);
           }
-          //cookie('unionid',$unionid,7200);
-          var_dump($result);
+          $t = I("get.t");
+          //var_dump(I("get.t"));
+          if($t == "top"){
+            header('Location: http://wx.vlegend.cn/top');
+          }elseif ($t == "sdgs") {
+            header('Location: http://wx.vlegend.cn/sdgs/index.html');
+          }
+          
+          $userId = cookie("userId");
+          var_dump($userId);
           //$data = array('' => , );
       }else{
           echo "NO CODE";
@@ -100,13 +114,33 @@ class IndexController extends Controller
       //var_dump($id);
       $this->display();
     }
+    public function goSdgs(){
+      $userId = cookie('userId');
+      //var_dump($userId);
+      //var_dump("haha");
+      if (!$userId) {
+        //跳转
+        header('Location: https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd2e82d66cc76016c&redirect_uri=http://wx.vlegend.cn/oauth2FuWu?t=sdgs&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect');
+      }else{
+        header('Location: http://wx.vlegend.cn/sdgs/index.html');
+      }
+    }    
     public function top(){
 
-      $unionid = cookie('unionid');
-      //$us   = M("Log")->field("Sum(score) as sum")->where("");
+      $userId = cookie('userId');
+      //var_dump($userId);
+      if (!$userId) {
+        //跳转
+        header('Location: https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd2e82d66cc76016c&redirect_uri=http://wx.vlegend.cn/oauth2FuWu?t=top&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect');
+      }else{
+        $user   = D("ScoreView")->field('Sum(score) as sum,nickname,headimgurl')->where("userid = {$userId}")->find();
+        $this->assign("user",$user);
+      }
+      //var_dump($user);
       $list = D("ScoreView")->field('Sum(score) as sum,nickname,headimgurl')->group('user.id')->order('sum DESC')->select();
       //var_dump($list);
       $this->assign("list",$list);
+      
       $this->display();
     }      
 }

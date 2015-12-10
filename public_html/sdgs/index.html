@@ -41,11 +41,13 @@
     </style>
 	<link rel="stylesheet" type="text/css" href="game9g.css">
 	<script src="game9g.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 </head>
 <body style="padding:0; margin: 0; background: #000000;">
 <canvas id="gameCanvas" width="320" height="480"></canvas>
 <img id="orientationchangeImg" src="res/orientationchange.jpg" style="z-index: 10000" />
 <img id="notSupportedImg" src="res/notSupportedImg.jpg" style="z-index: 9999" />
+
 <script src="jquery-1.7.1.min.js"></script>
 <script src="game.min.js"></script>
 <script type="text/javascript">
@@ -124,7 +126,14 @@
 				game9g.score =parseInt(score*100);
 				game9g.scoreName = "坚持了"+score+"秒";
 				game9g.shareData.title ="我在闪躲高手中坚持了"+score+"秒,你也来试试看吧！-玩游戏";
-				game9g.utils.shareConfirm("你闪躲高手中坚持了"+score+"秒,快告诉你的小伙伴们吧！",dp_share);
+                var credits = 0;
+                if (score > 15) {
+                    credits = 5;
+                }
+                if (score > 25) {
+                    credits = 10;
+                };
+				game9g.utils.shareConfirm("你闪躲高手中坚持了"+score+"秒获得了"+credits+"点积分,快告诉你的小伙伴们吧！",dp_share);
 			}
 			
 		}

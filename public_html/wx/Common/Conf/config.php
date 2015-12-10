@@ -28,7 +28,7 @@ return array(
 		       {
 				"type":"view",
 				"name":"来玩我",
-				"url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd2e82d66cc76016c&redirect_uri=http://wx.vlegend.cn/oauth2&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect"
+				"url":"http://wx.vlegend.cn/goSdgs"
 		       },		       
 		       {
 		           "name":"积分兑换",
