@@ -132,16 +132,16 @@ input, select {
         margin-bottom: 8px;
     }
     .list .order{
+        float: left;
         text-align: center;
         vertical-align: middle;
-        #padding-top: 15%;
     }
     .order span{
         font-family: "微软雅黑";
-        font-size: 180%;
+        font-size: 160%;
         text-align: center;
     }
-    .col-15{
+    .col-16{
         width: 16%;
         float: left;
     }
@@ -159,23 +159,29 @@ input, select {
         width: 100%;
     }
     .header,.header img{width: 100%;}
-    .name{
-        width: 120px;
+    .name,.my{
+        width: 145px;
         text-align: center;
-        #padding-top: 16%;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
     }
-    .name span{
+    .my{
+        line-height: 1.6;
+    }
+
+    .name span ,.my span{
         font-family: "微软雅黑";
-        font-size: 130%;
-        
+        font-size: 100%;
+
     }
     .sore{
-        padding-left: 8%;
+        
         #padding-top: 15%;
     }
     .sore span{
         font-family: "微软雅黑";
-        font-size: 180%;
+        font-size: 160%;
         color: #0daf70;
     }    
   	@media screen and (min-height:736px){
@@ -196,16 +202,17 @@ input, select {
 		</div>
         <ul class="list">
             <li class="first clearfix">
-                <div class="order col-15">
-                    <span>1</span>
+                <div class="order">
                 </div>
                 <div class="avatar">
                     <div class="radius">
                         <img src="{$user.headimgurl}">
                     </div>
                 </div>
-                <div class="name left">
+                <div class="my left">
                     <span>{$user.nickname}</span>
+                    <br/>
+                    <span style="color:#817f7f">第{$user.count}名</span>
                 </div>
                 <div class="sore left">
                     <span>{$user.sum}</span>
@@ -214,7 +221,7 @@ input, select {
 
             <volist name="list" id="vo" key="k" >
                 <li class="clearfix">
-                    <div class="order col-15">
+                    <div class="order">
                         <span>{$k}</span>
                     </div>
                     <div class="avatar">
@@ -237,13 +244,21 @@ input, select {
 	<script type="text/javascript">
         (function(){
             var winH = window.innerHeight;
-            var winW = window.innerWidth;
-            var colH = parseInt(winH*0.7/4);
+            var winW = document.body.clientWidth||window.innerWidth;
+            var colH = parseInt(winH*0.7/6);
             var pH   = parseInt(colH*0.40);
-            var aH   = parseInt(colH*0.28);
-            var aW   = parseInt(winW*0.14);
-            // var pt20 = parseInt(colH*0.25);
-            var cssNode = document.createTextNode(".list li{height:"+colH+"px;} .order{padding-top:"+pH+"px;} .name{padding-top:"+(pH+6)+"px;}  .sore{padding-top:"+pH+"px;} .avatar{padding-top:"+aH+"px; width:"+aW+"px;} .radius{height:"+aW+"px;width:"+aW+"px;}"); 
+            var aH   = parseInt(colH*0.24);
+            var aW   = parseInt(winW*0.12);
+            var oW   = parseInt(winW*0.16); //oreder width
+            var spl  = parseInt(winW*0.08); //score padding left 
+            var nW   = parseInt(winW*0.34); //name width 
+            if(colH <= oW){
+                colH = parseInt(winH*0.7/4);
+            }
+            // var pt20 = parseInt(colH*0.25);width:"+nW+"px;
+            //alert(colH);
+            //alert(aW);
+            var cssNode = document.createTextNode(".list li{height:"+colH+"px;} .order{padding-top:"+pH+"px;width:"+oW+"px;} .my{padding-top:"+(pH-16)+"px;width:"+nW+"px;} .name{padding-top:"+(pH+4)+"px;width:"+nW+"px;}  .sore{padding-top:"+pH+"px;padding-left:"+spl+"px;} .avatar{padding-top:"+aH+"px; width:"+aW+"px;} .radius{height:"+aW+"px;width:"+aW+"px;}"); 
             var style = document.createElement("style"); 
             style.type = "text/css"; 
             style.appendChild(cssNode);

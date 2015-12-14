@@ -1,6 +1,6 @@
 <?php
 namespace Home\Lib;
-
+use Org\Util;
 class WeChat
 {
    public function valid()
@@ -41,7 +41,7 @@ class WeChat
             switch ($RX_TYPE)
             {
                 case "text":
-                    $resultStr = $this->receiveText($postObj);
+                    //$resultStr = $this->receiveText($postObj);
                     break;
                 case "event":
                     $resultStr = $this->receiveEvent($postObj);
@@ -72,7 +72,7 @@ class WeChat
         {
             case "subscribe":
                 //关注后发送的消息
-                $contentStr = "欢迎订阅车侣威擎";
+                $contentStr = "点击下面 来玩我 玩游戏 赢大奖 ↓↓↓↓↓↓↓↓↓";
             case "unsubscribe":
                 break;
             case "CLICK":
@@ -82,7 +82,43 @@ class WeChat
                         $contentStr ="OAuth2.0网页授权演示 <a href=\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd2e82d66cc76016c&redirect_uri=http://wx.vlegend.cn/oauth2FuWu&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect\">点击这里体验</a>技术支持 车侣威擎"; 
                         break;
                     case "qiandao":
-                        $contentStr ="OAuth2.0网页授权演示 <a href=\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd2e82d66cc76016c&redirect_uri=http://wx.vlegend.cn/oauth2FuWu&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect\">点击这里体验</a>技术支持 车侣威擎"; 
+                        //$str = "";
+                        //foreach($object as $key => $value) {
+                        //    $str = $str."$key => $value\n";
+                        //}
+                        //$sdk = new Util\JSSDK();
+                        $openId = $object->FromUserName;
+                        $stamp  = $openId.date('Y-m-d');
+                        $sgin   = M("sgin");
+                        $result = $sgin->where("stamp='{$stamp}'")->find();
+                        $userResult = M("User")->where("openid2='{$openId}'")->find();
+                        if(!!$userResult){
+                            
+                            if(!$result){
+                                //$contentStr ="您已签到{$userResult}";
+                                $id = $userResult["id"];
+                                $credit = 5;
+                                $arr = array("score"=>$credit,"userid"=>$id,"event"=>"qiandao");
+                                M("Log")->where("userid = {id}")->data($arr)->add();
+                                $arr = array("stamp"=>$stamp);
+                                M("sgin")->data($arr)->add();
+                                $contentStr ="签到成功获得{$credit}点积分"; 
+                            }else{
+                                $contentStr ="您已签到";
+                            }                            
+                        }else{
+                            if(!$result){
+                                $arr = array("stamp"=>$stamp);
+                                M("sgin")->data($arr)->add();
+                                $contentStr ="签到成功 <a href=\"http://wx.vlegend.cn/top?openId={$openId}\">点击领取5点积分</a>"; 
+                            }else{
+                                $contentStr ="您已签到";
+                            }                            
+                        }
+
+                        
+                        
+                        //cookie('test','111');
                         break;                                            
                     case "company":
                         $contentStr[] = array("Title" =>"公司简介", 

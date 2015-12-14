@@ -20,15 +20,15 @@ return array(
 		               "url":"http://t.cn/RUFWwMN"
 		            },
 		            {
-		               "type":"click",
+		               "type":"view",
 		               "name":"我要软件",
-		               "key":"hongbao"
+		               "url":"http://wx.vlegend.cn/soft"
 		            }]
 		       },
 		       {
 				"type":"view",
 				"name":"来玩我",
-				"url":"http://wx.vlegend.cn/goSdgs"
+				"url":"http://wx.vlegend.cn/sdgs.html?cert=1"
 		       },		       
 		       {
 		           "name":"积分兑换",

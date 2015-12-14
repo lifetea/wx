@@ -8,7 +8,7 @@ Game9G = function(gameid, cpid) {
 	this.cpid = cpid || null;
 	this.spid = null;
 	this.baseurl = "http://i.wanyouxi.com/";
-	this.gameurl = "http://i.wanyouxi.com/games/sdgs/";
+	this.gameurl = "http://i.wanyouxi.com/games/sdgs.html";
 	this.homeurl = null;
 	this.gzurl = null;
 	this.moreurl = null;
@@ -43,7 +43,7 @@ Game9G.prototype.init = function() {
 	this.gameurl = "http://i.wanyouxi.com/games/sdgs/index.htm";
 	this.homeurl = "http://i.wanyouxi.com/games/sdgs/index.htm";
 	this.gzurl = "http://i.wanyouxi.com/";
-	this.moreurl = "http://wx.vlegend.cn/sdgs";
+	this.moreurl = "http://wx.vlegend.cn/top";
 	this.shareDomain = this.shareDomains[parseInt(Math.random() * this.shareDomains.length)];
 	this.shareData.imgurl = "icon.png";
 	this.shareData.link = "http://i.wanyouxi.com/games/sdgs/index.htm";
@@ -350,7 +350,7 @@ Game9GUtils.prototype.showShare = function() {
 	else {
 		img = document.createElement("img");
 		img.id = "game9gshare";
-		img.src = "images/share.png";
+		img.src = "res/share.png";
 		img.className = "game9gshare";
 		img.addEventListener("click", this.hideShare);
 		img.addEventListener("touchstart", this.hideShare);

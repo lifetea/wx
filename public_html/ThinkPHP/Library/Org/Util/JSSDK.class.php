@@ -106,10 +106,35 @@ class JSSDK {
     $res = json_decode($res, true);
     //$token = $res['access_token'];
     var_dump($res);
+    return $res;
     //S('access_token', $token, 7000);
-  }  
+  }
 
-
+  public function getUserId($openId) {
+    $token = S('access_token');
+    $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={$token}&openid={$openId}&lang=zh_CN";
+    $res = file_get_contents($url);
+    $res = json_decode($res, true);
+    //$token = $res['access_token'];
+    //var_dump($res);
+    return $res;
+    //S('access_token', $token, 7000);
+  }
+  public function getSubscribeStatus($openId) {
+    $token = S('access_token');
+    $url = "https://api.weixin.qq.com/cgi-bin/user/get?access_token={$token}&next_openid=";
+    $res = file_get_contents($url);
+    $res = json_decode($res, true);
+    $userList = $res["data"]["openid"];
+    var_dump($userList);
+    var_dump($openId);
+    if (in_array($openId, $userList)) {
+      return true;
+    }else{
+      return false;
+    }
+    
+  }
   public function hello() {
   	return "test";
   }

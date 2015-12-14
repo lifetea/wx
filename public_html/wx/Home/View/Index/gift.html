@@ -108,6 +108,7 @@ input, select {
     vertical-align:middle;
 }
 </style>
+
 <style type="text/css">
 	html,body,.main{height: 100%;}
 	body{
@@ -116,6 +117,7 @@ input, select {
     img {border:none;} 
     ul{list-style: none;}
     .left{float: left;}
+    .right{float: right;}
     .list li{
         background: #ffc446;
         border-bottom: 1px solid #d1a13a;
@@ -144,11 +146,10 @@ input, select {
         font-size: 180%;
         text-align: center;
     }
-    .col-30{
-        #width: 30%;
+    .avatar{
         float: left;
     }
-    .avatar{
+    .pic{
         float: left;
     }
     .pic img{
@@ -156,19 +157,16 @@ input, select {
         border: 3px solid #e1baaa;
     }
     .header,.header img{width: 100%;}
-    .name{
-        width: 120px;
-        text-align: center;
-        #padding-top: 16%;
-    }
-    .name span{
-        font-family: "微软雅黑";
-        font-size: 130%;
-        
-    }
+
     .sore{
         padding-left: 8%;
         #padding-top: 15%;
+    }
+    .pl10{
+        padding-left: 10%;
+    }
+    .pr10{
+        padding-right: 10%;
     }
     .sore span{
         font-family: "微软雅黑";
@@ -179,25 +177,17 @@ input, select {
         text-decoration:none;
     }
     .exchange .btn{
-        width: 120px;
-        height: 30px;
-        border-radius: 5px;
-        background: #ffc446;
-        border: 1px solid #fff;
-        color: #fff;
-        padding: 6px 18px 6px 18px;
+        #width: 120px;
+        #height: 30px;
+        #border-radius: 5px;
+        #background: #ffc446;
+        #border: 1px solid #fff;
+        #color: #fff;
+        #padding: 6px 18px 6px 18px;
     }
 
-  	@media screen and (min-height:736px){
-		 		
-  	}
-  	@media screen and (min-height:800px){
-		 		
-  	}
-  	@media screen and (min-height:1024px){
-		 		
-  	}
 </style>
+<link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 	<div class="main">
@@ -206,7 +196,7 @@ input, select {
 		</div>
         <ul class="list">
             <li>
-                <div class="pic col-30">
+                <div class="pic">
                         <img src="{$Think.config.SRC}/gift/1.jpg">
                 </div>
                 <div class="score left">
@@ -214,11 +204,11 @@ input, select {
                     <p>40000</p>
                 </div>
                 <div class="exchange left">
-                    <a class="btn" href="javascript:">兑换</a>
+                    <a class="btn btn-success btn-click" data-score="40000" href="javascript:">兑换</a>
                 </div>                
             </li>
             <li>
-                <div class="pic col-30">
+                <div class="pic">
                         <img src="{$Think.config.SRC}/gift/1.jpg">
                 </div>
                 <div class="score left">
@@ -226,11 +216,11 @@ input, select {
                     <p>40000</p>
                 </div>
                 <div class="exchange left">
-                    <a class="btn" href="javascript:">兑换</a>
+                    <a class="btn btn-success btn-click" data-score="40000" href="javascript:">兑换</a>
                 </div>                
             </li>
             <li>
-                <div class="pic col-30">
+                <div class="pic">
                         <img src="{$Think.config.SRC}/gift/1.jpg">
                 </div>
                 <div class="score left">
@@ -238,11 +228,11 @@ input, select {
                     <p>40000</p>
                 </div>
                 <div class="exchange left">
-                    <a class="btn" href="javascript:">兑换</a>
+                    <a class="btn btn-success btn-click" data-score="40000" href="javascript:">兑换</a>
                 </div>                
             </li>
             <li>
-                <div class="pic col-30">
+                <div class="pic">
                         <img src="{$Think.config.SRC}/gift/1.jpg">
                 </div>
                 <div class="score left">
@@ -250,31 +240,95 @@ input, select {
                     <p>40000</p>
                 </div>
                 <div class="exchange left">
-                    <a class="btn" href="javascript:">兑换</a>
+                    <a class="btn btn-success btn-click" data-score="40000" data-toggle="modal" data-target="#myModal" href="javascript:">兑换</a>
                 </div>                
             </li>                                                      
         </ul>
 	</div>
 
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+       aria-labelledby="myModalLabel" aria-hidden="true">
+       <div class="modal-dialog">
+          <div class="modal-content">
+             <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" 
+                   aria-hidden="true">×
+                </button>
+                <h4 class="modal-title text-center" id="myModalLabel">
+                   积分兑换
+                </h4>
+             </div>
+             <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-xs-2 control-label">地址</label>
+                        <div class="col-xs-10">
+                          <input type="email" class="form-control" id="inputEmail3" placeholder="收货地址">
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-xs-2 control-label">手机</label>
+                        <div class="col-xs-10">
+                          <input type="email" class="form-control" id="inputEmail3" placeholder="您的手机">
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label class="control-label left pl10" >需要:4000</label>
+                        <label class="control-label right pr10" >拥有:4000</label>
+                    </div>                                                    
+                </form> 
+             </div>
+             <div class="modal-footer">
+                <button type="button" class="btn btn-default left" 
+                   data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">
+                   兑换
+                </button>
+             </div>
+          </div><!-- /.modal-content -->
+       </div><!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
         (function(){
             var winH = window.innerHeight;
-            var winW = window.innerWidth;
+            var winW = document.body.clientWidth||window.innerWidth;
             var colH = parseInt(winH*0.8/4);
+            var pW   = parseInt(winW*0.28);
+            if(pW >= colH){
+                colH = parseInt(pW*1.1); 
+            }            
             var pH   = parseInt(colH*0.40);
             var aH   = parseInt(colH*0.28);
-            var pW   = parseInt(winW*0.28);
+            
             var sW   = parseInt(winW*0.32);
             var wW   = parseInt(winW*0.4*0.3);
             var tH   = (colH - pW)/2;
+
             // var pt20 = parseInt(colH*0.25);
-            var cssNode = document.createTextNode(".list li{height:"+colH+"px;} .pic{width:"+pW+"px;padding-top:"+tH+"px;padding-left:"+tH+"px;} .score{width:"+sW+"px;padding-top:"+tH+"px;} .exchange{padding-top:"+pH+"px;padding-left:"+wW+"px;}"); 
+            var cssNode = document.createTextNode(".list li{height:"+colH+"px;overflow:hidden;} .pic{width:"+pW+"px;padding-top:"+tH+"px;padding-left:"+tH+"px;} .score{width:"+sW+"px;padding-top:"+tH+"px;} .exchange{padding-top:"+pH+"px;padding-left:"+wW+"px;"); 
+            //}
             var style = document.createElement("style"); 
             style.type = "text/css"; 
             style.appendChild(cssNode);
             document.head.appendChild(style);    
 
         })();
+
+       $(function () { 
+            $(".btn-click").click(function(i){
+                console.log(this);
+            })
+       //  $('#myModal').modal({
+       //    keyboard: true
+       //  }
+       // )
+            //$('#identifier').modal('show')
+        });
 	</script>
 </body>
 </html>
