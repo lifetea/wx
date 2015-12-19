@@ -11,24 +11,27 @@ class IndexController extends Controller
     public function index()
     {
        $this->display();
-   	}
+    }
 
-   	public function test()
+    public function test()
     {
-      $token = S('access_token');
-      var_dump($token);
+      //$token = S('access_token');
+      //$openId = "";
+      //$result = M("User")->where("openid2 = '`".$openId."'")->find();
+      $str = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd2e82d66cc76016c&redirect_uri=http://wx.vlegend.cn/oauth2FuWu?t=top&openId=".$openId."&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect";
+      var_dump($str);
       //$this->display();
-   	}
+    }
     //订阅号认证
     public function cert()
     {
-  		$wechatObj = new Lib\WeChat();
-    		if (isset($_GET['echostr'])) {
-    			$wechatObj->valid();
-    		}else{
-    			$wechatObj->responseMsg();
-    	}
-   	}
+      $wechatObj = new Lib\WeChat();
+        if (isset($_GET['echostr'])) {
+          $wechatObj->valid();
+        }else{
+          $wechatObj->responseMsg();
+      }
+    }
     //服务号认证
     public function certFuWu()
     {
@@ -39,18 +42,18 @@ class IndexController extends Controller
           $fuWu->responseMsg();
       }
     }
-    //订阅号菜单  	
-   	public function menu(){
-		  $jsonmenu  = C("menuJson");  
+    //订阅号菜单   
+    public function menu(){
+      $jsonmenu  = C("menuJson");  
       $appId     = "wx85eea0cbf0d30d65";
-      $appSecret = "7fd7e90c834f1d29c8bae9b484a9a72d";		
-   		$sdk = new Util\JSSDK();
-   		$access_token  = $sdk->getAccessToken();
+      $appSecret = "7fd7e90c834f1d29c8bae9b484a9a72d";    
+      $sdk = new Util\JSSDK();
+      $access_token  = $sdk->getAccessToken();
       var_dump($access_token);
-   		$url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$access_token;
-		  $result = $sdk->https_request($url, $jsonmenu);
-		  var_dump($result);
-   	}
+      $url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$access_token;
+      $result = $sdk->https_request($url, $jsonmenu);
+      var_dump($result);
+    }
     //服务号菜单
     public function menuFuWu(){
       $jsonmenu  = C("menuJson");
@@ -77,6 +80,7 @@ class IndexController extends Controller
     }
     //服务号oauth2 
     public function oauth2FuWu(){
+      
       if (isset($_GET["code"])){
           $user = M("user");
           //echo $_GET["code"];
@@ -95,12 +99,15 @@ class IndexController extends Controller
             cookie('userId',$result["id"]);
           }
           $t = I("get.t");
+          $openId = I("get.openId");
           $cert = I("get.cert");
           //var_dump(I("get.t"));
           if($t == "top"){
-            header('Location: http://wx.vlegend.cn/top');
+      header("Location: http://wx.vlegend.cn/top?openId={$openId}");
           }elseif ($t == "sdgs") {
             header("Location: http://wx.vlegend.cn/sdgs/index.html?cert={$cert}&new={$new}");
+          }elseif ($t == "gift") {
+            header("Location: http://wx.vlegend.cn/gift");
           }
           
           $userId = cookie("userId");
@@ -116,11 +123,15 @@ class IndexController extends Controller
       //var_dump($id);
       $this->display();
     }
+    public function detail(){
+      $id = I("get.id");
+      $this->assign("id",$id);
+      //var_dump($id);
+      $this->display();
+    }
     public function sdgs(){
       $userId = cookie('userId');
       $new = I("get.new");
-      //var_dump($userId);
-      //var_dump("haha");
       if (!$userId) {
         header('Location: https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd2e82d66cc76016c&redirect_uri=http://wx.vlegend.cn/oauth2FuWu?t=sdgs&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect');
       }
@@ -139,6 +150,8 @@ class IndexController extends Controller
       //echo $jssdk->getJsApiTicket();
       //echo $jssdk->hello();
       //var_dump($signPackage);
+      
+      $this->assign("id",$userId);
       $this->assign('data',$signPackage);
       $this->display();
     }
@@ -157,21 +170,37 @@ class IndexController extends Controller
     //排行榜
     public function top(){
       $userId = cookie("userId");
-      $openId = I("get.openId");
-      if(!!$userId && !!$openId){
-        $result = M("User")->where("openid2 = '{$openId}'")->find();
-        if(!$result){
-          $arr = array("openid2"=>$openId);
-          $res = M("User")->where("id = {$userId}")->data($arr)->save();
-          $credit = 5;
-          $arr = array("score"=>$credit,"userid"=>$userId,"event"=>"qiandao");
-          M("Log")->where("userid = {id}")->data($arr)->add();         
-        }
+      $openId = cookie("openId");
+      if(!$openId){
+        $openId =  I("get.openId");
+        cookie("openId",$openId);
+      }else{
+        cookie("openId",$openId);
       }
+      //var_dump($openId);
+      //var_dump("Location: https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd2e82d66cc76016c&redirect_uri=http://wx.vlegend.cn/oauth2FuWu?t=top&openId=".$openId."&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect");
+
       if (!$userId) {
         //跳转
         header("Location: https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd2e82d66cc76016c&redirect_uri=http://wx.vlegend.cn/oauth2FuWu?t=top&openId={$openId}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect");
       }else{
+        //var_dump(!!$userId);
+        //var_dump(!!$openId);
+        //var_dump($openId);
+        if(!!$userId && !!$openId){
+          $result = M("User")->where("openid2 = \"".$openId."\"")->find();
+          //var_dump($result);
+          //var_dump(!$result);
+          if(!$result){
+            //
+
+            $arr = array("openid2"=>$openId);
+            $res = M("User")->where("id = {$userId}")->data($arr)->save();
+            $credit = 5;
+            $arr = array("score"=>$credit,"userid"=>$userId,"event"=>"qiandao");
+            M("Log")->where("userid = {id}")->data($arr)->add();         
+          }
+        }        
         //$Model = new Think\Model() // 实例化一个model对象 没有对应任何数据表
         //$Model->query("select * from think_user where status=1");
         $user   = D("ScoreView")->field('Sum(score) as sum,nickname,headimgurl')->where("userid = {$userId}")->find();
@@ -192,7 +221,7 @@ class IndexController extends Controller
         $this->assign("user",$user);
       }
       //var_dump($user);
-      $list = D("ScoreView")->field('Sum(score) as sum,nickname,headimgurl')->group('user.id')->order('sum DESC')->limit(15)->select();
+      $list = D("ScoreView")->field('Sum(score) as sum,nickname,headimgurl')->group('user.id')->order('sum DESC')->limit(20)->select();
       //var_dump($list);
       $this->assign("list",$list);
       
@@ -202,10 +231,75 @@ class IndexController extends Controller
     public function gift(){
       $userId = cookie("userId");
 
+      //跳转
       if (!$userId) {
-        //跳转
-        header("Location: https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd2e82d66cc76016c&redirect_uri=http://wx.vlegend.cn/oauth2FuWu?t=top&openId={$openId}&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect");
+        header("Location: https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd2e82d66cc76016c&redirect_uri=http://wx.vlegend.cn/oauth2FuWu?t=gift&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect");
       }
+      $gift   = M("gift")->order("id asc")->select();
+      //var_dump($gift);
+      if(!empty($userId)){
+        $user   = D("ScoreView")->field("Sum(score) as sum")->where("userid = {$userId}")->find();
+        $this->assign("user",$user);
+      }
+      //var_dump($user);
+      $this->assign("id",$userId);
+      
+      $this->assign("gift",$gift);
       $this->display();
     }
+    public function exchange(){
+      $post = I("post.");
+      //var_dump(!empty($post));
+      if (!empty($post)) {
+        $userId = $post["userid"];
+        $giftId = $post["giftid"];
+        $log  = M("Log")->field("Sum(score) as sum")->where("userid = {$userId}")->find();
+        $gift = M("Gift")->where("id = {$giftId}")->find();
+        $total = (int)$log["sum"];
+        $need  = (int)$gift["credit"];
+        $stamp  = $openId.date('Y-m');
+
+        $exLog = M("Exchange")->where("userid = {$userId} and giftid = {$giftId} and stamp = \"{$stamp}\"")->find();
+        if (!empty($exLog)) {
+          $this->error("本月已兑换");
+        }
+        //var_dump($exLog);
+        if($total > $need){
+          $post["stamp"] = $stamp;
+          $res = M("exchange")->data($post)->add();
+          $arr = array("userid"=>$userId,"event"=>"duihuan","score"=>(-$need));
+          $resLog = M("Log")->data($arr)->add();
+          $gift["count"] = (int)$gift["count"] - 1;
+          $giftLog = M("Gift")->where("id = {$giftId}")->data($gift)->save();
+          $this->success("兑换成功");
+        }else{
+          $this->error("积分不足");
+        }
+
+        //var_dump($post);
+        //var_dump($res);
+      }
+    }
+
+    public function share(){
+      
+      $get = I("get.");
+      
+      if (!empty($get)) {
+        $userId = $get["userid"];
+        $stamp = date("Y-m-d");
+        $get["stamp"] = $stamp;
+
+        $shareLog = M("Share")->where("userid = {$userId} and  stamp = \"{$stamp}\"")->find();  
+        if (empty($shareLog)) {
+          M("Share")->data($get)->add();
+          $arr = array("userid"=>$userId,"score"=>40,"event"=>"share");
+          M("Log")->data($arr)->add();
+        }        
+        
+
+      }
+      
+    }
+
 }

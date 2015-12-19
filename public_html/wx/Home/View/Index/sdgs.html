@@ -49,11 +49,10 @@
 <canvas id="gameCanvas" width="320" height="480"></canvas>
 <img id="orientationchangeImg" src="res/orientationchange.jpg" style="z-index: 10000" />
 <img id="notSupportedImg" src="res/notSupportedImg.jpg" style="z-index: 9999" />
-
+<input id="userId" name="userid" type="hidden" value="{$id}" />
 
 <script src="jquery-1.7.1.min.js"></script>
 <script src="game.min.js"></script>
-<img id="shareImage" class="hide"  src="res/window.png"/>
 <script type="text/javascript">
     window.conf ={
         "link":"http://wx.vlegend.cn/sdgs.html?id="
@@ -80,6 +79,12 @@
             },
             success: function (res) {
               //alert('已分享');
+              
+                var userId = $("#userId").val();
+                xmlhttp=new XMLHttpRequest();
+                xmlhttp.open("GET","http://wx.vlegend.cn/share?userid="+userId,true);
+                xmlhttp.send(null);
+            
               Game9GUtils.prototype.hideShare();
             },
             cancel: function (res) {
@@ -93,12 +98,17 @@
         wx.onMenuShareTimeline({
             title: "大爷，来玩我呀！",
             link: window.conf["link"],
-            imgUrl: 'http://wx.vlegend.cn/Public/logo.png',
+            imgUrl: 'http://wx.vlegend.cn/Public/logo.jpg',
             trigger: function (res) {
             //alert('用户点击分享到朋友圈');
             },
             success: function (res) {
             //alert('已分享');
+                var userId = $("#userId").val();
+                xmlhttp=new XMLHttpRequest();
+                xmlhttp.open("GET","http://wx.vlegend.cn/share?userid="+userId,true);
+                xmlhttp.send(null);            
+                Game9GUtils.prototype.hideShare();
             },
             cancel: function (res) {
             //alert('已取消');
@@ -190,15 +200,27 @@ wx.error(function(res){
 				game9g.scoreName = "坚持了"+score+"秒";
 				game9g.shareData.title ="我在闪躲高手中坚持了"+score+"秒,你也来试试看吧！-玩游戏";
                 var credits = 0;
-                if (score > 10) {
+                if (score > 6) {
                     credits = 1;
-                }                
-                if (score > 15) {
+                }
+                if (score > 10) {
                     credits = 5;
                 }
-                if (score > 25) {
+                if (score > 12) {
                     credits = 10;
-                };
+                }                                                  
+                if (score > 15) {
+                    credits = 15;
+                }
+                if (score > 18) {
+                    credits = 20;
+                }                
+                if (score > 20) {
+                    credits = 30;
+                }
+                if (score > 30) {
+                    credits = 40;
+                }                
                 if(score > 5){
                     //Game9GUtils.prototype.ajax();
                     xmlhttp=new XMLHttpRequest();

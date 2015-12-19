@@ -37,7 +37,7 @@ body {
 }
 
 :focus {
-	outline: 1;
+    outline: 1;
 }
 
 article,aside,canvas,details,figcaption,figure,
@@ -110,10 +110,10 @@ input, select {
 </style>
 
 <style type="text/css">
-	html,body,.main{height: 100%;}
-	body{
-		background:#ffc446;;
-	}
+    html,body,.main{height: 100%;}
+    body{
+        background:#ffc446;;
+    }
     img {border:none;} 
     ul{list-style: none;}
     .left{float: left;}
@@ -137,9 +137,17 @@ input, select {
     .score p{
         font-family: "微软雅黑";
         text-align: center;
+        line-height: 170%;           
+    }
+    .t1{
+        font-size: 120%;
+    }
+    .score .count{
+        font-size: 100%;
+    }
+    .score .credit{
         color: #ad1919;
-        font-size: 160%;
-        line-height: 200%;           
+        font-size: 100%;
     }
     .order span{
         font-family: "微软雅黑";
@@ -154,7 +162,7 @@ input, select {
     }
     .pic img{
         width: 100%;
-        border: 3px solid #e1baaa;
+        #border: 3px solid #e1baaa;
     }
     .header,.header img{width: 100%;}
 
@@ -185,66 +193,39 @@ input, select {
         #color: #fff;
         #padding: 6px 18px 6px 18px;
     }
+    .red {color:#d44950}
 
 </style>
 <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-	<div class="main">
-		<div class="header">
-			<img src="{$Think.config.SRC}/gift-h.jpg">
-		</div>
+    <div class="main">
+        <div class="header">
+            <img src="{$Think.config.SRC}/gift-h.jpg">
+        </div>
         <ul class="list">
-            <li>
-                <div class="pic">
-                        <img src="{$Think.config.SRC}/gift/1.jpg">
-                </div>
-                <div class="score left">
-                    <h3>积分</h3>
-                    <p>40000</p>
-                </div>
-                <div class="exchange left">
-                    <a class="btn btn-success btn-click" data-score="40000" href="javascript:">兑换</a>
-                </div>                
-            </li>
-            <li>
-                <div class="pic">
-                        <img src="{$Think.config.SRC}/gift/1.jpg">
-                </div>
-                <div class="score left">
-                    <h3>积分</h3>
-                    <p>40000</p>
-                </div>
-                <div class="exchange left">
-                    <a class="btn btn-success btn-click" data-score="40000" href="javascript:">兑换</a>
-                </div>                
-            </li>
-            <li>
-                <div class="pic">
-                        <img src="{$Think.config.SRC}/gift/1.jpg">
-                </div>
-                <div class="score left">
-                    <h3>积分</h3>
-                    <p>40000</p>
-                </div>
-                <div class="exchange left">
-                    <a class="btn btn-success btn-click" data-score="40000" href="javascript:">兑换</a>
-                </div>                
-            </li>
-            <li>
-                <div class="pic">
-                        <img src="{$Think.config.SRC}/gift/1.jpg">
-                </div>
-                <div class="score left">
-                    <h3>积分</h3>
-                    <p>40000</p>
-                </div>
-                <div class="exchange left">
-                    <a class="btn btn-success btn-click" data-score="40000" data-toggle="modal" data-target="#myModal" href="javascript:">兑换</a>
-                </div>                
-            </li>                                                      
+            <volist name="gift" id="vo">
+                <li>
+                    <div class="pic">
+                            <img src="{$Think.config.SRC}/{$vo.pic}">
+                    </div>
+                    <div class="score left">
+                        <p class="t1">{$vo.name}</p>
+                        <p>
+                            <span class="credit">积分:{$vo.credit}</span>
+                               
+                        </p>
+                        <p>
+                            <span class="count">数量:{$vo.count}</span> 
+                        </p>
+                    </div>
+                    <div class="exchange left">
+                        <a class="btn btn-success btn-click" data-score="{$vo.credit}" data-id="{$vo.id}" data-count="{$vo.count}" href="javascript:">兑换</a>
+                    </div>                
+                </li>
+            </volist>
         </ul>
-	</div>
+    </div>
 
 
     <!-- 模态框（Modal） -->
@@ -261,29 +242,41 @@ input, select {
                 </h4>
              </div>
              <div class="modal-body">
-                <form class="form-horizontal">
+                <form id="form" class="form-horizontal" method="post" action="exchange">
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-xs-2 control-label">地址</label>
+                        <label for="username" class="col-xs-2 control-label">姓名</label>
                         <div class="col-xs-10">
-                          <input type="email" class="form-control" id="inputEmail3" placeholder="收货地址">
+                          <input type="text" name="username" class="form-control" id="username" placeholder="收货人">
                         </div>
                     </div> 
                     <div class="form-group">
-                        <label for="inputEmail3" class="col-xs-2 control-label">手机</label>
+                        <label for="addr" class="col-xs-2 control-label">地址</label>
                         <div class="col-xs-10">
-                          <input type="email" class="form-control" id="inputEmail3" placeholder="您的手机">
+                          <input type="text" name="addr" class="form-control" id="addr" placeholder="收货地址">
                         </div>
                     </div> 
                     <div class="form-group">
-                        <label class="control-label left pl10" >需要:4000</label>
-                        <label class="control-label right pr10" >拥有:4000</label>
-                    </div>                                                    
+                        <label for="phone" class="col-xs-2 control-label">手机</label>
+                        <div class="col-xs-10">
+                          <input type="text" name="phone" class="form-control" id="phone" placeholder="您的手机">
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label id="mNeed" class="control-label left pl10" >需要:</label>
+                        <label id="mOwn" class="control-label right pr10" >拥有:</label>
+                    </div>
+                    <div class="form-group">
+                        <label id="error" class="control-label left pl10 red" ></label>
+                        
+                    </div>                                          <input id="userId" name="userid" type="hidden" value="{$id}" />
+                    <input id="userScore" name="score" type="hidden" value="{$user.sum}" />
+                    <input id="giftId" name="giftid" type="hidden" value="" />       
                 </form> 
              </div>
              <div class="modal-footer">
                 <button type="button" class="btn btn-default left" 
                    data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary">
+                <button id="submit" type="button" class="btn btn-primary">
                    兑换
                 </button>
              </div>
@@ -291,44 +284,105 @@ input, select {
        </div><!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
+
+<!-- system modal start -->
+    <div id="alert" class="modal">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h5 class="modal-title h4"><i class="fa fa-exclamation-circle"></i>提示</h5>
+          </div>
+          <div class="modal-body small">
+            <p id="mContent" class="h5">积分不足,赶快去玩游戏赚取积分吧!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- system modal end -->
+
+
     <script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-	<script type="text/javascript">
+    <script type="text/javascript">
         (function(){
-            var winH = window.innerHeight;
-            var winW = document.body.clientWidth||window.innerWidth;
-            var colH = parseInt(winH*0.8/4);
-            var pW   = parseInt(winW*0.28);
-            if(pW >= colH){
-                colH = parseInt(pW*1.1); 
-            }            
-            var pH   = parseInt(colH*0.40);
-            var aH   = parseInt(colH*0.28);
-            
-            var sW   = parseInt(winW*0.32);
-            var wW   = parseInt(winW*0.4*0.3);
-            var tH   = (colH - pW)/2;
+            var V = {};
+            V.init = function(){
+                var winH = window.innerHeight;
+                var winW = document.body.clientWidth||window.innerWidth;
+                var colH = parseInt(winH*0.8/4);
+                var pW   = parseInt(winW*0.28);
+                if(pW >= colH){
+                    colH = parseInt(pW*1.1); 
+                }            
+                var pH   = parseInt(colH*0.40);
+                var aH   = parseInt(colH*0.28);
+                
+                var sW   = parseInt(winW*0.32);
+                var wW   = parseInt(winW*0.4*0.3);
+                var tH   = (colH - pW)/2;
 
-            // var pt20 = parseInt(colH*0.25);
-            var cssNode = document.createTextNode(".list li{height:"+colH+"px;overflow:hidden;} .pic{width:"+pW+"px;padding-top:"+tH+"px;padding-left:"+tH+"px;} .score{width:"+sW+"px;padding-top:"+tH+"px;} .exchange{padding-top:"+pH+"px;padding-left:"+wW+"px;"); 
-            //}
-            var style = document.createElement("style"); 
-            style.type = "text/css"; 
-            style.appendChild(cssNode);
-            document.head.appendChild(style);    
+                // var pt20 = parseInt(colH*0.25);
+                var cssNode = document.createTextNode(".list li{height:"+colH+"px;overflow:hidden;} .pic{width:"+pW+"px;padding-top:"+tH+"px;padding-left:"+tH+"px;} .score{width:"+sW+"px;padding-top:"+tH+"px;} .exchange{padding-top:"+pH+"px;padding-left:"+wW+"px;"); 
+                //}
+                var style = document.createElement("style"); 
+                style.type = "text/css"; 
+                style.appendChild(cssNode);
+                document.head.appendChild(style);                 
+            }
+            V.init();
+            $(window).resize(function(){
+                V.init();
+            });   
 
         })();
 
        $(function () { 
             $(".btn-click").click(function(i){
-                console.log(this);
-            })
+                var credit = parseInt($("#userScore").val()) || 0;
+                var userId = $("#userId").val();
+                var needScore = parseInt($(this).attr("data-score"));
+                var count  = parseInt($(this).attr("data-count"));
+                var giftId =$(this).attr("data-id");
+                // alert(count);
+                if (count <= 0) {
+                    $("#mContent").text("该奖品已经被抢完，请关注下期活动吧!");
+                    $("#alert").modal('show');
+                    return false;
+                }
+                if(needScore > credit){
+                    $("#mContent").text("积分不足,赶快去玩游戏赚取积分吧!");
+                    $("#alert").modal('show');
+                    return false;
+                }else{
+                    $("#giftId").val(giftId);
+                    $("#mNeed").text("需要:"+needScore);
+                    $("#mOwn").text("拥有:"+credit);
+                    $("#myModal").modal('show');
+                }
+            });
+
+            $("#submit").click(function(){
+                var phone = $("#phone").val();
+                var addr  = $("#addr").val();
+                var userName  = $("#username").val();
+                if(!phone){
+                    $("#error").text("请填写手机号");
+                }
+                if(!addr){
+                    $("#error").text("请填写地址");
+                }
+                if(!userName){
+                    $("#error").text("请填写收货人姓名");
+                }                
+                $("#form").submit();             
+            });
        //  $('#myModal').modal({
        //    keyboard: true
        //  }
        // )
             //$('#identifier').modal('show')
         });
-	</script>
+    </script>
 </body>
 </html>

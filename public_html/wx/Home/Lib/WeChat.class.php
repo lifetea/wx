@@ -41,7 +41,7 @@ class WeChat
             switch ($RX_TYPE)
             {
                 case "text":
-                    //$resultStr = $this->receiveText($postObj);
+                    $resultStr = $this->receiveText($postObj);
                     break;
                 case "event":
                     $resultStr = $this->receiveEvent($postObj);
@@ -60,6 +60,8 @@ class WeChat
     private function receiveText($object)
     {
         $funcFlag = 0;
+
+        
         $contentStr = "你发送的内容为：".$object->Content;
         $resultStr = $this->transmitText($object, $contentStr, $funcFlag);
         return $resultStr;
@@ -73,6 +75,7 @@ class WeChat
             case "subscribe":
                 //关注后发送的消息
                 $contentStr = "点击下面 来玩我 玩游戏 赢大奖 ↓↓↓↓↓↓↓↓↓";
+                $object["funcFlag"] = 1;
             case "unsubscribe":
                 break;
             case "CLICK":
@@ -115,7 +118,7 @@ class WeChat
                                 $contentStr ="您已签到";
                             }                            
                         }
-
+                        $object["funcFlag"] = 1;
                         
                         
                         //cookie('test','111');
@@ -160,7 +163,17 @@ class WeChat
 
     private function transmitText($object, $content, $funcFlag = 0)
     {
+
         $textTpl = "<xml>
+            <ToUserName><![CDATA[%s]]></ToUserName>
+            <FromUserName><![CDATA[%s]]></FromUserName>
+            <CreateTime>%s</CreateTime>
+            <MsgType><![CDATA[transfer_customer_service]]></MsgType>
+            <Content><![CDATA[%s]]></Content>
+            <FuncFlag>%d</FuncFlag>
+            </xml>";
+        if (!empty($object["funcFlag"])) {
+            $textTpl = "<xml>
             <ToUserName><![CDATA[%s]]></ToUserName>
             <FromUserName><![CDATA[%s]]></FromUserName>
             <CreateTime>%s</CreateTime>
@@ -168,6 +181,7 @@ class WeChat
             <Content><![CDATA[%s]]></Content>
             <FuncFlag>%d</FuncFlag>
             </xml>";
+        }    
         $resultStr = sprintf($textTpl, $object->FromUserName, $object->ToUserName, time(), $content, $funcFlag);
         return $resultStr;
     }

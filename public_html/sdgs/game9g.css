@@ -1,5 +1,5 @@
-.shareTip{position:absolute;width:80%;top:0px;right:0px;z-index: 9998;}
-img.game9gshare { position: fixed; width: 100%; left: 0; top: 0; z-index: 9999; }
+.shareTip{position:absolute;width:100%;top:0px;right:0px;z-index: 9998;}
+img.game9gshare { position: fixed; width: 100%; max-width: 640px; right: 0; top: 0; z-index: 9999; }
 .hide{display: none;}
 .game9gdialog {color: white;background-color: #071125;text-align: center; border: 1px solid #616D85; -moz-border-radius: 8px;-webkit-border-radius: 8px;border-radius: 8px;font-family: Arial,Helvetica,sans-serif;line-height: 150%;font-weight: normal;width: 90%; z-index: 9991; top: 30%; left: 5%; position: fixed; }
 .game9gdialog header {font-weight: bold;margin-top: 10px;text-align: center;height: auto;width:auto;}

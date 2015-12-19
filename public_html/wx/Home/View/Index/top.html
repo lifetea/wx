@@ -240,30 +240,40 @@ input, select {
             </volist>                            
         </ul>
 	</div>
-
+    <script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
 	<script type="text/javascript">
         (function(){
-            var winH = window.innerHeight;
-            var winW = document.body.clientWidth||window.innerWidth;
-            var colH = parseInt(winH*0.7/6);
-            var pH   = parseInt(colH*0.40);
-            var aH   = parseInt(colH*0.24);
-            var aW   = parseInt(winW*0.12);
-            var oW   = parseInt(winW*0.16); //oreder width
-            var spl  = parseInt(winW*0.08); //score padding left 
-            var nW   = parseInt(winW*0.34); //name width 
-            if(colH <= oW){
-                colH = parseInt(winH*0.7/4);
+            var V = {};
+            V.init = function(){
+                var winH = window.innerHeight;
+                var winW = document.body.clientWidth||window.innerWidth;
+                var colH = parseInt(winH*0.7/6);
+                var pH   = parseInt(colH*0.40);
+                var aH   = parseInt(colH*0.24);
+                var aW   = parseInt(winW*0.12);
+                var oW   = parseInt(winW*0.16); //oreder width
+                var spl  = parseInt(winW*0.08); //score padding left 
+                var nW   = parseInt(winW*0.34); //name width 
+                if(colH <= oW){
+                    colH = parseInt(winH*0.7/3);
+                }
+                if(winW >= 1200){
+                    colH = parseInt(winH*0.7/2.5);
+                }
+                // var pt20 = parseInt(colH*0.25);width:"+nW+"px;
+                //alert(winW);
+                //alert(aW);
+                var cssNode = document.createTextNode(".list li{height:"+colH+"px;} .order{padding-top:"+pH+"px;width:"+oW+"px;} .my{padding-top:"+(pH-16)+"px;width:"+nW+"px;} .name{padding-top:"+(pH+4)+"px;width:"+nW+"px;}  .sore{padding-top:"+pH+"px;padding-left:"+spl+"px;} .avatar{padding-top:"+aH+"px; width:"+aW+"px;} .radius{height:"+aW+"px;width:"+aW+"px;}"); 
+                var style = document.createElement("style"); 
+                style.type = "text/css"; 
+                style.appendChild(cssNode);
+                document.head.appendChild(style);                   
             }
-            // var pt20 = parseInt(colH*0.25);width:"+nW+"px;
-            //alert(colH);
-            //alert(aW);
-            var cssNode = document.createTextNode(".list li{height:"+colH+"px;} .order{padding-top:"+pH+"px;width:"+oW+"px;} .my{padding-top:"+(pH-16)+"px;width:"+nW+"px;} .name{padding-top:"+(pH+4)+"px;width:"+nW+"px;}  .sore{padding-top:"+pH+"px;padding-left:"+spl+"px;} .avatar{padding-top:"+aH+"px; width:"+aW+"px;} .radius{height:"+aW+"px;width:"+aW+"px;}"); 
-            var style = document.createElement("style"); 
-            style.type = "text/css"; 
-            style.appendChild(cssNode);
-            document.head.appendChild(style);    
-
+            V.init();
+            $(window).resize(function(){
+                //alert("ha");
+                V.init();
+            });
         })();
 	</script>
 </body>
