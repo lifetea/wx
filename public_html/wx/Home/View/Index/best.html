@@ -187,6 +187,9 @@ input, select {
         font-size: 120%;
         font-weight: bold;
     }
+    .name span.rank{
+        font-weight: normal;
+    }
     .sore{
         
         #padding-top: 15%;
@@ -210,13 +213,16 @@ input, select {
 <body>
 	<div class="main">
         <ul class="list">
-            <li class="first clearfix">
+            <li class="first clearfix my">
                 <div class="avatar">
                     <img src="http://wx.vlegend.cn/Public/avatar/1.jpg">
                 </div>
                 <div class="name left">
                     <p>
                         <span>Lifetea</span>
+                    </p>
+                    <p>
+                        <span class="rank">第二名</span>
                     </p>
                 </div>
                 <div class="best left">
@@ -288,13 +294,22 @@ input, select {
                 var nPT = parseInt(colH*96/259);
                 var nH  = parseInt(colH - nPT);
                 var nW = parseInt(winW*238/640);
+                
                 var bW = parseInt(winW*200/640);
                 var mH = parseInt(colH*10);
                 var fS = (winW/640)*100+25;
+
+                var maPL = parseInt(winW*(72/640));
+                var maPT = parseInt(colH*(2/176));
+                var maW = parseInt(winW*162/640);
+                var mnPT = parseInt(colH*38/176);
+                var mbPT = parseInt(colH*50/176);
+                var mnW = parseInt(winW*180/640);
+                var mbW = parseInt(winW*220/640);
                 // var pt20 = parseInt(colH*0.25);width:"+nW+"px;
                 //alert(winW);
-                console.log(winW/640);
-                var cssNode = document.createTextNode(".main{height:"+mH+"px} .name span,.my span,.best span{font-size:"+fS+"%;} .rocket{height:"+colH+"px} .avatar{width:"+aW+"px;padding-left:"+aPW+"px;padding-right:"+aPW+"px;padding-top:"+aPT+"px;height:"+aH+"px;} .name{width:"+nW+"px} .name{padding-top:"+nPT+"px;height:"+nH+"px} .best{width:"+bW+"px;padding-top:"+nPT+"px;height:"+nH+"px}"); 
+                //console.log(winW/640);
+                var cssNode = document.createTextNode(".main{height:"+mH+"px} .name span,.my span,.best span{font-size:"+fS+"%;} .rocket{height:"+colH+"px} .my .avatar{padding-left:"+maPL+"px;width:"+maW+"px;padding-top:"+maPT+"px;} .rocket .avatar{width:"+aW+"px;padding-left:"+aPW+"px;padding-right:"+aPW+"px;padding-top:"+aPT+"px;height:"+aH+"px;} .name{width:"+nW+"px;padding-top:"+nPT+"px;height:"+nH+"px} .my .name{width:"+mnW+"px;padding-top:"+mnPT+"px} .best{width:"+bW+"px;padding-top:"+nPT+"px;height:"+nH+"px} .my .best{padding-top:"+mbPT+"px}"); 
                 var style = document.createElement("style"); 
                 style.type = "text/css"; 
                 style.appendChild(cssNode);
