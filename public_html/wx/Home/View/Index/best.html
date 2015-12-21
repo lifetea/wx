@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>积分排行|车侣威擎</title>
+<title>游戏排行|车侣威擎</title>
 <style type="text/css">
 /* 
 html5doctor.com Reset Stylesheet
@@ -118,7 +118,7 @@ input, select {
 	body{
 		background:#bbbcc0;
 	}
-    ul{list-style: none;}
+    ul{list-style: none;padding-top: 20px;}
     .clearfix:after {
       content: " ";
       display: block;
@@ -215,67 +215,39 @@ input, select {
         <ul class="list">
             <li class="first clearfix my">
                 <div class="avatar">
-                    <img src="http://wx.vlegend.cn/Public/avatar/1.jpg">
+                    <img src="{$user.headimgurl}">
                 </div>
                 <div class="name left">
                     <p>
-                        <span>Lifetea</span>
+                        <span>{$user.nickname}</span>
                     </p>
                     <p>
-                        <span class="rank">第二名</span>
+                        <span class="rank">第{$user.count}名</span>
                     </p>
                 </div>
                 <div class="best left">
                     <p>
-                        <span>35秒</span>
-                    </p>
-                </div>                
-            </li>            
-            <li class="clearfix rocket">
-                <div class="avatar">
-                    <img src="http://wx.vlegend.cn/Public/avatar/1.jpg">
-                </div>
-                <div class="name left">
-                    <p>
-                        <span>Lifetea</span>
-                    </p>
-                </div>
-                <div class="best left">
-                    <p>
-                        <span>35秒</span>
+                        <span>{$user.score}秒</span>
                     </p>
                 </div>                
             </li>
-            <li class="clearfix rocket">
-                <div class="avatar">
-                    <img src="http://wx.vlegend.cn/Public/avatar/1.jpg">
-                </div>
-                <div class="name left">
-                    <p>
-                        <span>Lifetea</span>
-                    </p>
-                </div>
-                <div class="best left">
-                    <p>
-                        <span>35秒</span>
-                    </p>
-                </div>                
-            </li>
-            <li class="clearfix rocket">
-                <div class="avatar">
-                    <img src="http://wx.vlegend.cn/Public/avatar/1.jpg">
-                </div>
-                <div class="name left">
-                    <p>
-                        <span>Lifetea</span>
-                    </p>
-                </div>
-                <div class="best left">
-                    <p>
-                        <span>35秒</span>
-                    </p>
-                </div>                
-            </li>                        
+            <volist name="best" id="vo" key="k" >
+                <li class="clearfix rocket">
+                    <div class="avatar">
+                        <img src="{$vo.headimgurl}">
+                    </div>
+                    <div class="name left">
+                        <p>
+                            <span>{$vo.nickname}</span>
+                        </p>
+                    </div>
+                    <div class="best left">
+                        <p>
+                            <span>{$vo.score}秒</span>
+                        </p>
+                    </div>                
+                </li>
+            </volist>            
         </ul>
 	</div>
     <script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>

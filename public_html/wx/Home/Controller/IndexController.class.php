@@ -108,6 +108,8 @@ class IndexController extends Controller
             header("Location: http://wx.vlegend.cn/sdgs/index.html?cert={$cert}&new={$new}");
           }elseif ($t == "gift") {
             header("Location: http://wx.vlegend.cn/gift");
+          }elseif ($t == "best") {
+            header("Location: http://wx.vlegend.cn/best");
           }
           
           $userId = cookie("userId");
@@ -147,9 +149,12 @@ class IndexController extends Controller
       //$userToken = $res['access_token'];
       //$openId = $res['openid'];
       $signPackage = $jssdk->getSignPackage();
-      //echo $jssdk->getJsApiTicket();
-      //echo $jssdk->hello();
-      //var_dump($signPackage);
+      
+      
+      if (!empty($userId)) {
+        $best = M("Best")->where("userid= {$userId} and gameid = 1")->find();
+        $this->assign("bestScore",$best["score"]);
+      }
       
       $this->assign("id",$userId);
       $this->assign('data',$signPackage);
@@ -301,5 +306,47 @@ class IndexController extends Controller
       }
       
     }
+
+    //礼品兑换
+    public function best(){
+      $userId = cookie("userId");
+
+      //跳转
+      if (!$userId) {
+        header("Location: https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd2e82d66cc76016c&redirect_uri=http://wx.vlegend.cn/oauth2FuWu?t=best&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect");
+      }
+      //
+      if (!empty($userId)) {
+        $user          = M("User")->where("id= {$userId}")->find();
+        $userBest      = M("Best")->where("userid= {$userId} and gameid = 1")->find();
+        $bestScore     = $userBest["score"];
+        $user["score"] = $bestScore;
+        $count = M("best")->field("Count(id) as count")->where("score > \"{$bestScore}\"")->find();
+        $user["count"] = $count["count"] + 1;
+        //var_dump($user);
+        $this->assign("user",$user);
+      }
+
+      $best = D("BestView")->where("gameid = 1")->order("score desc")->limit(20)->select();
+      $this->assign("best",$best);
+      //var_dump($best);
+      $this->display();
+    }
+
+    public function addBest(){
+      $get = I("get.");
+      if (!empty($get)) {
+        $userId = $get["userid"];
+        $gameId = $get["gameid"];
+        $bestLog = M("Best")->where("userid = {$userId} and  gameid = {$gameId}")->find();  
+        if (!empty($bestLog)) {
+          if((float)$bestLog["score"] < (float)$get["score"]){
+            M("best")->where("userid = {$userId}")->save($get);
+          }
+        }else{
+          M("best")->data($get)->add();
+        }
+      }
+    }    
 
 }

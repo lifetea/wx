@@ -48,6 +48,11 @@ return array(
 		                "name":"积分排名",
 		                "url":"http://wx.vlegend.cn/top"
 		            },
+		            {
+		                "type":"view",
+		                "name":"游戏排名",
+		                "url":"http://wx.vlegend.cn/best"
+		            },		            
 					{
 		                "type":"view",
 		                "name":"兑换奖品",

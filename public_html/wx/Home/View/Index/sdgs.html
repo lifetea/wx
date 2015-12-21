@@ -50,7 +50,7 @@
 <img id="orientationchangeImg" src="res/orientationchange.jpg" style="z-index: 10000" />
 <img id="notSupportedImg" src="res/notSupportedImg.jpg" style="z-index: 9999" />
 <input id="userId" name="userid" type="hidden" value="{$id}" />
-
+<input id="bestScore" name="bestScore" type="hidden" value="{$bestScore|default=0}" />
 <script src="jquery-1.7.1.min.js"></script>
 <script src="game.min.js"></script>
 <script type="text/javascript">
@@ -223,10 +223,18 @@ wx.error(function(res){
                 }                
                 if(score > 5){
                     //Game9GUtils.prototype.ajax();
-                    xmlhttp=new XMLHttpRequest();
+                    var xmlhttp=new XMLHttpRequest();
                     xmlhttp.open("GET","http://wx.vlegend.cn/addScore?score="+credits,true);
                     xmlhttp.send(null);
                 }
+                var bestScore = parseFloat($("#bestScore").val());
+
+                if(score > bestScore){
+                    var userId = $("#userId").val();
+                    var http=new XMLHttpRequest();
+                    http.open("GET","http://wx.vlegend.cn/addBest?score="+score+"&userid="+userId+"&gameid=1",true);
+                    http.send(null);
+                }                
 				game9g.utils.shareConfirm("你闪躲高手中坚持了"+score+"秒获得了"+credits+"点积分,快点分享告诉小伙伴们吧！",dp_share);
 			}
 			
