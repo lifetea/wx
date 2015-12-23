@@ -114,6 +114,7 @@ input, select {
         background: url("http://wx.vlegend.cn/Public/ji/ji-bg.jpg");
         background-repeat: repeat-y;
         background-size: 100% auto;
+        padding-top: 3em;
     }
 	body{
 		background:#bbbcc0;
@@ -129,7 +130,85 @@ input, select {
       zoom: 1;
     }    
     .left{float: left;}
-       
+    .avatar{
+        background: url("http://wx.vlegend.cn/Public/ji/avatar.png");
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+    }
+    .avatar img{
+        width: 100%;
+        border-radius: 50% 50% 50% 50%;
+        overflow: hidden;
+    }
+    .small-avatar img{
+        width: 100%;
+        border-radius: 50% 50% 50% 50%;
+        overflow: hidden;
+    }
+    .list li{
+        float: left;
+    }
+    .small-avatar{
+        margin: 0 3px;
+        box-shadow: 0px 2px 6px rgba(0,0,0,0.4);
+        border-radius: 50% 50% 50% 50%;
+    }
+    .jifen{
+        background: url("http://wx.vlegend.cn/Public/ji/jifen.png");
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+        text-align: center;
+    }
+    .jifen span{
+        font-family: "微软雅黑";
+        font-size: 120%;
+    }
+    .nichen{
+        background: url("http://wx.vlegend.cn/Public/ji/nichen.png");
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+        text-align: center;
+    }
+    .nichen span{
+        font-family: "微软雅黑";
+        font-size: 120%;
+    }
+    .percent{
+        text-align: right;
+        padding-bottom: 0.5em;
+    }
+    .percent span{
+        
+        font-family: "微软雅黑";
+        font-size: 120%;
+    }
+    .paodao{
+        background: url("http://wx.vlegend.cn/Public/ji/paodao.jpg");
+        background-repeat: repeat-x;
+        background-size: auto 100%;
+        overflow: hidden;
+        box-shadow: 0px 7px 0px rgba(0,0,0,0.3);
+    }
+    .btn a{
+        width: 100%;
+        display: inline-block;
+        height: 100%;
+        background: url("http://wx.vlegend.cn/Public/ji/btn-up.png");
+        background-size: 100% auto;
+    }
+    .btn a:active{
+        background: url("http://wx.vlegend.cn/Public/ji/btn-down.png");
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+    }
+    .fire{
+        background: url("http://wx.vlegend.cn/Public/ji/fire.jpg");
+        background-repeat: repeat-x;
+        background-size: auto 100%;
+    }
+    .fire img{
+        float: right;
+    }
   	@media screen and (min-height:736px){
 		 		
   	}
@@ -143,7 +222,40 @@ input, select {
 </head>
 <body>
 	<div class="main">
-        <div class="avatar"></div>
+        <div class="avatar">
+            <img src="http://wx.vlegend.cn/Public/avatar/1.jpg">
+        </div>
+        <div class="nichen">
+            <span>LifeTea</span>
+        </div>
+        <div class="jifen">
+            <span>6666</span>
+        </div> 
+        <div class="percent">
+            <span>(0/100)</span>
+        </div>
+        <div class="paodao">
+            <div id="fire" class="fire">
+                <img src="http://wx.vlegend.cn/Public/ji/plane.png">
+            </div>
+        </div>
+        <ul class="list clearfix">
+            <li>
+                <div class="small-avatar">
+                    <img src="http://wx.vlegend.cn/Public/avatar/1.jpg">
+                </div>
+            </li>
+            <li>
+                <div class="small-avatar">
+                    <img src="http://wx.vlegend.cn/Public/avatar/1.jpg">
+                </div>
+            </li>
+        </ul>
+        <div class="btn">
+            <a href="javascript:void">
+                
+            </a>
+        </div>          
 	</div>
     <script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
 	<script type="text/javascript">
@@ -152,9 +264,36 @@ input, select {
             V.init = function(){
                 var winH = window.innerHeight;
                 var winW = document.body.clientWidth||window.innerWidth;
+                var aML  = parseInt(winW/640*184); 
+                var aW   = parseInt(winW/640*314);
 
-                //console.log(winW/640);
-                var cssNode = document.createTextNode(""); 
+                //昵称
+                var nW   = parseInt(winW/640*377);
+                var nH   = parseInt(nW/377*53);
+                var nML  = parseInt(winW/640*157);
+                var nMT  = nH;
+                //积分
+                var jW   = parseInt(winW/640*377);
+                var jH   = parseInt(nW/377*53);
+                var jML   = parseInt(winW/640*130);
+                var jMT   = nH/2+2;
+
+                //跑道
+                var pH   = parseInt(nW/377*93);
+                var pMT   = parseInt(nW/377*108);
+                //fire
+                var fMT  = parseInt(pH/80*8);
+                var fH   = parseInt(pH/80*64);
+                //console.log(winH);
+                //列表
+                var saW   = parseInt(nW/377*56);
+                //按钮
+                var btnW  = parseInt(winW/640*331);
+                var btnH  = parseInt(nW/377*127);
+                var btnPL  = parseInt(winW/640*160);
+                var btnPT   = parseInt(nW/377*128);
+                
+                var cssNode = document.createTextNode(".avatar{margin-left:"+aML+"px;width:"+aW+"px;height:"+aW+"px} .nichen{width:"+nW+"px;height:"+nH+"px;margin-left:"+nML+"px;margin-top:"+nMT+"px;} .nichen span{line-height:"+nH+"px;} .jifen span{line-height:"+nH+"px;} .jifen{width:"+jW+"px;height:"+jH+"px;margin-left:"+jML+"px;margin-top:"+jMT+"px;} .percent{margin-top:"+pMT+"px;} .paodao{height:"+pH+"px;} .small-avatar{width:"+saW+"px} .btn{width:"+btnW+"px;margin-left:"+btnPL+"px;margin-top:"+btnPT+"px;height:"+btnH+"px;} .fire{height:"+fH+"px;margin-top:"+fMT+"px;} .fire img{height:"+fH+"px}"); 
                 var style = document.createElement("style"); 
                 style.type = "text/css"; 
                 style.appendChild(cssNode);
@@ -165,6 +304,8 @@ input, select {
                 //alert("ha");
                 V.init();
             });
+
+
         })();
 	</script>
 </body>
