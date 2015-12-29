@@ -122,7 +122,11 @@ class WeChat
                         
                         
                         //cookie('test','111');
-                        break;                                            
+                        break;
+                    case "zhunbei":
+                         $contentStr ="准备新游戏中";
+                         $object["funcFlag"] = 1;
+                         break;                              
                     case "company":
                         $contentStr[] = array("Title" =>"公司简介", 
                         "Description" =>"车侣威擎提供移动互联网相关的产品及服务", 
