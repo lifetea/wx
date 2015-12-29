@@ -39,7 +39,7 @@
     //全局变量
     var _manage = false,
         initTime = 30,
-        _resRoot = '//wx.vlegend.cn/yd',
+        _resRoot = '//wx.vlegend.cn',
         g_showSkillSup = true, //是否开启技术支持
         g_showMenu = true,
         g_scoreFlag = 0,   
@@ -467,7 +467,7 @@ function parseRemToPx(rem){
 					if(xg.type != 3){
 						combol ++;
 					}
-					xg.flag = true;	
+					//xg.flag = true;	
 					break;
 				}
 			}		
@@ -488,7 +488,7 @@ function parseRemToPx(rem){
                 var xgY = xg.y/ratio;
                 
                 if(touchX > xgX && touchX < (xgX + xg.w/ratio) && touchY > xgY && touchY < (xgY + xg.h/ratio)){
-                    Sound.play(1);//音效
+                    //Sound.play(1);//音效
                     if(xg.type == 1){
                         var xg1 = Edit.getImgInfo("xg1");
                         xg.image = allImage[xg1.path[1]];
@@ -502,11 +502,6 @@ function parseRemToPx(rem){
                         }else{
                             xg.image = allImage[xg3.path[0]];
                         }
-                        // if(!xg.flag){
-                            // curTouchTime = (new Date).getTime();
-                        // }
-                        // touchTime = ((new Date).getTime() - curTouchTime)/1e3;   //大鬼的点击时间间隔
-                        // curTouchTime = (new Date).getTime();                                 
                     }
 
                     if(!xg.flag || xg.type == 3){
@@ -525,7 +520,7 @@ function parseRemToPx(rem){
                     if(xg.type != 3){
                         combol ++;
                     }
-                    xg.flag = true; 
+                    // xg.flag = true; 
                     break;
                 }
             }       
