@@ -109,16 +109,18 @@ input, select {
 }
 </style>
 <style type="text/css">
-	html,body,.main{height: 100%;}
-    .main{
+	html,body{
+        height: 100%;
         background: url("http://wx.vlegend.cn/Public/ji/ji-bg.jpg");
         background-repeat: repeat-y;
         background-size: 100% auto;
-        padding-top: 3em;
     }
-	body{
-		background:#bbbcc0;
-	}
+    .main{
+
+        padding-top: 1em;
+        height: 100%;
+    }
+
     ul{list-style: none;padding-top: 20px;}
     .clearfix:after {
       content: " ";
@@ -209,6 +211,9 @@ input, select {
     .fire img{
         float: right;
     }
+    .guanzhu img{
+        width: 100%;
+    }
   	@media screen and (min-height:736px){
 		 		
   	}
@@ -219,50 +224,135 @@ input, select {
 		 		
   	}
 </style>
+<link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 	<div class="main">
         <div class="avatar">
-            <img src="http://wx.vlegend.cn/Public/avatar/1.jpg">
+            <img src="{$user.headimgurl}">
         </div>
         <div class="nichen">
-            <span>LifeTea</span>
+            <span>{$user.nickname}</span>
         </div>
         <div class="jifen">
-            <span>6666</span>
+            <span id="jifen">{$user.sum}</span>
         </div> 
         <div class="percent">
-            <span>(0/100)</span>
+            <span>(
+                <em id="num">{$count*10}</em>
+                /100)</span>
         </div>
         <div class="paodao">
             <div id="fire" class="fire">
                 <img src="http://wx.vlegend.cn/Public/ji/plane.png">
             </div>
         </div>
-        <ul class="list clearfix">
-            <li>
-                <div class="small-avatar">
-                    <img src="http://wx.vlegend.cn/Public/avatar/1.jpg">
-                </div>
-            </li>
-            <li>
-                <div class="small-avatar">
-                    <img src="http://wx.vlegend.cn/Public/avatar/1.jpg">
-                </div>
-            </li>
+        <ul id="aList" class="list clearfix">
+            <volist name="list" id="vo" key="k" >
+                <li>
+                    <div class="small-avatar">
+                        <img src="{$vo.headimgurl}">
+                    </div>
+                </li>
+            </volist>
         </ul>
         <div class="btn">
-            <a href="javascript:void">
+            <a href="javascript:void" id="btn">
                 
             </a>
         </div>          
 	</div>
+
+<!-- system modal start -->
+    <div id="alert" class="modal">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h5 class="modal-title h4">
+                <i class="fa fa-exclamation-circle"></i>
+                <span id="mTitle">助威成功 关注我们一起玩游戏哦！</span>
+            </h5>
+          </div>
+          <div class="modal-body">
+            <p class="guanzhu" id="mContent" class="h5">
+                <img src="http://wx.vlegend.cn/Public/ji/guanzhu.png">
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- system modal end -->    
+    <input type="hidden" id="userId" value="{$userId}">
+    <input type="hidden" id="friendId" value="{$friendId}">
+    <input type="hidden" id="count" value="{$count|default=0}">
+    <input type="hidden" id="headPic" value="{$friend.headimgurl}">
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     <script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
-	<script type="text/javascript">
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        window.conf ={
+            "link":"http://wx.vlegend.cn/ji.html?id="+$("#friendId").val()
+        };
+        wx.config({
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: '{$data.appId}', // 必填，公众号的唯一标识
+            timestamp: {$data.timestamp}, // 必填，生成签名的时间戳
+            nonceStr:'{$data.nonceStr}', // 必填，生成签名的随机串
+            signature:'{$data.signature}',// 必填，签名，见附录1
+            jsApiList: ['checkJsApi',
+                        'onMenuShareTimeline',
+                        'onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+        wx.ready(function(){
+            //var id =getQueryString("id");
+            wx.onMenuShareAppMessage({
+                title: "大爷，来玩我呀！",
+                desc: "玩我有奖的喔~★★★     大爷你能坚持几秒哟？      就喜欢你们来玩的呢",
+                link: window.conf["link"],
+                imgUrl: 'http://wx.vlegend.cn/Public/logo.jpg',
+                trigger: function (res) {
+                  //alert('用户点击发送给朋友');
+                },
+                success: function (res) {
+                  //alert('已分享');
+
+                },
+                cancel: function (res) {
+                  //alert('已取消');
+                },
+                fail: function (res) {
+                  alert(JSON.stringify(res));
+                }
+            });
+        
+            wx.onMenuShareTimeline({
+                title: "大爷，来玩我呀！",
+                link: window.conf["link"],
+                imgUrl: 'http://wx.vlegend.cn/Public/logo.jpg',
+                trigger: function (res) {
+                //alert('用户点击分享到朋友圈');
+                },
+                success: function (res) {
+                //alert('已分享');
+                },
+                cancel: function (res) {
+                //alert('已取消');
+                },
+                fail: function (res) {
+                alert(JSON.stringify(res));
+                }
+            });
+        });
+        wx.error(function(res){
+            // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+        });	
+    </script>
+    <script type="text/javascript">
         (function(){
             var V = {};
             V.init = function(){
-                var winH = window.innerHeight;
+                var winH = $(document).height() || window.innerHeight;
                 var winW = document.body.clientWidth||window.innerWidth;
                 var aML  = parseInt(winW/640*184); 
                 var aW   = parseInt(winW/640*314);
@@ -277,13 +367,14 @@ input, select {
                 var jH   = parseInt(nW/377*53);
                 var jML   = parseInt(winW/640*130);
                 var jMT   = nH/2+2;
-
                 //跑道
                 var pH   = parseInt(nW/377*93);
-                var pMT   = parseInt(nW/377*108);
+                var pMT   = parseInt(nW/377*60);
                 //fire
                 var fMT  = parseInt(pH/80*8);
-                var fH   = parseInt(pH/80*64);
+                var fH   = parseInt(pH/80*63);
+                //飞机
+                var planeW = parseInt(winW/640*161);
                 //console.log(winH);
                 //列表
                 var saW   = parseInt(nW/377*56);
@@ -291,9 +382,9 @@ input, select {
                 var btnW  = parseInt(winW/640*331);
                 var btnH  = parseInt(nW/377*127);
                 var btnPL  = parseInt(winW/640*160);
-                var btnPT   = parseInt(nW/377*128);
+                var btnPT   = parseInt(nW/377*60);
                 
-                var cssNode = document.createTextNode(".avatar{margin-left:"+aML+"px;width:"+aW+"px;height:"+aW+"px} .nichen{width:"+nW+"px;height:"+nH+"px;margin-left:"+nML+"px;margin-top:"+nMT+"px;} .nichen span{line-height:"+nH+"px;} .jifen span{line-height:"+nH+"px;} .jifen{width:"+jW+"px;height:"+jH+"px;margin-left:"+jML+"px;margin-top:"+jMT+"px;} .percent{margin-top:"+pMT+"px;} .paodao{height:"+pH+"px;} .small-avatar{width:"+saW+"px} .btn{width:"+btnW+"px;margin-left:"+btnPL+"px;margin-top:"+btnPT+"px;height:"+btnH+"px;} .fire{height:"+fH+"px;margin-top:"+fMT+"px;} .fire img{height:"+fH+"px}"); 
+                var cssNode = document.createTextNode(".avatar{margin-left:"+aML+"px;width:"+aW+"px;height:"+aW+"px} .nichen{width:"+nW+"px;height:"+nH+"px;margin-left:"+nML+"px;margin-top:"+nMT+"px;} .nichen span{line-height:"+nH+"px;} .jifen span{line-height:"+nH+"px;} .jifen{width:"+jW+"px;height:"+jH+"px;margin-left:"+jML+"px;margin-top:"+jMT+"px;} .percent{margin-top:"+pMT+"px;} .paodao{height:"+pH+"px;} .small-avatar{width:"+saW+"px} .btn{width:"+btnW+"px;margin-left:"+btnPL+"px;margin-top:"+btnPT+"px;height:"+btnH+"px;} .fire{height:"+fH+"px;margin-top:"+fMT+"px;width:"+planeW+"px;} .fire img{height:"+fH+"px}"); 
                 var style = document.createElement("style"); 
                 style.type = "text/css"; 
                 style.appendChild(cssNode);
@@ -303,9 +394,46 @@ input, select {
             $(window).resize(function(){
                 //alert("ha");
                 V.init();
+                V.fire();
             });
+            V.fire = function(){
+                var count = $("#count").val();
+                var winW = document.body.clientWidth||window.innerWidth;
+                var planeW = parseInt(winW/640*161);
+                var width = parseInt((winW-planeW)/10*count)+planeW; 
+                $("#fire").animate({width:width+"px"});                
+            }
+            V.fire();
 
-
+            $("#btn").click(function(){
+                var userId   = $("#userId").val();
+                var friendId = $("#friendId").val();
+                var para = {
+                    "userId":userId,
+                    "friendId":friendId
+                };
+                $.get("http://wx.vlegend.cn/doJi",para,function(data){
+                   
+                   if (data == "1") {
+                    　  var count = parseInt($("#count").val())+1;
+                        $("#count").val(count);
+                        $("#num").text(count*10);
+                        $("#count").val(count);
+                        var jifen = $("#jifen").text();
+                        $("#jifen").text(parseInt(jifen)+10);
+                        V.fire(); 
+                        var img = $("#headPic").val();
+                        var li = document.createElement("li");
+                        li.innerHTML = "<div class=\"small-avatar\"><img src=\""+img+"\"></div>";
+                        $("#aList").append(li);
+                        $("#alert").modal('show');
+                    }else{
+                        $("#mTitle").text("提示");
+                        $("#mContent").text("已经点过赞了,明天再继续");
+                        $("#alert").modal('show');
+                    }
+                });
+            });
         })();
 	</script>
 </body>

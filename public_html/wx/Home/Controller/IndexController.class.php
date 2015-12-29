@@ -110,6 +110,8 @@ class IndexController extends Controller
             header("Location: http://wx.vlegend.cn/gift");
           }elseif ($t == "best") {
             header("Location: http://wx.vlegend.cn/best");
+          }elseif ($t == "ji"){
+            header("Location: http://wx.vlegend.cn/ji?");
           }
           
           $userId = cookie("userId");
@@ -347,6 +349,70 @@ class IndexController extends Controller
           M("best")->data($get)->add();
         }
       }
-    }    
+    }
+
+    public function ji(){
+      $userId   = I("get.id");
+      $self   = I("get.self");
+      if (!empty($userId)) {
+        cookie("jid",$userId);
+      }else{
+        $userId = cookie("jid");
+      }
+      $friendId = cookie("userId");
+      if (!$friendId) {
+        header("Location: https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd2e82d66cc76016c&redirect_uri=http://wx.vlegend.cn/oauth2FuWu?t=ji&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect");
+      }
+      if(empty($userId)){
+        $userId = $friendId;
+      }
+      if(!empty($self)){
+        $userId = $friendId;
+      }
+      if (!empty($userId)) {
+        $user   = D("ScoreView")->field('Sum(score) as sum,nickname,headimgurl')->where("userid = {$userId}")->find();
+        $stamp = date("Y-m-d");
+        $list = D("JiView")->where("ji.userid = {$userId} and ji.stamp = \"{$stamp}\"")->select();
+        $count = count($list);
+        $this->assign("count",$count);
+        $this->assign("list",$list);
+        $this->assign("user",$user);
+        $this->assign("userId",$userId);
+      }
+
+      if(!empty($friendId)){
+        $friend = M("User")->where("id = $friendId")->find();
+        $this->assign("friend",$friend);
+        $this->assign("friendId",$friendId);
+      }
+      
+      //var_dump($user);
+
+      $jssdk = new Util\JSSDK();
+      $signPackage = $jssdk->getSignPackage();
+      $this->assign('data',$signPackage); 
+      $this->display();
+    }
+
+    public function doJi(){
+      $get   = I("get.");
+      if (!empty($get)) {
+        $stamp = date("Y-m-d");
+        
+        $userId = $get["userId"];
+        $friendId = $get["friendId"];
+        $jiLog = M("Ji")->where("userid = {$userId} and friendid = {$friendId} and  stamp = \"{$stamp}\"")->find();
+        if (empty($jiLog)) {
+          $arr = array();
+          $arr["stamp"] = $stamp;
+          $arr["userid"] = $userId;
+          $arr["friendid"] = $friendId;
+          $data = array("userid" => $userId,"score"=>10,"event"=>"dianzan");
+          $res = M("Log")->data($data)->add();
+          M("Ji")->data($arr)->add();
+          echo "1";
+        }
+      }
+    }
 
 }
