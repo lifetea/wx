@@ -112,6 +112,8 @@ class IndexController extends Controller
             header("Location: http://wx.vlegend.cn/best");
           }elseif ($t == "ji"){
             header("Location: http://wx.vlegend.cn/ji?");
+          }elseif ($t == "yd"){
+            header("Location: http://wx.vlegend.cn/yd.html?");
           }
           
           $userId = cookie("userId");
@@ -172,7 +174,6 @@ class IndexController extends Controller
         //$result = $user->data($arr)->add();
         //var_dump($score);
       }
-      
     }
     //排行榜
     public function top(){
@@ -414,5 +415,56 @@ class IndexController extends Controller
         }
       }
     }
+
+  public function yd(){
+      $userId = cookie("userId");
+
+      //跳转
+      if (!$userId) {
+        header("Location: https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd2e82d66cc76016c&redirect_uri=http://wx.vlegend.cn/oauth2FuWu?t=yd&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect");
+      }
+      if(!empty($userId)){
+        $user = M("User")->where("id = {$userId}")->find();
+        
+        $ydp = M("yd")->where("userid = {$userId} and stamp = 1")->select();
+        $ydm = M("yd")->field("Sum(stamp) as sum")->where("userid = {$userId}")->find();
+        $count = 3-count($ydp);
+        $this->assign("user",$user);
+        $this->assign("count",$count);
+        $this->assign("enable",$ydm["sum"]);
+      }
+      $jssdk = new Util\JSSDK();
+      $signPackage = $jssdk->getSignPackage();
+      $this->assign('data',$signPackage);      
+      $this->display();   
+  }
+
+  public function doYd(){
+    $userId = cookie('userId');
+    $score = I("get.score");
+    if (!!$score && !!$userId) {
+      $ydRes = M("yd")->where("userid = {$userId} and stamp = -1")->select();
+      if (count($ydRes) <= 3) {
+        $arrLog   = array("userid" => $userId,"score"=>$score,"event"=>"yd");
+        $resLog   = M("Log")->data($arrLog)->add();
+        $arrYd   = array("userid" => $userId,"stamp"=>-1);
+        $resYd   = M("yd")->data($arrYd)->add();
+      }
+
+      //$result = $user->data($arr)->add();
+      var_dump($ydRes);
+    }
+  }
+
+  public function doYdShare(){
+    $userId = I("get.userid");
+    if (!empty($userId)) {
+      $ydRes = M("yd")->where("userid = {$userId} and stamp = 1")->select();
+      if (count($ydRes) < 3) {
+        $arrYd   = array("userid" => $userId,"stamp"=>1);
+        $resYd   = M("yd")->data($arrYd)->add();
+      }
+    }
+  }
 
 }

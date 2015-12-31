@@ -1,1031 +1,162 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html style="font-size: 47.3125px;">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <!-- Mobile Devices Support @begin -->
 <meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
 <meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+
 <meta content="no-cache" http-equiv="pragma">
 <meta content="0" http-equiv="expires">
 <base href="http://wx.vlegend.cn/yd/" />
 <meta content="telephone=no, address=no" name="format-detection">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes"> <!-- apple devices fullscreen -->
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="full-screen" content="yes"/>
+<meta name="screen-orientation" content="portrait"/>
+<meta name="x5-fullscreen" content="true"/>
+<meta name="360-fullscreen" content="true"/>
 <title></title>
 <link href="./res/zxg.min.css" rel="stylesheet" type="text/css">
 <link href="./res/base.min.css" rel="stylesheet" type="text/css">
 
-
-<script type="text/javascript">
-	if( false){
-		document.domain = 'faisco.cn';
-		
-	}
-	
-</script>
-<script type="text/javascript" src="./res/jquery-core.min.js"></script>
-<!--<script type="text/javascript" src="//hdg.faisys.com/js/comm/fai.min.js?v=201510121802"></script>-->
-
-
-
-<script type="text/javascript" src="//res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-
-
-
-
-
-<script type="text/javascript">
-    //全局变量
-    var _manage = false,
-        initTime = 30,
-        _resRoot = '//wx.vlegend.cn',
-        g_showSkillSup = true, //是否开启技术支持
-        g_showMenu = true,
-        g_scoreFlag = 0,   
-        g_drawLimitDef = 200, //游戏默认门槛
-        g_scoreSet = 200,
-        g_style = 17,
-        g_scoreUnit = '分',
-        m_debug = false,                            
-        g_testCMD = 'null',
-        g_ajaxUrl = '//wx.vlegend.cn/ajax/',
-        g_startTime = '2015-12-25 00:00',
-        g_test = false,
-        g_failSrcId = 15018,//游戏挫败量srcId
-        g_setGameTimeInterval = 10,//所有游戏计时时间间隔
-        g_isDoubleGame = false,//是否是双人游戏
-        undefined;
-        
-    if(g_testCMD.indexOf('dbg') !== -1){
-        m_debug = true;//如果是测试状态，开启调试模式
-    }
-
-    if( initTime === 0){
-        if(!_manage){
-            initTime = 99999;
-        }else{
-            if(30 == 0){
-                initTime = 30;
-            }else{
-                initTime = 30; 
-            }
-            
-        }
-        
-    }
-    var g_rem = 20;
-    (function(){
-        var h = window.screen.width - $(window).height();
-        var remBase = Math.min($(window).width(),$(window).height()+h)/16;
-        remBase === 0 && (remBase = '20px');
-        $('html').css('font-size',remBase);
-        g_rem = parseFloat(remBase);
-    })();
-</script>
-
-<script type="text/javascript" src="./res/createjs.min.js"></script>
-<script type="text/javascript" src="./res/hdgame.min.js"></script>
-<script type="text/javascript" src="./res/hdUtil.min.js?v=201504271715"></script>
-<script type="text/javascript" src="./res/lufylegend.min.js"></script>
-
-<script type="text/javascript">
-
-
-/*-----------------------资源loading-----------------------------*/
-//存放所有loading好的image对象,src为key
-var allImage = HdGame.initLoadPreAssets(1,'//wx.vlegend.cn/res/logoDef.png');
-
-/*-----------------------声音------------------------*/
-var Sound = null;
-
-(function(){
-    var soundList = [{"path":"//wx.vlegend.cn/yd/res/bgm.mp3","fileName":"我要抢礼物背景音乐.mp3","optFlag":0},{"path":"//hdg.faisys.com/image/zxg/tap.mp3","fileName":"点击音效.mp3","optFlag":2}];
-    var soundListDef = [{"path":"*_resRoot*/yd/image/zxg/bgmusic05S.mp3","fileName":"背景音乐.mp3","optFlag":0},{"path":"*_resRoot*/yd/image/zxg/tap.mp3","fileName":"点击音效.mp3","optFlag":2}];
-    var soundListMod = [{"path":"//wx.vlegend.cn/res/bgm.mp3","fileName":"我要抢礼物背景音乐.mp3","optFlag":2},{"path":"//hdg.faisys.com/image/zxg/tap.mp3","fileName":"点击音效.mp3","optFlag":2}];
-    if(soundListMod){
-        $.each(soundListMod,function(index,sound) {
-            soundListDef[index].path =  sound.path;
-            
-        });
-    }
-    soundListMod = null;
-    if(soundList){
-        $.each(soundList,function(index,sound) {
-            var soundDef =  soundListDef[index];
-            if(index !== 0 && sound.optFlag === 1){
-                sound.optFlag = 2;
-            }
-            sound.path = HdGame.getSrc(sound.path);
-            soundDef.path = HdGame.getSrc(soundDef.path);
-        });
-    }
-    Sound = HdGame.initSound(soundList,soundListDef);
-    if(soundList){
-        $.each(soundList,function(index,sound) {
-            var path = sound.path;
-            if(index === 0 ){
-                
-                Sound.load(path,index,false);
-                
-            }else{
-                Sound.load(path,index);
-            }
-            
-        });
-        
-        Sound.readyPlay(0,0,'loop');
-        
-        $(window).on('beforeunload', function(event) {
-            Sound.pause(0); //iPhone6可能出现离开页面声音无法停止，此处绑定离开页面前事件，停止音乐
-        });
-    }
-})()
-function loadGamePreAssets(){}
-$(function(){
-    
-    var exlainInfo = '获奖后凭兑奖码联系活动主办单位即可兑奖。';
-    if(false){
-        HdGame.unPublishMsg();          
-    }
-    if(exlainInfo.length == 0){
-        $('#actExplain').hide();
-    }
-    if(!_manage){
-        allImage.add([
-            "http://7020498.h40.faiusr.com/4/ACgIABAEGAAg3eWpswUoqbftoAQwgAU45gY.png",
-            "http://7020498.h40.faiusr.com/4/ACgIABAEGAAg5eWpswUoxLOurAMwmAI4eA.png",
-            "http://7020498.h40.faiusr.com/2/ACgIABACGAAg_OWpswUotv21xQEwgAU4wAw.jpg",
-            "//hdg.faisys.com/image/lots1.png",
-            "//hdg.faisys.com/image/lots2.png"
-        ]);
-    }
-    
-    if(!_manage){
-        allImage.add([
-            "http://7020498.h40.faiusr.com/2/ACgIABACGAAg1OWpswUouNKD_wYwgAU4wAw.jpg",
-            "//hdg.faisys.com/image/rankBtn.png",
-            "//hdg.faisys.com/image/awardBtn.png",
-            "//hdg.faisys.com/image/logo.jpg",
-            "//hdg.faisys.com/image/ruleImg.png",
-            "//hdg.faisys.com/image/success.png",
-            "//hdg.faisys.com/image/light.png",
-            "//hdg.faisys.com/image/bird.png",
-            "//hdg.faisys.com/image/musicOff.png",
-            "//hdg.faisys.com/image/musicOn.png"
-        ]);
-        loadGamePreAssets();
-        if(true){
-            allImage.add('//hdg.faisys.com/image/faiImg.png?v=201509171041');
-        }
-        allImage.loadPage();
-    }
-});
-/*----------------------------可编辑元素包装------------------------------------*/
-var Edit = null;
-
-//通过conf文件配置可编辑元素的属性
-(function(){
-    var origin = [{"name":"xg1","pos":{"left":"0.7rem","top":"11.55rem"},"size":{"width":"3.05rem","height":"4.95rem"},"path":[["http://wx.vlegend.cn/yd/image/1-0.png"],["http://wx.vlegend.cn/yd/image/1-1.png"]]},{"name":"xg2","pos":{"left":"11.9rem","top":"11.45rem"},"size":{"width":"3.1rem","height":"5.05rem"},"path":[["http://wx.vlegend.cn/yd/image/2-0.png"],["http://wx.vlegend.cn/yd/image/2-1.png"]]},{"name":"xg3","pos":{"left":"3rem","top":"2rem"},"size":{"width":"8.5rem","height":"13.5rem"},"path":[["http://wx.vlegend.cn/yd/image/3-0.png"],["http://wx.vlegend.cn/yd/image/3-1.png"]]}];
-    var originDef = [{"name":"xg1","pos":{"left":"1rem","top":"12rem","disable":"disable"},"size":{"width":"2.75rem","height":"4.5rem"},"path":[["*_resRoot*/image/zxg/xg1.png","游戏角色01","100k"],["*_resRoot*/image/zxg/xg1c.png","游戏角色02","100k"]],"edit":"all"},{"name":"xg2","pos":{"left":"12.25rem","top":"12rem","disable":"disable"},"size":{"width":"2.75rem","height":"4.5rem"},"path":[["*_resRoot*/image/zxg/xg2.png","游戏角色03","100k"],["*_resRoot*/image/zxg/xg2c.png","游戏角色04","100k"]],"edit":"all"},{"name":"xg3","pos":{"left":"3rem","top":"2rem","disable":"disable"},"size":{"width":"8.5rem","height":"13.5rem"},"path":[["*_resRoot*/image/zxg/xg3.png","游戏角色05","100k"],["*_resRoot*/image/zxg/xg3c.png","游戏角色06","100k"]],"edit":"all"}];
-    var originMod = [{"name":"xg1","pos":{"left":"0.7rem","top":"11.55rem"},"size":{"width":"3.05rem","height":"4.95rem"},"path":[["http://7020498.h40.faiusr.com/4/ACgIABAEGAAgz_apswUonMnYhwYwbji0AQ.png"],["http://7020498.h40.faiusr.com/4/ACgIABAEGAAg1OapswUohITGCDBuOLQB.png"]]},{"name":"xg2","pos":{"left":"11.9rem","top":"11.45rem"},"size":{"width":"3.1rem","height":"5.05rem"},"path":[["http://7020498.h40.faiusr.com/4/ACgIABAEGAAg2OapswUo46Sa6AIwbji0AQ.png"],["http://7020498.h40.faiusr.com/4/ACgIABAEGAAg2OapswUotr3ekgMwbji0AQ.png"]]},{"name":"xg3","pos":{"left":"3rem","top":"2rem"},"size":{"width":"8.5rem","height":"13.5rem"},"path":[["http://7020498.h40.faiusr.com/4/ACgIABAEGAAg2_apswUoh_jEtgYw1AI4nAQ.png"],["http://7020498.h40.faiusr.com/4/ACgIABAEGAAg3uapswUo_vrhwgIw1AI4nAQ.png"]]}];
-    Edit = HdGame.initEdit(origin,originDef,originMod);
-})();
-
-function parseRemToPx(rem){
-    if(rem.indexOf('rem') === -1){
-        return parseFloat(rem);
-    }
-    return parseFloat(rem)*g_rem;
-}
-</script>
-
-<script type="text/javascript">
-    wx.config({
-          debug: false,
-          appId: 'wx25367438c8ce0799',
-          timestamp: 1451004171,
-          nonceStr: '4e96fe72-fe7c-4291-87ee-d48b5277454c',
-          signature: '7d8d8a6cf5cc370933ea24c49dd8031c7d9ea756',
-          jsApiList: [
-            'checkJsApi',
-            'onMenuShareTimeline',
-            'onMenuShareAppMessage',
-            'onMenuShareQQ',
-            'onMenuShareWeibo',
-            'hideMenuItems',
-            'showMenuItems',
-            'hideAllNonBaseMenuItem',
-            'showAllNonBaseMenuItem',
-            'translateVoice',
-            'startRecord',
-            'stopRecord',
-            'onRecordEnd',
-            'playVoice',
-            'pauseVoice',
-            'stopVoice',
-            'uploadVoice',
-            'downloadVoice',
-            'chooseImage',
-            'previewImage',
-            'uploadImage',
-            'downloadImage',
-            'getNetworkType',
-            'openLocation',
-            'getLocation',
-            'hideOptionMenu',
-            'showOptionMenu',
-            'closeWindow',
-            'scanQRCode',
-            'chooseWXPay',
-            'openProductSpecificView',
-            'addCard',
-            'chooseCard',
-            'openCard'
-          ]
-    });
-	
-    
-
-
-    var wxConfigShareImg = 'http://7020498.h40.faiusr.com/4/ACgIABAEGAAg5_apswUoxJ_m4wUwyAE4yAE.png';
-    if(!/^http:/.test(wxConfigShareImg) && /^\/\//.test(wxConfigShareImg)){
-        wxConfigShareImg = 'http:' + wxConfigShareImg;
-    }
-    function setWxShare(desc,url,callBack){
-        wx.ready(function () {
-           
-        });
-    }
-    var scoreUnit = '达到200分'.match(/[分秒]/);
-    scoreUnit = scoreUnit ? scoreUnit[0] : '';
-    function setShareText(text){
-        text = text.replace(/&nbsp;/g,' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-        return text.replace(/<span class=["']tag["'] contenteditable=["']?false["']?>(.+?)<\/span>/g,function(match,$1){
-            switch($1){
-                case '玩家名称':
-                    return 'lifetea';
-                case '游戏成绩':
-                    return HdGame.currentScore;
-                case '游戏排名':
-                    return HdGame.currentRank;
-                case '奖品名称':
-                    return HdGame.currentAward;
-                case '奖项等级':
-                    return HdGame.currentAwardStyle;
-            }
-        });
-    }
-    function setWxShareByStatus(){
-        if(false){
-            return;
-        }
-        if(typeof arguments[0] === 'string'){
-            HdGame.currentShareUrl = arguments[0];
-        }
-        if(false){
-            if(HdGame.currentShareUrl){
-                setWxShare(setShareText('我刚在圣诞游戏里赢得<span class="tag" contenteditable="false">奖品名称</span>，你想领大奖吗？一起来玩！'),HdGame.currentShareUrl);
-            }else{
-                setWxShare(setShareText('轻轻松松就能抽到大奖，积攒多年的人品终于有用了，你也赶紧来抽奖吧！！'));
-            }
-        }else{
-            if(HdGame.currentAward){
-                setWxShare(setShareText('我刚在圣诞游戏里赢得<span class="tag" contenteditable="false">奖品名称</span>，你想领大奖吗？一起来玩！'));
-            }else if(HdGame.currentRank){
-                setWxShare(setShareText('我以<span class="tag" contenteditable="false">游戏成绩</span>分的成绩傲视群雄，不服你来战!圣诞礼物等着你！'));
-            }else{
-                setWxShare(setShareText('轻轻松松就能抽到大奖，积攒多年的人品终于有用了，你也赶紧来抽奖吧！！'));
-            }
-        }
-    }
-    //判断该玩家是否已获取过礼物
-    (function(){
-        if(false){
-            return;
-        }
-        var arr=['一','二','三','四','五','六','七','八'];
-        var haveAward = false;
-        if(haveAward){
-            var list = [];            
-            var itemInfo = list[list.length-1];
-            if(itemInfo.award.length > 0){
-                HdGame.currentAward=itemInfo.award;
-            }
-            var awardLevel = itemInfo.awardLevel;
-            if( awardLevel != 900 && awardLevel > 0 ){  
-                if(true && 9 >= awardLevel){
-                    var nameList = ["一等奖","二等奖","三等奖","四等奖","五等奖","六等奖","七等奖","八等奖","安慰奖"];          
-                    HdGame.currentAwardStyle = nameList[awardLevel-1];
-                }else{
-                    HdGame.currentAwardStyle = arr[awardLevel-1];
-                }
-            }else{
-                HdGame.currentAwardStyle = '安慰奖';
-            }    
-        }
-       //setWxShareByStatus();
-    })();
-
-    //判断该玩家是否已有过排行榜
-    (function(){
-        // if(false){
-        //     return;
-        // }
-        // var r = {"rank":0,"score":""};
-        // HdGame.currentRank=r.rank;
-        // HdGame.currentScore=r.score;
-        // setWxShareByStatus();
-    })();
-
-    //setWxShareByStatus();
-</script>
-<script type="text/javascript">
-	var time = initTime;
-    var count = 0;
-    var grade = 0; 
-	var drawTimesLimit = 3;
-	var timeLock = 0,timeFlag = 0;
-	var _timer ;
-	var publish = true;	
-	HdGame.isReg = false;
-    var _gameOver = false;
-	var touchX = 0;
-	var touchY = 0;
-	var clientWidth = $(window).width(),
-		clientHeight = $(window).height(),
-		htmlFontSize = parseInt($('html').css('font-size').replace('px',''));
-	var delta = 0;
-	var showTime = 0;
-	var stayTime = 0.8;
-	var combol = 0;	
-	var xgList = [];
-	var scoreList = [];
-	var createTime = 0.6;
-	var flag = 1;
-	var curTouchTime = 0;
-	var touchTime = 0;
-
-	function loadGamePreAssets(){ 
-        allImage.add("//hdg.faisys.com/image/zxg/score.png");
-    }
-		
-	$(function(){
-		if(!false){
-			canvas = document.getElementById("canvas");
-			ctx = canvas.getContext("2d");	
-		}
-		
-		init();
-		window.requestAnimFrame = (function() {
-			return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
-			function(callback) {
-				window.setTimeout(callback, 1000/60);
-			}
-    	})();
-		// HdGame.resulePoup.init({
-		// 	drawType  : 1,
-		// 	checkRegUrl:'//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=checkRegNum&aid=7939017&gameId=4&openId=o1ueSjpHu11MLY09QeVUXU0A94JQ',	
-		// 	regUrl	  : '//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=setPlayerReg&aid=7939017&gameId=4&openId=o1ueSjpHu11MLY09QeVUXU0A94JQ&flag1=true',
-		// 	home      : home,
-		// 	again     : gameRestart,
-		// 	giftInit  : luckDraw,
-		// });
-
-        $('.gameBox').on('touchmove',function(event){
-            event.preventDefault();
-            event.stopPropagation();
-        });
-		$('#startBtnImg').on('touchend',function(){
-			$('#ruleImg').hide();
-            $('.homeBtnBox').hide();
-            $('.footerBox').hide();
-            $('.home').hide();
-            $('.gameBox').show();
-            gameStart();					
-		});	
-
-        $('#startBtnImg').on('click',function(){
-            $('#ruleImg').hide();
-            $('.homeBtnBox').hide();
-            $('.footerBox').hide();
-            $('.home').hide();
-            $('.gameBox').show();
-            gameStart();
-                      
-        });
-		
-		$('#canvas').bind('touchstart',function(e){
-			if(_gameOver){
-				return;
-			}
-			e.preventDefault();
-			e = e.originalEvent;
-			touchX = e.clientX || e.changedTouches[0].clientX;
-			touchY = (e.clientY || e.changedTouches[0].clientY) - 80;
-			
-			for(var i = 0; i < xgList.length; i++){
-				var xg = xgList[i];
-				var xgX = xg.x/ratio;
-				var xgY = xg.y/ratio;
-				
-				if(touchX > xgX && touchX < (xgX + xg.w/ratio) && touchY > xgY && touchY < (xgY + xg.h/ratio)){
-					Sound.play(1);//音效
-					if(xg.type == 1){
-						var xg1 = Edit.getImgInfo("xg1");
-						xg.image = allImage[xg1.path[1]];
-					}else if(xg.type == 2){
-						var xg2 = Edit.getImgInfo("xg2");
-						xg.image = allImage[xg2.path[1]];
-					}else if(xg.type == 3){
-						var xg3 = Edit.getImgInfo("xg3");
-						if(xg.image == allImage[xg3.path[0]]){
-							xg.image = allImage[xg3.path[1]];
-						}else{
-							xg.image = allImage[xg3.path[0]];
-						}
-						// if(!xg.flag){
-							// curTouchTime = (new Date).getTime();
-						// }
-						// touchTime = ((new Date).getTime() - curTouchTime)/1e3;	//大鬼的点击时间间隔
-						// curTouchTime = (new Date).getTime();									
-					}
-
-					if(!xg.flag || xg.type == 3){
-						var score = new ImageObject();
-                        var img = new Image();// 创建一个image对象
-                        img.src = "http://wx.vlegend.cn/yd/image/score.png";  
-						score.image = img;
-						score.w = 80;
-						score.h = 50;
-						score.x = xg.x + xg.w;
-						score.y = xg.y ;
-						scoreList.push(score);
-						grade += 10;
-						$('.grade').html(grade);
-					}
-					if(xg.type != 3){
-						combol ++;
-					}
-					//xg.flag = true;	
-					break;
-				}
-			}		
-		});
-
-        $('#canvas').bind('click',function(e){
-            if(_gameOver){
-                return;
-            }
-            e.preventDefault();
-            e = e.originalEvent;
-            touchX = e.clientX || e.changedTouches[0].clientX;
-            touchY = (e.clientY || e.changedTouches[0].clientY) - 80;
-            
-            for(var i = 0; i < xgList.length; i++){
-                var xg = xgList[i];
-                var xgX = xg.x/ratio;
-                var xgY = xg.y/ratio;
-                
-                if(touchX > xgX && touchX < (xgX + xg.w/ratio) && touchY > xgY && touchY < (xgY + xg.h/ratio)){
-                    //Sound.play(1);//音效
-                    if(xg.type == 1){
-                        var xg1 = Edit.getImgInfo("xg1");
-                        xg.image = allImage[xg1.path[1]];
-                    }else if(xg.type == 2){
-                        var xg2 = Edit.getImgInfo("xg2");
-                        xg.image = allImage[xg2.path[1]];
-                    }else if(xg.type == 3){
-                        var xg3 = Edit.getImgInfo("xg3");
-                        if(xg.image == allImage[xg3.path[0]]){
-                            xg.image = allImage[xg3.path[1]];
-                        }else{
-                            xg.image = allImage[xg3.path[0]];
-                        }
-                    }
-
-                    if(!xg.flag || xg.type == 3){
-                        var score = new ImageObject();
-                        var img = new Image();// 创建一个image对象
-                        img.src = "http://wx.vlegend.cn/yd/image/score.png";  
-                        score.image = img;
-                        score.w = 80;
-                        score.h = 50;
-                        score.x = xg.x + xg.w;
-                        score.y = xg.y ;
-                        scoreList.push(score);
-                        grade += 10;
-                        $('.grade').html(grade);
-                    }
-                    if(xg.type != 3){
-                        combol ++;
-                    }
-                    // xg.flag = true; 
-                    break;
-                }
-            }       
-        });
-
-	});	
-	
-	function setGameTime(){
-        time = initTime - (new Date().getTime() - timeFlag)/1000;
-        if(time <= (initTime/4)*3 && !bossTime && timeLock == 0){
-            timeLock++;
-            createTime = 0.4;
-        }else if(time <= (initTime/4)*2 && !bossTime && timeLock == 1){
-            timeLock++;
-            createTime = 0.3;
-        }
-        else if(time <= (initTime/4)*1 && !bossTime && timeLock == 2){
-            timeLock++;
-            createTime = 0.2;
-        }
-		
-        if(time <= 0){
-			time = 0;
-			timeLock = 0;
-			$('.time').html(time.toFixed(2));
-            _gameOver = true;
-            clearTimeout(_timer);
-            var timeUpImg = $('.timeUpImg');
-            timeUpImg.removeClass('tada');
-            timeUpImg.addClass('tada');
-            timeUpImg.show();
-            setTimeout(function(){gameOver(grade);},1000);
-            return;
-        }
-		$('.time').html(time.toFixed(2));
-		_timer = setTimeout(arguments.callee,g_setGameTimeInterval);
-	}
-
-	function startBtnDelay(){
-        var startBtn = $('#startBtnImg');
-        var titleImg = $('.titleImg');
-        var thisTop = parseInt(startBtn.css('top'));
-        var _target = startBtn;
-        if(false){
-            _target = startBtn.parent();
-        }
-        titleImg.removeClass('titleDown').addClass('titleDown');
-        _target.removeClass('startTada');
-        setTimeout(function(){
-            _target.addClass('startTada');
-        },1000);
-    } 
-	
-	function parseRemToPx(rem){
-        if(rem.indexOf('rem') === -1){
-            return parseFloat(rem)*ratio;
-        }
-        return parseFloat(rem)*g_rem*ratio;
-    }
-	
-	function gamePicLayer(){
-		var titleImgArgs = [];
-		var titleArg = {};
-		titleArg.from = "#titleImg";
-		titleArg.title = '标题图片';
-		titleArg.size = '440px*600px';
-		titleArg.limit = '100k';
-		titleArg.defSrc = 'http://7020498.h40.faiusr.com/4/ACgIABAEGAAg3eWpswUoqbftoAQwgAU45gY.png';
-		titleImgArgs.push(titleArg);
-		
-		var startImgArgs = [];
-		var startArg = {};
-		startArg.from = "#startBtnImg";
-		startArg.title = '按钮图片';
-		startArg.size = '280px*120px';
-		startArg.limit = '50k';
-		startArg.defSrc = 'http://7020498.h40.faiusr.com/4/ACgIABAEGAAg5eWpswUoxLOurAMwmAI4eA.png';
-		startImgArgs.push(startArg);
-
-		HdGame.initModuleLayer('#titleImg',-1,"",titleImgArgs);
-		HdGame.initModuleLayer('#startBtnImg',-1,"",startImgArgs);
-	}
-	
-	function getSrc(src){
-        return src.replace('*_resRoot*','//hdg.faisys.com');
-    }
-	
-	function init() {
-		$('#gameBgBox').css('height',clientHeight);
-		if(_manage){		
-			$('.titleImg').addClass('abs');
-			gamePicLayer();
-			HdGame.moduleSlaveImgResize($('#titleImg'));
-			HdGame.moduleSlaveImgResize($('#startBtnImg'));
-			HdGame.moduleDraggale('#titleImg',true);
-			HdGame.moduleDraggale('#startBtnImg',true);
-            var reSizeDef={             //图片恢复默认参数
-                titleImg     : {width:'12.35rem',height:'16.85rem'},
-                startBtnImg  : {width:'7.2rem',height:'2.55rem'},
-            };
-            $('.recoverBtn').click(function(){
-                var wrapper = $(this).parent();
-                var _from = wrapper.attr('_from');
-                var slaveImg = wrapper.find('.slaveImg');
-                wrapper.find('.recoverBtn').hide();
-                slaveImg.attr('resize',0);
-                if(wrapper.attr('resize')){
-                    wrapper.attr('resize',0);
-                }
-                wrapper.css('width',reSizeDef[_from].width);
-                wrapper.css('height',reSizeDef[_from].height);
-                slaveImg.css('width',reSizeDef[_from].width);
-                slaveImg.css('height',reSizeDef[_from].height);
-                if(reSizeDef[_from].left && reSizeDef[_from].top){
-                    wrapper.css('left',reSizeDef[_from].left);
-                    wrapper.css('top',reSizeDef[_from].top);
-                    slaveImg.css('left',reSizeDef[_from].left);
-                    slaveImg.css('top',reSizeDef[_from].top);
-                }
-                slaveImg.css('margin','auto');
-                callBack = slaveImg.data('reSizeCallBack');
-                callBack && callBack.call(slaveImg[0]);
-            }); 
-            startBtnDelay();
-		}else{
-            allImage.onload(startBtnDelay);
-        }
-	}
-
-	function gameInit() {
-		ctx.clearRect(0,0,canvas.width,canvas.height);
-		ctx.globalAlpha = 1;
-		time = initTime;
-		$('.time').html(time.toFixed(2));
-        grade = 0;
-		combol = 0;
-		_gameOver = false;
-		stayTime = 0.8;
-		showTime = 0;
-		flag = 1;
-		createTime = 0.6;
-		xgList = [];
-		scoreList = [];
-		HdGame.Guide.stop($('#gameLayerBox'));
-        $('.grade').html(grade);
-        $('.timeUpImg').hide();
-					
-		addXg(1);
-		showTime  = 0;
-		xgTime = (new Date).getTime();
-		gamePlay();
-	}
-	function home(){
-		$('#ruleImg').show();
-		$('.homeBtnBox').show();
-		$('.footerBox').show();
-		$('.gameBox').hide();
-		startBtnDelay();
-		$('.home').show();
-		$('#poupInfoBox').hide();
-		$('.resuleBox').hide();
-		gameInit();
-
-	}	
-	function gameRestart() {
-		if(!HdGame.isplaySucess){
-			create = 0;
-		}
-		gameStart();
-	}
-    function showGamePage(){
-		time = initTime;
-		$('.time').html(time.toFixed(2));
-        $('#ruleImg').hide();
-        $('.homeBtnBox').hide();
-        $('.footerBox').hide();
-        $('.home').hide();
-        $('#poupInfoBox').hide();
-        $('.resuleBox').hide();
-        $('.gameBox').show();
-    }
-	
-	function gameStart(){
-		window.scrollTo(0,0);
-		timeFlag = new Date().getTime();
-		setGameTime();
-		gamePlayPanel_t = parseInt($('#gameLayerBox').css('top'));
-		gamePlayPanel_h = clientHeight - gamePlayPanel_t;
-		gamePlayPanel_w = $('#gameLayerBox').width();
-		$('#gameLayerBox').height(gamePlayPanel_h);
-		var backingStore = ctx.backingStorePixelRatio ||
-                        ctx.webkitBackingStorePixelRatio ||
-                        ctx.mozBackingStorePixelRatio ||
-                        ctx.msBackingStorePixelRatio ||
-                        ctx.oBackingStorePixelRatio ||
-                        ctx.backingStorePixelRatio || 1;
-        window.ratio = (window.devicePixelRatio || 1) / backingStore;
-		canvas.width = clientWidth*ratio;
-		canvas.height = gamePlayPanel_h*ratio;
-		canvas.style.width = clientWidth+"px";
-		canvas.style.height = gamePlayPanel_h+"px";
-		
-		gameInit();
-	}
-
-	function addXg(flag){
-		var xg1 = Edit.getImgInfo("xg1");
-		var xg2 = Edit.getImgInfo("xg2");
-		var xgW = (flag == 1)?xg1.width:xg2.height
-		var xgH = (flag == 1)?xg1.height:xg2.height
-		var x = Math.floor(Math.random() * (canvas.width - xgW));
-		var y = Math.floor(Math.random() * (canvas.height - xgH));
-		
-		for(var i = 0; i < xgList.length; i++){
-			var xg = xgList[i];
-			if(x > xg.x && x < (xg.x + xg.w) && y > xg.y && y < (xg.y + xg.h)){
-				x = Math.floor(Math.random() * (canvas.width - xgW));
-				y = Math.floor(Math.random() * (canvas.height - xgH));
-			}
-		}
-		xgList.push(createXg(flag,x,y));
-	}
-	var create = 0;
-	function createXg(flag,x,y){
-		if(create < 4){
-			create ++;
-		}
-		
-		var xg = new ImageObject();
-		if(flag == 1){
-			var xg1 = Edit.getImgInfo("xg1");
-			xg.image = allImage[xg1.path[0]];
-			xg.w = xg1.width;
-			xg.h = xg1.height;
-			xg.x = x;
-			xg.y = y;
-			xg.type = 1;
-		}else if(flag == 2){
-			var xg2 = Edit.getImgInfo("xg2");
-			xg.image = allImage[xg2.path[0]];
-			xg.w = xg2.width;
-			xg.h = xg2.height;
-			xg.x = x;
-			xg.y = y;
-			xg.type = 2;
-		}else if(flag == 3){
-			var xg3 = Edit.getImgInfo("xg3");
-			xg.image = allImage[xg3.path[0]];
-			xg.w = xg3.width;
-			xg.h = xg3.height;
-			xg.x = (canvas.width - xg.w)/2;
-			xg.y = (canvas.height - xg.h)/2;
-			xg.type = 3;
-		}
-		HdGame.Guide.stop();
-		
-		if(create < 4){
-			var or = {};
-			or.w = xg.w/ratio;
-			or.h = xg.h/ratio;
-			or.x = xg.x/ratio;
-			or.y = xg.y/ratio;
-			if(!HdGame.isplaySucess){
-				HdGame.Guide.play($('#gameLayerBox'),or);
-			}
-			
-		}
-		
-		return xg;
-	}
-	
-	function ImageObject(){
-		this.x = 0;
-		this.y = 0;
-		this.w = 0;
-		this.h = 0;
-		this.type = 1;
-		this.opacity = 1;
-		this.flag = false;
-		this.time = 0;
-		this.image = new Image();
-	}	
-	var bossTime = false;
-	function gamePlay(){
-		if(_gameOver){
-			return;
-		}
-		ctx.clearRect(0,0,canvas.width,canvas.height);
-		var currentTime = (new Date).getTime();
-		
-		delta = (currentTime - xgTime)/1e3;
-		delta > 0.5 && (delta = 0);
-		xgTime = currentTime;
-		showTime += delta;
-		
-		for(var i = 0; i < xgList.length; i++){
-			var xg = xgList[i];
-			xg.time += delta;
-			
-			if(xg.time > stayTime || (xg.flag && xg.type != 3 && xg.time > 0.5)){
-				if(xg.opacity > 0){
-					xg.opacity -= 0.1;
-					ctx.globalAlpha = xg.opacity;
-				}else{
-					if(!xg.flag){//消失了还没点中说明连击断了。
-						combol = 0;
-					}
-					
-					xgList.splice(i,1);
-					i--;
-					if(xg.type == 3){
-						addXg(1);
-						stayTime = 0.8;
-						createTime = 0.6;
-						if(time >= 10 && time < 20){
-							createTime = 0.4;
-						}else if(time < 10){
-							createTime = 0.3;
-						}
-						bossTime = false;
-					}
-				}
-			}else{
-				ctx.globalAlpha = 1;
-			}
-			if(xg.opacity > 0){
-				drawImg(xg);
-			}
-		}
-
-		if(showTime > createTime){
-			if(flag == 1){
-				flag = 2;
-			}else if(flag == 2 || flag == 3){
-				flag = 1;
-			}
-			addXg(flag);
-			showTime = 0;
-		}
-		
-		if(combol == 15){
-			xgList = [];
-			addXg(3);
-			stayTime = 5;
-			createTime = 5;
-			combol = 0;
-			bossTime = true;//出大鬼
-			showTime = 0;
-		}
-		
-		for(var i = 0; i < scoreList.length; i++){
-				var score = scoreList[i];
-				score.y -= 2;
-				score.time += delta;
-
-				if(score.time > 0.3){
-					if(score.opacity > 0){
-						score.opacity -= 0.1;
-						ctx.globalAlpha = score.opacity;
-					}else{
-						ctx.globalAlpha = 1;
-						scoreList.splice(i,1);
-						i--;
-					}
-				}else{
-					ctx.globalAlpha = 1;
-				}
-				if(score.opacity > 0){
-					drawImg(score);
-				}
-		}
-		
-		requestAnimFrame(gamePlay);
-	}
-	function drawImg(t){
-    	ctx.drawImage(t.image,t.x,t.y,t.w,t.h);
-    }
-</script>	
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<style type="text/css">
+#mContent img{width: 100%;}
+</style>
 </head>
 
 <body class="gameTpl_-1">
-	<div class="ajaxLoadBg">
-		<div class="ajaxLoadBar "></div>
-	</div>
-	<div class="body">		
-		<div class="home">
-			<div id="homeBgBox" style="height: 1110px;">
-				<img id="homeBg" src="http://7020498.h40.faiusr.com/2/ACgIABACGAAg1OWpswUouNKD_wYwgAU4wAw.jpg">	
-			</div>	
-			<div class="gameInfoBox">
-				<div class="titleImg imgContainer absCenter titleDown">
-					<img id="titleImg" class="slaveImg abs" src="http://7020498.h40.faiusr.com/4/ACgIABAEGAAg3eWpswUoqbftoAQwgAU45gY.png" style="width:12.35rem;height:16.85rem;top:-0.4rem;left:1.85rem;">
-				</div>
-			</div>	
+    <div class="ajaxLoadBg">
+        <div class="ajaxLoadBar "></div>
+    </div>
+    <div class="body">      
+        <div class="home">
+            <div id="homeBgBox" style="height: 1110px;">
+                <img id="homeBg" src="http://wx.vlegend.cn/yd/image/yd-bg.jpg"> 
+            </div>  
+            <div class="gameInfoBox">
+                <div class="titleImg imgContainer absCenter titleDown">
+                    <img id="titleImg" class="slaveImg abs" src="http://wx.vlegend.cn/yd/image/yd-bg.png" style="width:12.35rem;height:16.85rem;top:-0.4rem;left:1.85rem;">
+                </div>
+            </div>  
 
+            <if condition="$enable lt 0">
+                    <div id="startBtn" data="{$enable|default=0}" class="startBtn imgContainer absCenter" style="top:0rem;">
+                        <img id="startBtnImg" class="slaveImg abs startTada" src="http://wx.vlegend.cn/yd/image/disable.png" style="width:7.2rem;height:2.55rem;top:19.05rem;left:4rem;">
+                    </div>
+                <else />
+                    <div id="startBtn" data="{$enable|default=0}" class="startBtn imgContainer absCenter" style="top:0rem;">
+                        <img id="startBtnImg" class="slaveImg abs startTada" src="http://wx.vlegend.cn/yd/image/enable.png" style="width:7.2rem;height:2.55rem;top:19.05rem;left:4rem;">
+                    </div>
+            </if>
 
-			<div id="startBtn" class="startBtn imgContainer absCenter" style="top:0rem;">
-				<img id="startBtnImg" class="slaveImg abs startTada" src="http://7020498.h40.faiusr.com/4/ACgIABAEGAAg5eWpswUoxLOurAMwmAI4eA.png" style="width:7.2rem;height:2.55rem;top:19.05rem;left:4rem;">
-			</div>			
+            <div class="bottomSkill skillInfo">亲，你还有{$count}次机会哦~转发即可获得</div>       
         <div class="soundIcon soundIconPlay" style="z-index: 90; left: 0.75rem; top: 1rem;"></div></div>
-		<div class="gameBox hide gameBgBox">
-			<div id="gameBgBox" style="height: 826px;">
-				<img id="gameBg" src="http://7020498.h40.faiusr.com/2/ACgIABACGAAg_OWpswUotv21xQEwgAU4wAw.jpg" style="width:100%;height:auto;">	
-			</div>
-			
+        <div class="gameBox hide gameBgBox">
+            <div id="gameBgBox" style="height: 826px;">
+                <img id="gameBg" src="http://wx.vlegend.cn/yd/image/cd-bg.jpg" style="width:100%;height:auto;"> 
+            </div>
+            
 <div id="gameTopBar" class="gameTopBar" style="color:rgb(255, 255, 255);background-color:rgba(0, 0, 0, 0)">
-	<div class="userInfoBox">
-		<div class="userImgBox" style="border-color:rgb(255, 255, 255)"><img src="http://wx.qlogo.cn/mmopen/jM4ibGAz8Xl3j0Hib2YnThgRR8avKlibLSgJgJwg87wg1KxnrDoibaVeW4iaMib0pB6rdtrdhDqaBzTCBIYbS6N095zWicmzUOWjWHic/0" class="userImg"></div>
-					
-			<div id="grade" class="grade">0</div>
-			
-	</div>
+    <div class="userInfoBox">
+        <div class="userImgBox" style="border-color:rgb(255, 255, 255)"><img src="{$user.headimgurl}" class="userImg"></div>
+                    
+            <div id="grade" class="grade">0</div>
+            
+    </div>
 
-	<div class="timeBox">
-		时间<br><span class="time">0</span>
-	</div>
-</div>	
-			<div id="gameLayerBox" style="top:4rem;">
-				
+    <div class="timeBox">
+        时间<br><span class="time">0</span>
+    </div>
+</div>  
+            <div id="gameLayerBox" style="top:4rem;">
+                
                 <canvas id="canvas">你的浏览器不支持canvas，请换个牛逼点的浏览器，谢谢</canvas>
                 
-				
-			</div>
+                
+            </div>
             <div class="timeUpImg hide"></div>
-		<div class="soundIcon soundIconPlay" style="z-index: 100;"></div></div>
-		
+        <div class="soundIcon soundIconPlay" style="z-index: 100;"></div></div>
+        
 
 <!-- 活动规则，排行榜，我的奖品的弹出层 -->
-<div id="ruleImg" _mousein="0" ontouchend="showRule();"></div>
 <div id="poupInfoBox">
-	<div class="poupHead">
-		<div class="poupTitle">活动及奖品说明</div>
-		<div class="poupClose"></div>
-	</div>
-	<div id="ruleBox" class="poupMain" style="display:none;-webkit-overflow-scrolling:touch;">
-		<div id="getHeight">
-			<div id="awardLine" class="poupLine">
+    <div class="poupHead">
+        <div class="poupTitle">活动及奖品说明</div>
+        <div class="poupClose"></div>
+    </div>
+    <div id="ruleBox" class="poupMain" style="display:none;-webkit-overflow-scrolling:touch;">
+        <div id="getHeight">
+            <div id="awardLine" class="poupLine">
                 <div class="mainTitle">活动奖品</div>
                 <div id="awardLineBox">
-				<div class="unComfortLine"><span class="awardStyle">一等奖</span> : <span class="award">100优惠券</span></div>
+                <div class="unComfortLine"><span class="awardStyle">一等奖</span> : <span class="award">100优惠券</span></div>
 <div class="unComfortLine"><span class="awardStyle">二等奖</span> : <span class="award">50元优惠券</span></div>
 <div class="unComfortLine"><span class="awardStyle">三等奖</span> : <span class="award">5元优惠券</span></div>
 
-				<div id="comfortLine" class="hide" style="font-size: 0.6rem;"><span class="awardStyle">null</span> : <span class="award">null</span></div>
-	
-            </div>	
+                <div id="comfortLine" class="hide" style="font-size: 0.6rem;"><span class="awardStyle">null</span> : <span class="award">null</span></div>
+    
+            </div>  
             <div id="selfAwardLine" class="hide" style="word-wrap: break-word; display: none;"></div>
-		</div>
-			
-			<div id="gameDateTime" class="poupLine">
+        </div>
+            
+            <div id="gameDateTime" class="poupLine">
                 <div class="mainTitle">活动时间</div>
-				<p><span id="startDate">2015年12月25日 00:00</span>&nbsp;-&nbsp;<span id="endDate">2016年12月25日 00:00</span></p>
-			</div>	
+                <p><span id="startDate">2015年12月25日 00:00</span>&nbsp;-&nbsp;<span id="endDate">2016年12月25日 00:00</span></p>
+            </div>  
             <div class="hostLine poupLine">
                 <div class="mainTitle">主办单位</div>
                 <p>本次活动主办单位为 <a class="hostName" href="#" style="text-decoration: none;">lifetea</a></p>
                 <p>主办单位在法律允许的范围内拥有活动解释权</p>
             </div>
-		</div>	
-		<div id="explainBox" class="poupLine">
+        </div>  
+        <div id="explainBox" class="poupLine">
             <div class="mainTitle">活动及兑奖说明</div>
-			<p><span id="haveScore">游戏达到 <span id="scoreLimit" class="scoreLimit">200</span> 分即可获得抽奖机会，</span>
+            <p><span id="haveScore">游戏达到 <span id="scoreLimit" class="scoreLimit">200</span> 分即可获得抽奖机会，</span>
             
             每人<span class="dayFont">每日</span>有 <span id="drawTimesLimit">3</span> 次抽奖机会<span class="drawTotalFont">，每人最多可抽奖 <span id="totalDrawTimeLimit">6</span> 次</span>。<br>
             </p>
-			
-			<div id="exlainInfo">获奖后凭兑奖码联系活动主办单位即可兑奖。</div>
-		</div>
-	</div>
-	<div id="rankBox" class="poupMain hide" style="-webkit-overflow-scrolling:touch;">
-		<div id="noRank" class="hide">暂无排名</div>
-		<div id="rankMain" class="getRankHeight hide">
-			<div style="margin-top:0.7rem;margin-left: 0.25rem;">当前排名：<span id="rank"></span> （只显示前50名）</div>
-			<div style="padding:0rem 0.5rem">					
-				<table class="rankTable" cellspacing="0" cellpadding="0">
-					<thead>
-						<tr style="line-height: 1rem;">
-							<th>排行</th>
-							<th>头像</th>
-							<th>昵称</th>
-							<th>成绩</th>
-						</tr>
-					</thead>		
-				</table>
-			</div>
-		</div>		
-		<div id="rankHeight">
-			<table id="rankInfoBox" class="rankTable" cellspacing="0" cellpadding="0" style="margin-top: 0;">
-			</table>
-		</div>				
-	</div>
-	<div id="awardBox" class="poupMain hide">
-		<div id="awardInfo">暂无中奖纪录</div>
+            
+            <div id="exlainInfo">获奖后凭兑奖码联系活动主办单位即可兑奖。</div>
+        </div>
+    </div>
+    <div id="rankBox" class="poupMain hide" style="-webkit-overflow-scrolling:touch;">
+        <div id="noRank" class="hide">暂无排名</div>
+        <div id="rankMain" class="getRankHeight hide">
+            <div style="margin-top:0.7rem;margin-left: 0.25rem;">当前排名：<span id="rank"></span> （只显示前50名）</div>
+            <div style="padding:0rem 0.5rem">                   
+                <table class="rankTable" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <tr style="line-height: 1rem;">
+                            <th>排行</th>
+                            <th>头像</th>
+                            <th>昵称</th>
+                            <th>成绩</th>
+                        </tr>
+                    </thead>        
+                </table>
+            </div>
+        </div>      
+        <div id="rankHeight">
+            <table id="rankInfoBox" class="rankTable" cellspacing="0" cellpadding="0" style="margin-top: 0;">
+            </table>
+        </div>              
+    </div>
+    <div id="awardBox" class="poupMain hide">
+        <div id="awardInfo">暂无中奖纪录</div>
         <div id="awardScrollWrap" style="overflow:auto;">
-    		<div>
+            <div>
                 <div class="hostLine poupLine">
                     <div class="mainTitle">主办单位</div>
                     <p>本次活动主办单位为 <a class="hostName" href="#" style="text-decoration: none;">lifetea</a></p>
                     <p>主办单位在法律允许的范围内拥有活动解释权</p>
                 </div>
-    			<div id="awardExplainBox" class="poupLine">
+                <div id="awardExplainBox" class="poupLine">
                     <div id="awardExplain_h" class="mainTitle">活动及兑奖说明</div>
                     <div id="awardExplain" class="explain">获奖后凭兑奖码联系活动主办单位即可兑奖。</div>
                 </div>
-    		</div>
+            </div>
         </div>
         <div class="attentionBox">
             <div class="menuBtnBox">
@@ -1034,40 +165,40 @@ function parseRemToPx(rem){
             <div class="skillInfo"><a href="http://mp.weixin.qq.com/s?__biz=MjM5MTk5MjI3OA==&amp;mid=209854000&amp;idx=1&amp;sn=82241d924839270d3ea820ad2d56c01b#rd">我也要免费创建活动</a><span class="gotoFlag"></span></div>
             <div class="holdBox"></div>
         </div>
-	</div>
-	<div id="regAwardBox" class="poupMain hide" style="-webkit-overflow-scrolling:touch;">
-		<div id="noRegAward" class="hide" style="margin-left:3px;">尚未公布获奖名单，详情请查看活动说明</div>
-		<div id="regAwardMain">
-					
-					<div class="regAwardList">
-						<div class="mainTitle">一等奖</div>
-						<div class="playerName" style="margin-bottom:12px;"></div>
-					</div>	
-					
-					<div class="regAwardList">
-						<div class="mainTitle">二等奖</div>
-						<div class="playerName" style="margin-bottom:12px;"></div>
-					</div>	
-					
-					<div class="regAwardList">
-						<div class="mainTitle">三等奖</div>
-						<div class="playerName" style="margin-bottom:12px;"></div>
-					</div>	
-			
-			
-		</div>	
-	</div>
+    </div>
+    <div id="regAwardBox" class="poupMain hide" style="-webkit-overflow-scrolling:touch;">
+        <div id="noRegAward" class="hide" style="margin-left:3px;">尚未公布获奖名单，详情请查看活动说明</div>
+        <div id="regAwardMain">
+                    
+                    <div class="regAwardList">
+                        <div class="mainTitle">一等奖</div>
+                        <div class="playerName" style="margin-bottom:12px;"></div>
+                    </div>  
+                    
+                    <div class="regAwardList">
+                        <div class="mainTitle">二等奖</div>
+                        <div class="playerName" style="margin-bottom:12px;"></div>
+                    </div>  
+                    
+                    <div class="regAwardList">
+                        <div class="mainTitle">三等奖</div>
+                        <div class="playerName" style="margin-bottom:12px;"></div>
+                    </div>  
+            
+            
+        </div>  
+    </div>
 </div>
 <!-- 右侧按钮 -->
 <div class="homeBtnBox">
-	
-	
-	<div id="rankBtn" ontouchend="HdGame.changePoup(1,'//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=getRankList&amp;aid=7939017&amp;gameId=4&amp;style=17&amp;openId=o1ueSjpHu11MLY09QeVUXU0A94JQ','//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=getGiftList&amp;aid=7939017&amp;style=17','//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=getRegAwardList&amp;aid=7939017&amp;gameId=4&amp;style=17&amp;openId=o1ueSjpHu11MLY09QeVUXU0A94JQ','o1ueSjpHu11MLY09QeVUXU0A94JQ',4);">		<img src="//hdg.faisys.com/image/rankBtn.png" style="width:1.5rem;height:1.5rem"></div>
     
-	<div id="awardBtn" style="position:relative;" ontouchend="HdGame.changePoup(3,'//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=getRankList&amp;aid=7939017&amp;gameId=4&amp;style=17&amp;openId=o1ueSjpHu11MLY09QeVUXU0A94JQ','//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=getGiftList&amp;aid=7939017&amp;style=17','//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=getRegAwardList&amp;aid=7939017&amp;gameId=4&amp;style=17&amp;openId=o1ueSjpHu11MLY09QeVUXU0A94JQ','o1ueSjpHu11MLY09QeVUXU0A94JQ',4);">
-		<span id="Award_Round_Dot" class="redDot hide"></span>
-		<img src="//hdg.faisys.com/image/awardBtn.png" style="width:1.5rem;height:1.5rem;">
-	</div>
+    
+    <div id="rankBtn">        <img src="//hdg.faisys.com/image/rankBtn.png" style="width:1.5rem;height:1.5rem"></div>
+    
+    <div id="awardBtn" style="position:relative;">
+        <span id="Award_Round_Dot" class="redDot hide"></span>
+        <img src="//hdg.faisys.com/image/awardBtn.png" style="width:1.5rem;height:1.5rem;">
+    </div>
 </div>
 <!-- logo -->
 <div id="logoImgBox" class="logoImgBox imgContainer absCenter hide">
@@ -1087,24 +218,24 @@ function parseRemToPx(rem){
                 </div>
                 <div id="resule-status-ribbon" class="resule-status-ribbon"></div>
             </div>
-			<div id="resule-status-body">
-				<p style="font-size:0.8rem; line-height:1.2rem">您的成绩为：<span class="resuleArg"></span>分</p>
-				<p class="resule-status-minscore" style="display:none;">成绩必须达到 <span class="resuleArg resulescoreLimit"></span> 分才能抽奖</p>
-				<p style="margin-top:0.5rem">最佳成绩为：<span class="resuleArg"></span>分</p>
+            <div id="resule-status-body">
+                <p style="font-size:0.8rem; line-height:1.2rem">您的成绩为：<span class="resuleArg"></span>分</p>
+                <p class="resule-status-minscore" style="display:none;">成绩必须达到 <span class="resuleArg resulescoreLimit"></span> 分才能抽奖</p>
+                <p style="margin-top:0.5rem">最佳成绩为：<span class="resuleArg"></span>分</p>
 
-				<p>最佳排名为：NO.<span class="resuleArg"></span></p>
-				<div id="resule-status-count" style="margin-top:0.6rem">
-					<p class="totalDraw" style="display: none;">您还有 <span id="totalDrawCount" class="resuleArg"></span> 次抽奖机会</p>
-					<p class="dayDraw">今天还有 <span class="resuleArg dayDrawCount"></span> 次机会抽奖</p>
-					<p class="dayDraw4Total hide">今天可抽 <span class="resuleArg dayDrawCount"></span> 次</p>
-				</div>	
-			</div>
-			<div id="resule-status-other" class="hide">
-				<p style="font-size:0.8rem;font-weight:bold;">通关并且</p>
-				<p class="resule-status-minscore hide" style="margin: 10px 0px 50px;">成绩必须达到 <span class="resuleArg resuleArg-fail resulescoreLimit"></span> 分才能抽奖</p>
-			</div>
-			<div id="resule-sucReg" class="hide" style="margin-top:0.6rem">您已经成功报名参与活动！</div>
-            <div id="resule-foot-box">				
+                <p>最佳排名为：NO.<span class="resuleArg"></span></p>
+                <div id="resule-status-count" style="margin-top:0.6rem">
+                    <p class="totalDraw" style="display: none;">您还有 <span id="totalDrawCount" class="resuleArg"></span> 次抽奖机会</p>
+                    <p class="dayDraw">今天还有 <span class="resuleArg dayDrawCount"></span> 次机会抽奖</p>
+                    <p class="dayDraw4Total hide">今天可抽 <span class="resuleArg dayDrawCount"></span> 次</p>
+                </div>  
+            </div>
+            <div id="resule-status-other" class="hide">
+                <p style="font-size:0.8rem;font-weight:bold;">通关并且</p>
+                <p class="resule-status-minscore hide" style="margin: 10px 0px 50px;">成绩必须达到 <span class="resuleArg resuleArg-fail resulescoreLimit"></span> 分才能抽奖</p>
+            </div>
+            <div id="resule-sucReg" class="hide" style="margin-top:0.6rem">您已经成功报名参与活动！</div>
+            <div id="resule-foot-box">              
                 <div class="resule-foot-one">
                     <div class="resule-button resule-one-button resule-status-gift hide">赶紧去抽奖</div>
                     <div class="resule-button resule-one-button resule-status-reg hide">我要报名</div>
@@ -1119,7 +250,7 @@ function parseRemToPx(rem){
             <div id="resule-status-lots"></div>
             <div id="resule-status-lotsHand"></div>
         </div>
-		
+        
     </div>
 
     <div id="resule-gift-box" style="display:none">
@@ -1200,47 +331,932 @@ function parseRemToPx(rem){
     </div>
     <div class="info">加载中 <span id="loadPercent">100</span>/100...</div>
 </div>
+<input id="userId" type="hidden" value="{$user.id}">
+<input id="count" type="hidden" value="{$count}">
+<link href="//cdn.bootcss.com/bootstrap/3.0.0-rc2/css/bootstrap.min.css" rel="stylesheet">
+<!-- system modal start -->
+    <div id="alert" class="modal">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h5 class="modal-title h4">
+                <i class="fa fa-exclamation-circle"></i>
+                <span id="mTitle">关注我们,去兑换奖品吧</span>
+            </h5>
+          </div>
+          <div class="modal-body">
+            <p class="guanzhu" id="mContent" class="h5">
+                <img src="http://wx.vlegend.cn/Public/ji/guanzhu.png">
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="warning" class="modal">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h5 class="modal-title h4">
+                <i class="fa fa-exclamation-circle"></i>
+                <span id="mTitle">转发 继续玩游戏</span>
+            </h5>
+          </div>
+          <div class="modal-body">
+            <p class="guanzhu" id="mContent" class="h5">
+                分享到朋友圈还可以获得{$count}次机会哟！
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+   <div id="more" class="modal">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h5 class="modal-title h4">
+                <i class="fa fa-exclamation-circle"></i>
+                <span id="mTitle">关注我们，有更多游戏哟</span>
+                
+            </h5>
+          </div>
+          <div class="modal-body">
+            <p class="guanzhu" id="mContent" class="h5">
+                新的游戏正在路上，关注我们玩游戏赢大奖！
+                <img src="http://wx.vlegend.cn/Public/ji/guanzhu.png">
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>    
+<script type="text/javascript">
+    if( false){
+        document.domain = 'faisco.cn';
+        
+    }
+    
+</script>
+<script type="text/javascript" src="./res/jquery-core.min.js"></script>
+<script type="text/javascript" src="./res/bootstrap.min.js"></script>
+<!--<script type="text/javascript" src="//hdg.faisys.com/js/comm/fai.min.js?v=201510121802"></script>-->
 
+
+
+<script type="text/javascript">
+    window.conf ={
+        "link":"http://wx.vlegend.cn/yd.html?id="
+    };
+    wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: '{$data.appId}', // 必填，公众号的唯一标识
+        timestamp: {$data.timestamp}, // 必填，生成签名的时间戳
+        nonceStr:'{$data.nonceStr}', // 必填，生成签名的随机串
+        signature:'{$data.signature}',// 必填，签名，见附录1
+        jsApiList: ['checkJsApi',
+                    'onMenuShareTimeline',
+                    'onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+    });
+    wx.ready(function(){
+        //var id =getQueryString("id");
+        wx.onMenuShareAppMessage({
+            title: "轻轻的，元旦来了，点点你的手指，取走你的积分",
+            desc:  "元旦积分大放送，转发还有{$count}次砸彩蛋的机会喔~",
+            link: window.conf["link"],
+            imgUrl: 'http://wx.vlegend.cn/yd/image/share.jpg',
+            trigger: function (res) {
+              //alert('用户点击发送给朋友');
+            },
+            success: function (res) {
+              //alert('已分享');
+              
+            var userId = $("#userId").val();
+            xmlhttp=new XMLHttpRequest();
+            xmlhttp.open("GET","http://wx.vlegend.cn/doYdShare?userid="+userId,true);
+            xmlhttp.send(null);
+            location.href="http://wx.vlegend.cn/yd.html?v=1213";
+              //Game9GUtils.prototype.hideShare();
+            },
+            cancel: function (res) {
+              //alert('已取消');
+            },
+            fail: function (res) {
+              alert(JSON.stringify(res));
+            }
+        });
+    
+        wx.onMenuShareTimeline({
+            title: "轻轻的，元旦来了，点点你的手指，取走你的积分",
+            link: window.conf["link"],
+            imgUrl: 'http://wx.vlegend.cn/yd/image/share.jpg',
+            trigger: function (res) {
+            //alert('用户点击分享到朋友圈');
+            },
+            success: function (res) {
+                var userId = $("#userId").val();
+                xmlhttp=new XMLHttpRequest();
+                xmlhttp.open("GET","http://wx.vlegend.cn/doYdShare?userid="+userId,true);
+                xmlhttp.send(null);
+                location.href="http://wx.vlegend.cn/yd.html?v=1213";
+            },
+            cancel: function (res) {
+            //alert('已取消');
+            },
+            fail: function (res) {
+            alert(JSON.stringify(res));
+            }
+        });
+    });
+wx.error(function(res){
+    // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+});
+
+</script>
+
+
+<script type="text/javascript">
+    //全局变量
+    var _manage = false,
+        initTime = 25,
+        _resRoot = '//wx.vlegend.cn',
+        g_showSkillSup = true, //是否开启技术支持
+        g_showMenu = true,
+        g_scoreFlag = 0,   
+        g_drawLimitDef = 200, //游戏默认门槛
+        g_scoreSet = 200,
+        g_style = 17,
+        g_scoreUnit = '分',
+        m_debug = false,                            
+        g_testCMD = 'null',
+        g_ajaxUrl = '//wx.vlegend.cn/ajax/',
+        g_startTime = '2015-12-25 00:00',
+        g_test = false,
+        g_failSrcId = 15018,//游戏挫败量srcId
+        g_setGameTimeInterval = 10,//所有游戏计时时间间隔
+        g_isDoubleGame = false,//是否是双人游戏
+        undefined;
+        
+    if(g_testCMD.indexOf('dbg') !== -1){
+        m_debug = true;//如果是测试状态，开启调试模式
+    }
+
+    if( initTime === 0){
+        if(!_manage){
+            initTime = 99999;
+        }else{
+            if(30 == 0){
+                initTime = 30;
+            }else{
+                initTime = 30; 
+            }
+            
+        }
+        
+    }
+    var g_rem = 20;
+    (function(){
+        var h = window.screen.width - $(window).height();
+        var remBase = Math.min($(window).width(),$(window).height()+h)/16;
+        remBase === 0 && (remBase = '20px');
+        $('html').css('font-size',remBase);
+        g_rem = parseFloat(remBase);
+    })();
+</script>
+
+<script type="text/javascript" src="./res/createjs.min.js"></script>
+<script type="text/javascript" src="./res/hdgame.min.js"></script>
+<script type="text/javascript" src="./res/hdUtil.min.js?v=201504271715"></script>
+<script type="text/javascript" src="./res/lufylegend.min.js"></script>
+
+<script type="text/javascript">
+
+
+    /*-----------------------资源loading-----------------------------*/
+    //存放所有loading好的image对象,src为key
+    var allImage = HdGame.initLoadPreAssets(1,'//wx.vlegend.cn/res/logoDef.png');
+
+    /*-----------------------声音------------------------*/
+    var Sound = null;
+
+    (function(){
+        var soundList = [{"path":"//wx.vlegend.cn/yd/res/bgm.mp3","fileName":"bgm.mp3","optFlag":0},{"path":"//hdg.faisys.com/image/zxg/tap.mp3","fileName":"点击音效.mp3","optFlag":2}];
+        var soundListDef = [{"path":"//wx.vlegend.cn/yd/res/bgm.mp3","fileName":"bgm.mp3","optFlag":0},{"path":"*_resRoot*/yd/image/zxg/tap.mp3","fileName":"点击音效.mp3","optFlag":2}];
+        var soundListMod = [{"path":"//wx.vlegend.cn/res/bgm.mp3","fileName":"bgm.mp3","optFlag":2},{"path":"//hdg.faisys.com/image/zxg/tap.mp3","fileName":"点击音效.mp3","optFlag":2}];
+        if(soundListMod){
+            $.each(soundListMod,function(index,sound) {
+                soundListDef[index].path =  sound.path;
+                
+            });
+        }
+        soundListMod = null;
+        if(soundList){
+            $.each(soundList,function(index,sound) {
+                var soundDef =  soundListDef[index];
+                if(index !== 0 && sound.optFlag === 1){
+                    sound.optFlag = 2;
+                }
+                sound.path = HdGame.getSrc(sound.path);
+                soundDef.path = HdGame.getSrc(soundDef.path);
+            });
+        }
+        Sound = HdGame.initSound(soundList,soundListDef);
+        if(soundList){
+            $.each(soundList,function(index,sound) {
+                var path = sound.path;
+                if(index === 0 ){
+                    
+                    Sound.load(path,index,false);
+                    
+                }else{
+                    Sound.load(path,index);
+                }
+                
+            });
+            
+            Sound.readyPlay(0,0,'loop');
+            
+            $(window).on('beforeunload', function(event) {
+                Sound.pause(0); //iPhone6可能出现离开页面声音无法停止，此处绑定离开页面前事件，停止音乐
+            });
+        }
+    })()
+    function loadGamePreAssets(){}
+    $(function(){
+        
+        var exlainInfo = '获奖后凭兑奖码联系活动主办单位即可兑奖。';
+        if(false){
+            HdGame.unPublishMsg();          
+        }
+        if(exlainInfo.length == 0){
+            $('#actExplain').hide();
+        }
+        if(!_manage){
+            allImage.add([
+                "http://wx.vlegend.cn/yd/image/yd-bg.png",
+                "http://wx.vlegend.cn/yd/image/enable.png",
+                "http://wx.vlegend.cn/yd/image/cd-bg.jpg",
+                "//hdg.faisys.com/image/lots1.png",
+                "//hdg.faisys.com/image/lots2.png"
+            ]);
+        }
+        
+        if(!_manage){
+            allImage.add([
+                "http://wx.vlegend.cn/yd/image/yd-bg.jpg",
+                "//hdg.faisys.com/image/rankBtn.png",
+                "//hdg.faisys.com/image/awardBtn.png",
+                "//hdg.faisys.com/image/logo.jpg",
+                "//hdg.faisys.com/image/ruleImg.png",
+                "//hdg.faisys.com/image/success.png",
+                "//hdg.faisys.com/image/light.png",
+                "//hdg.faisys.com/image/bird.png",
+                "//hdg.faisys.com/image/musicOff.png",
+                "//hdg.faisys.com/image/musicOn.png"
+            ]);
+            loadGamePreAssets();
+            if(true){
+                allImage.add('//hdg.faisys.com/image/faiImg.png?v=201509171041');
+            }
+            allImage.loadPage();
+        }
+    });
+    /*----------------------------可编辑元素包装------------------------------------*/
+    var Edit = null;
+
+    //通过conf文件配置可编辑元素的属性
+    (function(){
+        var origin = [{"name":"xg1","pos":{"left":"0.7rem","top":"11.55rem"},"size":{"width":"3.05rem","height":"4.95rem"},"path":[["http://wx.vlegend.cn/yd/image/1-0.png"],["http://wx.vlegend.cn/yd/image/1-1.png"]]},{"name":"xg2","pos":{"left":"11.9rem","top":"11.45rem"},"size":{"width":"3.1rem","height":"5.05rem"},"path":[["http://wx.vlegend.cn/yd/image/2-0.png"],["http://wx.vlegend.cn/yd/image/2-1.png"]]},{"name":"xg3","pos":{"left":"3rem","top":"2rem"},"size":{"width":"8.5rem","height":"13.5rem"},"path":[["http://wx.vlegend.cn/yd/image/3-0.png"],["http://wx.vlegend.cn/yd/image/3-1.png"]]}];
+        var originDef = [{"name":"xg1","pos":{"left":"1rem","top":"12rem","disable":"disable"},"size":{"width":"2.75rem","height":"4.5rem"},"path":[["*_resRoot*/image/zxg/xg1.png","游戏角色01","100k"],["*_resRoot*/image/zxg/xg1c.png","游戏角色02","100k"]],"edit":"all"},{"name":"xg2","pos":{"left":"12.25rem","top":"12rem","disable":"disable"},"size":{"width":"2.75rem","height":"4.5rem"},"path":[["*_resRoot*/image/zxg/xg2.png","游戏角色03","100k"],["*_resRoot*/image/zxg/xg2c.png","游戏角色04","100k"]],"edit":"all"},{"name":"xg3","pos":{"left":"3rem","top":"2rem","disable":"disable"},"size":{"width":"8.5rem","height":"13.5rem"},"path":[["*_resRoot*/image/zxg/xg3.png","游戏角色05","100k"],["*_resRoot*/image/zxg/xg3c.png","游戏角色06","100k"]],"edit":"all"}];
+        var originMod = [{"name":"xg1","pos":{"left":"0.7rem","top":"11.55rem"},"size":{"width":"3.05rem","height":"4.95rem"},"path":[["http://7020498.h40.faiusr.com/4/ACgIABAEGAAgz_apswUonMnYhwYwbji0AQ.png"],["http://7020498.h40.faiusr.com/4/ACgIABAEGAAg1OapswUohITGCDBuOLQB.png"]]},{"name":"xg2","pos":{"left":"11.9rem","top":"11.45rem"},"size":{"width":"3.1rem","height":"5.05rem"},"path":[["http://7020498.h40.faiusr.com/4/ACgIABAEGAAg2OapswUo46Sa6AIwbji0AQ.png"],["http://7020498.h40.faiusr.com/4/ACgIABAEGAAg2OapswUotr3ekgMwbji0AQ.png"]]},{"name":"xg3","pos":{"left":"3rem","top":"2rem"},"size":{"width":"8.5rem","height":"13.5rem"},"path":[["http://7020498.h40.faiusr.com/4/ACgIABAEGAAg2_apswUoh_jEtgYw1AI4nAQ.png"],["http://7020498.h40.faiusr.com/4/ACgIABAEGAAg3uapswUo_vrhwgIw1AI4nAQ.png"]]}];
+        Edit = HdGame.initEdit(origin,originDef,originMod);
+    })();
+
+    function parseRemToPx(rem){
+        if(rem.indexOf('rem') === -1){
+            return parseFloat(rem);
+        }
+        return parseFloat(rem)*g_rem;
+    }
+</script>
+<script type="text/javascript">
+    var time = initTime;
+    var count = 0;
+    var grade = 0; 
+    var drawTimesLimit = 3;
+    var timeLock = 0,timeFlag = 0;
+    var _timer ;
+    var publish = true; 
+    HdGame.isReg = false;
+    var _gameOver = false;
+    var touchX = 0;
+    var touchY = 0;
+    var clientWidth = $(window).width(),
+        clientHeight = $(window).height(),
+        htmlFontSize = parseInt($('html').css('font-size').replace('px',''));
+    var delta = 0;
+    var showTime = 0;
+    var stayTime = 0.8;
+    var combol = 0; 
+    var xgList = [];
+    var scoreList = [];
+    var createTime = 0.6;
+    var flag = 1;
+    var curTouchTime = 0;
+    var touchTime = 0;
+    var lastTime = 0;
+    function loadGamePreAssets(){ 
+        allImage.add("//hdg.faisys.com/image/zxg/score.png");
+    }
+        
+    $(function(){
+        if(!false){
+            canvas = document.getElementById("canvas");
+            ctx = canvas.getContext("2d");  
+        }
+        
+        init();
+        window.requestAnimFrame = (function() {
+            return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+            function(callback) {
+                window.setTimeout(callback, 1000/60);
+            }
+        })();
+        // HdGame.resulePoup.init({
+        //  drawType  : 1,
+        //  checkRegUrl:'//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=checkRegNum&aid=7939017&gameId=4&openId=o1ueSjpHu11MLY09QeVUXU0A94JQ',    
+        //  regUrl    : '//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=setPlayerReg&aid=7939017&gameId=4&openId=o1ueSjpHu11MLY09QeVUXU0A94JQ&flag1=true',
+        //  home      : home,
+        //  again     : gameRestart,
+        //  giftInit  : luckDraw,
+        // });
+
+        $('.gameBox').on('touchmove',function(event){
+            event.preventDefault();
+            event.stopPropagation();
+        });
+
+        $('#startBtnImg').on('click',function(){
+            var data = $('#startBtn').attr("data");
+            var count = $('#count').val();
+            if(parseInt(data) > -1 ){
+                $('.homeBtnBox').hide();
+                $('.footerBox').hide();
+                $('.home').hide();
+                $('.gameBox').show();
+                $('.gameBox').removeClass("hide");
+                gameStart();
+            }else{
+                if (count >0 ) {
+                    $("#warning").modal('show');
+                }else{
+                    $("#more").modal('show');
+                }
+                
+            }
+
+                      
+        });
+        $('#awardBtn').on('click',function(){
+           $("#alert").modal('show');
+        });
+        $('#rankBtn').on('click',function(){
+           location.href="http://wx.vlegend.cn/top.html";
+        });        
+                    
+        $('#canvas').bind('touchstart',function(e){
+            if(_gameOver){
+                return;
+            }
+            e.preventDefault();
+            e = e.originalEvent;
+            touchX = e.clientX || e.changedTouches[0].clientX;
+            touchY = (e.clientY || e.changedTouches[0].clientY) - 80;
+            curTime = (new Date).getTime();
+            if (!lastTime) {
+                lastTime = curTime;
+            }
+            for(var i = 0; i < xgList.length; i++){
+                var xg = xgList[i];
+                var xgX = xg.x/ratio;
+                var xgY = xg.y/ratio;
+                
+
+                if(touchX > xgX && ((curTime-lastTime)>100) && touchX < (xgX + xg.w/ratio) && touchY > xgY && touchY < (xgY + xg.h/ratio)){
+                    lastTime = curTime;
+                    Sound.play(1);//音效
+                    if(xg.type == 1){
+                        var xg1 = Edit.getImgInfo("xg1");
+                        xg.image = allImage[xg1.path[1]];
+                    }else if(xg.type == 2){
+                        var xg2 = Edit.getImgInfo("xg2");
+                        xg.image = allImage[xg2.path[1]];
+                    }else if(xg.type == 3){
+                        var xg3 = Edit.getImgInfo("xg3");
+                        if(xg.image == allImage[xg3.path[0]]){
+                            xg.image = allImage[xg3.path[1]];
+                        }else{
+                            xg.image = allImage[xg3.path[0]];
+                        }
+                        // if(!xg.flag){
+                            // curTouchTime = (new Date).getTime();
+                        // }
+                        // touchTime = ((new Date).getTime() - curTouchTime)/1e3;   //大鬼的点击时间间隔
+                        // curTouchTime = (new Date).getTime();                                 
+                    }
+
+                    if(!xg.flag || xg.type == 3){
+                        var score = new ImageObject();
+                        var img = new Image();// 创建一个image对象
+                        img.src = "http://wx.vlegend.cn/yd/image/score.png";  
+                        score.image = img;
+                        score.w = 80;
+                        score.h = 50;
+                        score.x = xg.x + xg.w;
+                        score.y = xg.y ;
+                        scoreList.push(score);
+                        grade += 10;
+                        $('.grade').html(grade);
+                    }
+                    if(xg.type != 3){
+                        combol ++;
+                    }
+                    //xg.flag = true;   
+                    break;
+                }
+            }       
+        });
+
+        $('#canvas').bind('click',function(e){
+            if(_gameOver){
+                return;
+            }
+            e.preventDefault();
+            e = e.originalEvent;
+            touchX = e.clientX || e.changedTouches[0].clientX;
+            touchY = (e.clientY || e.changedTouches[0].clientY) - 80;
+            curTime = (new Date).getTime();
+            if (!lastTime) {
+                lastTime = curTime;
+            }
+            for(var i = 0; i < xgList.length; i++){
+                var xg = xgList[i];
+                var xgX = xg.x/ratio;
+                var xgY = xg.y/ratio;
+                
+                if(touchX > xgX && touchX < (xgX + xg.w/ratio) && touchY > xgY && touchY < (xgY + xg.h/ratio)){
+                    //Sound.play(1);//音效
+                    if(xg.type == 1){
+                        var xg1 = Edit.getImgInfo("xg1");
+                        xg.image = allImage[xg1.path[1]];
+                    }else if(xg.type == 2){
+                        var xg2 = Edit.getImgInfo("xg2");
+                        xg.image = allImage[xg2.path[1]];
+                    }else if(xg.type == 3){
+                        var xg3 = Edit.getImgInfo("xg3");
+                        if(xg.image == allImage[xg3.path[0]]){
+                            xg.image = allImage[xg3.path[1]];
+                        }else{
+                            xg.image = allImage[xg3.path[0]];
+                        }
+                    }
+
+                    if(!xg.flag || xg.type == 3){
+                        var score = new ImageObject();
+                        var img = new Image();// 创建一个image对象
+                        img.src = "http://wx.vlegend.cn/yd/image/score.png";  
+                        score.image = img;
+                        score.w = 80;
+                        score.h = 50;
+                        score.x = xg.x + xg.w;
+                        score.y = xg.y ;
+                        scoreList.push(score);
+                        grade += 10;
+                        $('.grade').html(grade);
+                    }
+                    if(xg.type != 3){
+                        combol ++;
+                    }
+                    // xg.flag = true; 
+                    break;
+                }
+            }       
+        });
+
+    }); 
+    
+    function setGameTime(){
+        time = initTime - (new Date().getTime() - timeFlag)/1000;
+        if(time <= (initTime/4)*3 && !bossTime && timeLock == 0){
+            timeLock++;
+            createTime = 0.4;
+        }else if(time <= (initTime/4)*2 && !bossTime && timeLock == 1){
+            timeLock++;
+            createTime = 0.3;
+        }
+        else if(time <= (initTime/4)*1 && !bossTime && timeLock == 2){
+            timeLock++;
+            createTime = 0.2;
+        }
+        
+        if(time <= 0){
+            time = 0;
+            timeLock = 0;
+            $('.time').html(time.toFixed(2));
+            _gameOver = true;
+            clearTimeout(_timer);
+            var timeUpImg = $('.timeUpImg');
+            timeUpImg.removeClass('tada');
+            timeUpImg.addClass('tada');
+            timeUpImg.removeClass('hide');
+            timeUpImg.show();
+            setTimeout(function(){gameOver(grade);},1000);
+            return;
+        }
+        $('.time').html(time.toFixed(2));
+        _timer = setTimeout(arguments.callee,g_setGameTimeInterval);
+    }
+
+    function startBtnDelay(){
+        var startBtn = $('#startBtnImg');
+        var titleImg = $('.titleImg');
+        var thisTop = parseInt(startBtn.css('top'));
+        var _target = startBtn;
+        if(false){
+            _target = startBtn.parent();
+        }
+        titleImg.removeClass('titleDown').addClass('titleDown');
+        _target.removeClass('startTada');
+        setTimeout(function(){
+            _target.addClass('startTada');
+        },1000);
+    } 
+    
+    function parseRemToPx(rem){
+        if(rem.indexOf('rem') === -1){
+            return parseFloat(rem)*ratio;
+        }
+        return parseFloat(rem)*g_rem*ratio;
+    }
+    
+    function gamePicLayer(){
+        var titleImgArgs = [];
+        var titleArg = {};
+        titleArg.from = "#titleImg";
+        titleArg.title = '标题图片';
+        titleArg.size = '440px*600px';
+        titleArg.limit = '100k';
+        titleArg.defSrc = 'http://wx.vlegend.cn/yd/image/yd-bg.png';
+        titleImgArgs.push(titleArg);
+        
+        var startImgArgs = [];
+        var startArg = {};
+        startArg.from = "#startBtnImg";
+        startArg.title = '按钮图片';
+        startArg.size = '280px*120px';
+        startArg.limit = '50k';
+        startArg.defSrc = 'http://wx.vlegend.cn/yd/image/enable.png';
+        startImgArgs.push(startArg);
+
+        HdGame.initModuleLayer('#titleImg',-1,"",titleImgArgs);
+        HdGame.initModuleLayer('#startBtnImg',-1,"",startImgArgs);
+    }
+    
+    function getSrc(src){
+        return src.replace('*_resRoot*','//hdg.faisys.com');
+    }
+    
+    function init() {
+        $('#gameBgBox').css('height',clientHeight);
+        if(_manage){        
+            $('.titleImg').addClass('abs');
+            gamePicLayer();
+            HdGame.moduleSlaveImgResize($('#titleImg'));
+            HdGame.moduleSlaveImgResize($('#startBtnImg'));
+            HdGame.moduleDraggale('#titleImg',true);
+            HdGame.moduleDraggale('#startBtnImg',true);
+            var reSizeDef={             //图片恢复默认参数
+                titleImg     : {width:'12.35rem',height:'16.85rem'},
+                startBtnImg  : {width:'7.2rem',height:'2.55rem'},
+            };
+            $('.recoverBtn').click(function(){
+                var wrapper = $(this).parent();
+                var _from = wrapper.attr('_from');
+                var slaveImg = wrapper.find('.slaveImg');
+                wrapper.find('.recoverBtn').hide();
+                slaveImg.attr('resize',0);
+                if(wrapper.attr('resize')){
+                    wrapper.attr('resize',0);
+                }
+                wrapper.css('width',reSizeDef[_from].width);
+                wrapper.css('height',reSizeDef[_from].height);
+                slaveImg.css('width',reSizeDef[_from].width);
+                slaveImg.css('height',reSizeDef[_from].height);
+                if(reSizeDef[_from].left && reSizeDef[_from].top){
+                    wrapper.css('left',reSizeDef[_from].left);
+                    wrapper.css('top',reSizeDef[_from].top);
+                    slaveImg.css('left',reSizeDef[_from].left);
+                    slaveImg.css('top',reSizeDef[_from].top);
+                }
+                slaveImg.css('margin','auto');
+                callBack = slaveImg.data('reSizeCallBack');
+                callBack && callBack.call(slaveImg[0]);
+            }); 
+            startBtnDelay();
+        }else{
+            allImage.onload(startBtnDelay);
+        }
+    }
+
+    function gameInit() {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.globalAlpha = 1;
+        time = initTime;
+        $('.time').html(time.toFixed(2));
+        grade = 0;
+        combol = 0;
+        _gameOver = false;
+        stayTime = 0.8;
+        showTime = 0;
+        flag = 1;
+        createTime = 0.6;
+        xgList = [];
+        scoreList = [];
+        HdGame.Guide.stop($('#gameLayerBox'));
+        $('.grade').html(grade);
+        $('.timeUpImg').hide();
+                    
+        addXg(1);
+        showTime  = 0;
+        xgTime = (new Date).getTime();
+        gamePlay();
+    }
+    function home(){
+        $('.homeBtnBox').show();
+        $('.footerBox').show();
+        $('.gameBox').hide();
+        startBtnDelay();
+        $('.home').show();
+        $('#poupInfoBox').hide();
+        $('.resuleBox').hide();
+        gameInit();
+
+    }   
+    function gameRestart() {
+        if(!HdGame.isplaySucess){
+            create = 0;
+        }
+        gameStart();
+    }
+    function showGamePage(){
+        time = initTime;
+        $('.time').html(time.toFixed(2));
+        $('.homeBtnBox').hide();
+        $('.footerBox').hide();
+        $('.home').hide();
+        $('#poupInfoBox').hide();
+        $('.resuleBox').hide();
+        $('.gameBox').show();
+    }
+    
+    function gameStart(){
+        window.scrollTo(0,0);
+        timeFlag = new Date().getTime();
+        setGameTime();
+        gamePlayPanel_t = parseInt($('#gameLayerBox').css('top'));
+        gamePlayPanel_h = clientHeight - gamePlayPanel_t;
+        gamePlayPanel_w = $('#gameLayerBox').width();
+        $('#gameLayerBox').height(gamePlayPanel_h);
+        var backingStore = ctx.backingStorePixelRatio ||
+                        ctx.webkitBackingStorePixelRatio ||
+                        ctx.mozBackingStorePixelRatio ||
+                        ctx.msBackingStorePixelRatio ||
+                        ctx.oBackingStorePixelRatio ||
+                        ctx.backingStorePixelRatio || 1;
+        window.ratio = (window.devicePixelRatio || 1) / backingStore;
+        canvas.width = clientWidth*ratio;
+        canvas.height = gamePlayPanel_h*ratio;
+        canvas.style.width = clientWidth+"px";
+        canvas.style.height = gamePlayPanel_h+"px";
+        
+        gameInit();
+    }
+
+    function addXg(flag){
+        var xg1 = Edit.getImgInfo("xg1");
+        var xg2 = Edit.getImgInfo("xg2");
+        var xgW = (flag == 1)?xg1.width:xg2.height
+        var xgH = (flag == 1)?xg1.height:xg2.height
+        var x = Math.floor(Math.random() * (canvas.width - xgW));
+        var y = Math.floor(Math.random() * (canvas.height - xgH));
+        
+        for(var i = 0; i < xgList.length; i++){
+            var xg = xgList[i];
+            if(x > xg.x && x < (xg.x + xg.w) && y > xg.y && y < (xg.y + xg.h)){
+                x = Math.floor(Math.random() * (canvas.width - xgW));
+                y = Math.floor(Math.random() * (canvas.height - xgH));
+            }
+        }
+        xgList.push(createXg(flag,x,y));
+    }
+    var create = 0;
+    function createXg(flag,x,y){
+        if(create < 4){
+            create ++;
+        }
+        
+        var xg = new ImageObject();
+        if(flag == 1){
+            var xg1 = Edit.getImgInfo("xg1");
+            xg.image = allImage[xg1.path[0]];
+            xg.w = xg1.width;
+            xg.h = xg1.height;
+            xg.x = x;
+            xg.y = y;
+            xg.type = 1;
+        }else if(flag == 2){
+            var xg2 = Edit.getImgInfo("xg2");
+            xg.image = allImage[xg2.path[0]];
+            xg.w = xg2.width;
+            xg.h = xg2.height;
+            xg.x = x;
+            xg.y = y;
+            xg.type = 2;
+        }else if(flag == 3){
+            var xg3 = Edit.getImgInfo("xg3");
+            xg.image = allImage[xg3.path[0]];
+            xg.w = xg3.width;
+            xg.h = xg3.height;
+            xg.x = (canvas.width - xg.w)/2;
+            xg.y = (canvas.height - xg.h)/2;
+            xg.type = 3;
+        }
+        HdGame.Guide.stop();
+        
+        if(create < 4){
+            var or = {};
+            or.w = xg.w/ratio;
+            or.h = xg.h/ratio;
+            or.x = xg.x/ratio;
+            or.y = xg.y/ratio;
+            if(!HdGame.isplaySucess){
+                HdGame.Guide.play($('#gameLayerBox'),or);
+            }
+            
+        }
+        
+        return xg;
+    }
+    
+    function ImageObject(){
+        this.x = 0;
+        this.y = 0;
+        this.w = 0;
+        this.h = 0;
+        this.type = 1;
+        this.opacity = 1;
+        this.flag = false;
+        this.time = 0;
+        this.image = new Image();
+    }   
+    var bossTime = false;
+    function gamePlay(){
+        if(_gameOver){
+            return;
+        }
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        var currentTime = (new Date).getTime();
+        
+        delta = (currentTime - xgTime)/1e3;
+        delta > 0.5 && (delta = 0);
+        xgTime = currentTime;
+        showTime += delta;
+        
+        for(var i = 0; i < xgList.length; i++){
+            var xg = xgList[i];
+            xg.time += delta;
+            
+            if(xg.time > stayTime || (xg.flag && xg.type != 3 && xg.time > 0.5)){
+                if(xg.opacity > 0){
+                    xg.opacity -= 0.1;
+                    ctx.globalAlpha = xg.opacity;
+                }else{
+                    if(!xg.flag){//消失了还没点中说明连击断了。
+                        combol = 0;
+                    }
+                    
+                    xgList.splice(i,1);
+                    i--;
+                    if(xg.type == 3){
+                        addXg(1);
+                        stayTime = 0.8;
+                        createTime = 0.6;
+                        if(time >= 10 && time < 20){
+                            createTime = 0.4;
+                        }else if(time < 10){
+                            createTime = 0.3;
+                        }
+                        bossTime = false;
+                    }
+                }
+            }else{
+                ctx.globalAlpha = 1;
+            }
+            if(xg.opacity > 0){
+                drawImg(xg);
+            }
+        }
+
+        if(showTime > createTime){
+            if(flag == 1){
+                flag = 2;
+            }else if(flag == 2 || flag == 3){
+                flag = 1;
+            }
+            addXg(flag);
+            showTime = 0;
+        }
+        
+        if(combol == 15){
+            xgList = [];
+            addXg(3);
+            stayTime = 5;
+            createTime = 5;
+            combol = 0;
+            bossTime = true;//出大鬼
+            showTime = 0;
+        }
+        
+        for(var i = 0; i < scoreList.length; i++){
+                var score = scoreList[i];
+                score.y -= 2;
+                score.time += delta;
+
+                if(score.time > 0.3){
+                    if(score.opacity > 0){
+                        score.opacity -= 0.1;
+                        ctx.globalAlpha = score.opacity;
+                    }else{
+                        ctx.globalAlpha = 1;
+                        scoreList.splice(i,1);
+                        i--;
+                    }
+                }else{
+                    ctx.globalAlpha = 1;
+                }
+                if(score.opacity > 0){
+                    drawImg(score);
+                }
+        }
+        
+        requestAnimFrame(gamePlay);
+    }
+    function drawImg(t){
+        ctx.drawImage(t.image,t.x,t.y,t.w,t.h);
+    }
+</script> 
+
+  
 
 <script type="text/javascript">
     var pubResizeDef={             //图片恢复默认参数
         'logoImg'         : {width:'2rem',height:'2rem'},
         'resule-faiImg'   : {width:'15rem',height:'18rem'},
     };
-	var drawTimesLimit = 3;
-	var drawTotalLimit = 6;
-	var totalCount = 6;
-	var isLimitDraw = false;
-	
-	function homeBtnLayer(){
-		var rankImgArgs = [];
-		var rankArg ={};
-		rankArg.from = "#rankBtn img";
-		rankArg.title = '按钮图片';
-		rankArg.size = '70px*70px';
-		rankArg.limit = '50k';
-		rankArg.src = $('#rankBtn img').attr('src');
-		rankArg.defSrc = '//hdg.faisys.com/image/rankBtn.png';
-		rankImgArgs.push(rankArg);
-		var awardImgArgs = [];
-		var awardArg ={};
-		awardArg.from = "#awardBtn img";
-		awardArg.title = '按钮图片';
-		awardArg.size = '70px*70px';
-		awardArg.limit = '50k';
-		awardArg.src = $('#awardBtn img').attr('src');
-		awardArg.defSrc = '//hdg.faisys.com/image/awardBtn.png'
-		awardImgArgs.push(awardArg);
+    var drawTimesLimit = 3;
+    var drawTotalLimit = 6;
+    var totalCount = 6;
+    var isLimitDraw = false;
+    
+    function homeBtnLayer(){
+        var rankImgArgs = [];
+        var rankArg ={};
+        rankArg.from = "#rankBtn img";
+        rankArg.title = '按钮图片';
+        rankArg.size = '70px*70px';
+        rankArg.limit = '50k';
+        rankArg.src = $('#rankBtn img').attr('src');
+        rankArg.defSrc = '//hdg.faisys.com/image/rankBtn.png';
+        rankImgArgs.push(rankArg);
+        var awardImgArgs = [];
+        var awardArg ={};
+        awardArg.from = "#awardBtn img";
+        awardArg.title = '按钮图片';
+        awardArg.size = '70px*70px';
+        awardArg.limit = '50k';
+        awardArg.src = $('#awardBtn img').attr('src');
+        awardArg.defSrc = '//hdg.faisys.com/image/awardBtn.png'
+        awardImgArgs.push(awardArg);
 
-		var mingdanImgArgs = [];
-		var mingdanArg ={};
-		mingdanArg.from = "#mingdanBtn img";
-		mingdanArg.title = '按钮图片';
-		mingdanArg.size = '70px*70px';
-		mingdanArg.limit = '50k';
-		mingdanArg.src = $('#mingdanBtn img').attr('src');
-		mingdanArg.defSrc = 'http://d1.faiusr.com/4/AAEIABAEGAAgipC6swUo-J6GlgYwPDg8.png'
-		mingdanImgArgs.push(mingdanArg);
+        var mingdanImgArgs = [];
+        var mingdanArg ={};
+        mingdanArg.from = "#mingdanBtn img";
+        mingdanArg.title = '按钮图片';
+        mingdanArg.size = '70px*70px';
+        mingdanArg.limit = '50k';
+        mingdanArg.src = $('#mingdanBtn img').attr('src');
+        mingdanArg.defSrc = 'http://d1.faiusr.com/4/AAEIABAEGAAgipC6swUo-J6GlgYwPDg8.png'
+        mingdanImgArgs.push(mingdanArg);
 
         /*var faiImgArgs = [];
         var faiImgArg = {};
@@ -1251,25 +1267,25 @@ function parseRemToPx(rem){
         faiImgArg.src = $('#resule-faiImg').attr('src');
         faiImgArg.defSrc = '//hdg.faisys.com/image/zxg/faiImg.png';
         faiImgArgs.push(faiImgArg);*/
-		
+        
         //HdGame.initModuleLayer('#resule-faiImg',-1,"",faiImgArgs);
         //HdGame.moduleSlaveImgResize($('#resule-faiImg'),'#resule-gift-box');
         //HdGame.moduleDraggale('#resule-faiImg',true,'#resule-gift-box');
-		HdGame.initModuleLayer('#rankBtn',-1,"",rankImgArgs);
-		HdGame.initModuleLayer('#awardBtn',-1,"",awardImgArgs);
-		HdGame.initModuleLayer('#mingdanBtn',-1,"",mingdanImgArgs);
-	}
+        HdGame.initModuleLayer('#rankBtn',-1,"",rankImgArgs);
+        HdGame.initModuleLayer('#awardBtn',-1,"",awardImgArgs);
+        HdGame.initModuleLayer('#mingdanBtn',-1,"",mingdanImgArgs);
+    }
 
-	$(function(){
-		var hostLink = 'http://'.replace('http://',''); //统一去掉，在地址栏统一拼接
+    $(function(){
+        var hostLink = 'http://'.replace('http://',''); //统一去掉，在地址栏统一拼接
         var menuLink = ''.replace('http://','');
         var menuName = $('.menuName');
 
         $(document).on('touchstart',function(event){});
-		
-		if(false){
-			$('.resule-fxts').hide();
-		}
+        
+        if(false){
+            $('.resule-fxts').hide();
+        }
         true && g_showSkillSup && HdGame.logDog(1000028,0);
         
         
@@ -1281,7 +1297,7 @@ function parseRemToPx(rem){
             "top":'1rem'
         });
         
-		var isSelAwardLine = false;
+        var isSelAwardLine = false;
         _manage && $('a').on('click',function(){ return false; });
         $('.homePoupMask').on('touchend',function(event){
             event.preventDefault();
@@ -1294,25 +1310,25 @@ function parseRemToPx(rem){
             }
         });
        
-		var showRedDot = false;
-		var showMDRedDot = false;
+        var showRedDot = false;
+        var showMDRedDot = false;
         $('.menuBtnBox').on('touchend',function(){
             HdGame.logDog(1000012);
         });
 
-		if(showRedDot){
-			$('#Award_Round_Dot').css('display','inline-block');
-		}
-		if(showMDRedDot){
-			$('#Mingdan_Round_Dot').css('display','inline-block');
-		}
-		if(isSelAwardLine){			
-			$('#selfAwardLine').show();
+        if(showRedDot){
+            $('#Award_Round_Dot').css('display','inline-block');
+        }
+        if(showMDRedDot){
+            $('#Mingdan_Round_Dot').css('display','inline-block');
+        }
+        if(isSelAwardLine){         
+            $('#selfAwardLine').show();
             $('#awardLineBox').hide();
-		}else{
-			$('#awardLineBox').show();
+        }else{
+            $('#awardLineBox').show();
             $('#selfAwardLine').hide();
-		}
+        }
         if(!true){
             $('.skillInfo').hide();
         }
@@ -1336,40 +1352,40 @@ function parseRemToPx(rem){
                 });
             })();
         }
-		if($.trim(hostLink).length == 0){
-			$('.hostName').css('text-decoration','none');
-			$('.hostName').attr('href','#');
-		}
+        if($.trim(hostLink).length == 0){
+            $('.hostName').css('text-decoration','none');
+            $('.hostName').attr('href','#');
+        }
 
-		//音乐图标旋转
-		/*var rotation = function(){
-			$('.soundIcon').rotate({
-			    angle: 0, 
-			    animateTo: 360, 
-			    callback: rotation,
-			    easing: function(x,t,b,c,d){
-			        return c*(t/d)+b;
-			    }
-			});
-		}*/
-		
-		//总抽奖次数显示逻辑
-		if(true){
-			$('.totalDraw').hide();
-		}else{
-			$('.totalDraw').show();
-		}
-		if(false){
-			$('.dayDraw').hide();	
-		}else if(false ){
-			$('.dayDraw').hide();
-			$('.dayDraw4Total').show();
-		}
-		
+        //音乐图标旋转
+        /*var rotation = function(){
+            $('.soundIcon').rotate({
+                angle: 0, 
+                animateTo: 360, 
+                callback: rotation,
+                easing: function(x,t,b,c,d){
+                    return c*(t/d)+b;
+                }
+            });
+        }*/
+        
+        //总抽奖次数显示逻辑
+        if(true){
+            $('.totalDraw').hide();
+        }else{
+            $('.totalDraw').show();
+        }
+        if(false){
+            $('.dayDraw').hide();   
+        }else if(false ){
+            $('.dayDraw').hide();
+            $('.dayDraw4Total').show();
+        }
+        
         if(!_manage){
             $('.gameBgBox .soundIcon').css('z-index','100');
             $('.soundIcon').addClass('soundIconPlay');
-            Sound.load(_resRoot + "/image/button.mp3","startButton");
+            Sound.load(_resRoot + "/yd/image/button.mp3","startButton");
             $('#startBtnImg').on('touchend',function(e){
                 Sound.play("startButton");
             });
@@ -1383,71 +1399,57 @@ function parseRemToPx(rem){
                     self.addClass("soundIconOff");
                 }else{
                     Sound.allowPlay = true;
-                	Sound.readyPlay(0);
+                    Sound.readyPlay(0);
                     self.removeClass("soundIconOff");
                 }
             });
         }
-		
         
-		//管理态下绑定虚线编辑框
-		
-		if($('#awardExplain').text().length == 0){
-			$('#awardExplain_h').hide();
-		}
+        
+        //管理态下绑定虚线编辑框
+        
+        if($('#awardExplain').text().length == 0){
+            $('#awardExplain_h').hide();
+        }
         $('.hostName').click(function(){
-			HdGame.logDog(1000013);
+            HdGame.logDog(1000013);
         });
         $('.skillInfo a').click(function(){
             HdGame.logDog(1000005);
         });
-	});
+    });
 
-	function showRank(){
-		HdGame.changePoup(1,'//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=getRankList&aid=7939017&gameId=4&style=17&openId=o1ueSjpHu11MLY09QeVUXU0A94JQ','//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=getGiftList&aid=7939017&style=17','//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=getRegAwardList&aid=7939017&gameId=4&style=17&openId=o1ueSjpHu11MLY09QeVUXU0A94JQ','o1ueSjpHu11MLY09QeVUXU0A94JQ',4,false);
-	}
-	
-	function showRule(){
-		if(isLimitDraw && (drawTimesLimit == drawTotalLimit)){
-			$('#explainBox').find('.dayFont').hide();	
-			$('#explainBox').find('.drawTotalFont').hide();		
-		}
-		if(!isLimitDraw){
-			$('#explainBox').find('.drawTotalFont').hide();			
-		}
-		HdGame.changePoup(2,'//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=getRankList&aid=7939017&gameId=4&style=17&openId=o1ueSjpHu11MLY09QeVUXU0A94JQ','//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=getGiftList&aid=7939017&style=17','//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=getRegAwardList&aid=7939017&gameId=4&style=17&openId=o1ueSjpHu11MLY09QeVUXU0A94JQ','o1ueSjpHu11MLY09QeVUXU0A94JQ',4,false,true)
-	}
-	
+    function showRank(){
+        HdGame.changePoup(1,'//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=getRankList&aid=7939017&gameId=4&style=17&openId=o1ueSjpHu11MLY09QeVUXU0A94JQ','//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=getGiftList&aid=7939017&style=17','//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=getRegAwardList&aid=7939017&gameId=4&style=17&openId=o1ueSjpHu11MLY09QeVUXU0A94JQ','o1ueSjpHu11MLY09QeVUXU0A94JQ',4,false);
+    }
     
-	
+    function showRule(){
+        if(isLimitDraw && (drawTimesLimit == drawTotalLimit)){
+            $('#explainBox').find('.dayFont').hide();   
+            $('#explainBox').find('.drawTotalFont').hide();     
+        }
+        if(!isLimitDraw){
+            $('#explainBox').find('.drawTotalFont').hide();         
+        }
+        HdGame.changePoup(2,'//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=getRankList&aid=7939017&gameId=4&style=17&openId=o1ueSjpHu11MLY09QeVUXU0A94JQ','//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=getGiftList&aid=7939017&style=17','//hd.faisco.cn/ajax/hdgame_h.jsp?cmd=getRegAwardList&aid=7939017&gameId=4&style=17&openId=o1ueSjpHu11MLY09QeVUXU0A94JQ','o1ueSjpHu11MLY09QeVUXU0A94JQ',4,false,true)
+    }
+    
+    
+    
     
     function gameOver(_gameScore,callBack){
-        
-		if(_gameScore === 'fail'){
-			var arg={
-				isSuc:false,
-				gameScore:"fail",//闯关失败
-				minScore:200,
-				bestScore:0,
-				isReg:HdGame.isReg, //是否报名
-				gameType:0,
-				rank:0,
-				count:drawTimesLimit-count<0 ? 0:(drawTimesLimit-count),
-				isLimitDrawTotal:false,
-				totalCount:	6
-			};
-			setTimeout(function(){
-				HdGame.resulePoup.show(arg);
-			},900);
-			return;
-		}
+        var credits = _gameScore;
+        var xmlhttp=new XMLHttpRequest();
+        xmlhttp.open("GET","http://wx.vlegend.cn/doYd?score="+credits,true);
+        xmlhttp.send(null);        
+        //console.log(_gameScore);
 
         
     }
     var drawStatus=true;
     function luckDraw(fn){
         
-	    if(!drawStatus){
+        if(!drawStatus){
             return;
         }
         drawStatus=false;
@@ -1463,7 +1465,7 @@ function parseRemToPx(rem){
         
         params.push("&userName=","lifetea");
         params.push('&isPub=',$.trim(''));
-        params.push('&headImg=','http://wx.qlogo.cn/mmopen/jM4ibGAz8Xl3j0Hib2YnThgRR8avKlibLSgJgJwg87wg1KxnrDoibaVeW4iaMib0pB6rdtrdhDqaBzTCBIYbS6N095zWicmzUOWjWHic/0');
+        params.push('&headImg=',"{user.headimgurl}");
         params.push("&drawTimesLimit=",3);
         $.ajax({
             type : 'post',
@@ -1519,127 +1521,127 @@ function parseRemToPx(rem){
 
 
 
-	</div>
+    </div>
 
 
 
 <script type="text/javascript">
-	var _faiAjax = function(){
-		//for regexp
-		var r = /\?/;
-		var _o = {
-			type:"get",
-			url:"",
-			data:"",
-			error:function(){},
-			success:function(){}
-		};
-		var _sendRequest=function(o) {
-			var xmlhttp = null;
-			//init option code
-			o.type = o.type || _o.type;
-			o.url = o.url || _o.url;
-			o.data = o.data || _o.data;
-			o.error = o.error || _o.error;
-			o.success = o.success || _o.success;
-			if (window.XMLHttpRequest) {
-				// code for IE7+, Firefox, Chrome, Opera, Safari
-				xmlhttp=new XMLHttpRequest();
-			}else{
-				// code for IE6, IE5
-				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-			}
-			//the instructions param takes the form of an eval statement
-			if(o.type != "post") {
-				o.url += ( this.r.test( o.url ) ? "&" : "?" ) + o.data;
-				xmlhttp.open("GET", o.url, true);
-					xmlhttp.onreadystatechange=function() {
-					if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-						o.success( xmlhttp.responseText );
-					}else if( o.error ){
-						o.error();
-					}
-				}
-				xmlhttp.send();
-			} else {
-				xmlhttp.open("POST", o.url, true);
-				//Send the proper header information along with the request
-				xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
-				xmlhttp.onreadystatechange=function() {
-					if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-						o.success( xmlhttp.responseText );
-					}else{
-						o.error();
-					}
-				}
-				xmlhttp.send(o.data);
-			}
-		}
-		return {
-			ajax:function(option){
-				try {
-					//´Ë´Îµ÷ÓÃµÄ´íÎó²»ÈÃÅ×³ö¸øwindow¡£·ÀÖ¹º¯ÊýÖØÈë
-					_sendRequest(option);	
-				}catch(e){
-					//alert(e);
-				}
-			}
-		};
-	}();
-	
-	
-	
-	var _jsErrCahche = [];
-	window.onerror = function(sMsg,sUrl,sLine,columnNumber,errorObj){
-		if( sLine < 1 || typeof sMsg != 'string' || sMsg.length < 1 ){
-			return;
-		}
-		
-		var log = "Error:" + sMsg + ";Line:" + sLine + ";Url:" + sUrl;
-		var alertLog = "Error:"+sMsg+"\n" + "Line:" + sLine + "\n" + "Url:" + sUrl + "\n";
-		var encodeUrl = function (url){
-			return typeof url === "undefined" ? "" : encodeURIComponent(url);
-		};
-		
-		var ajax = true;
-		var obj = { 'm' : sMsg, 'u' : sUrl, 'l' : sLine };
-		for( var i = 0; i < _jsErrCahche.length; i ++ ){
-			if( _jsErrCahche[i].m == obj.m && _jsErrCahche[i].u == obj.u && _jsErrCahche[i].l == obj.l  ){
-				ajax = false;
-				break;
-			}
-		}
-		
-		if( ajax ){
-			_jsErrCahche.push( obj );
-			_faiAjax.ajax({
-				type	: "post",
-				url		: "//hd.faisco.cn/ajax/logJsErr_h.jsp?cmd=jsErr",
-				data	: 'msg='+ encodeUrl(log)
-			});
-		}
-		if(false){
-			alert( alertLog );
-		}
+    var _faiAjax = function(){
+        //for regexp
+        var r = /\?/;
+        var _o = {
+            type:"get",
+            url:"",
+            data:"",
+            error:function(){},
+            success:function(){}
+        };
+        var _sendRequest=function(o) {
+            var xmlhttp = null;
+            //init option code
+            o.type = o.type || _o.type;
+            o.url = o.url || _o.url;
+            o.data = o.data || _o.data;
+            o.error = o.error || _o.error;
+            o.success = o.success || _o.success;
+            if (window.XMLHttpRequest) {
+                // code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp=new XMLHttpRequest();
+            }else{
+                // code for IE6, IE5
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            //the instructions param takes the form of an eval statement
+            if(o.type != "post") {
+                o.url += ( this.r.test( o.url ) ? "&" : "?" ) + o.data;
+                xmlhttp.open("GET", o.url, true);
+                    xmlhttp.onreadystatechange=function() {
+                    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                        o.success( xmlhttp.responseText );
+                    }else if( o.error ){
+                        o.error();
+                    }
+                }
+                xmlhttp.send();
+            } else {
+                xmlhttp.open("POST", o.url, true);
+                //Send the proper header information along with the request
+                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+                xmlhttp.onreadystatechange=function() {
+                    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                        o.success( xmlhttp.responseText );
+                    }else{
+                        o.error();
+                    }
+                }
+                xmlhttp.send(o.data);
+            }
+        }
+        return {
+            ajax:function(option){
+                try {
+                    //´Ë´Îµ÷ÓÃµÄ´íÎó²»ÈÃÅ×³ö¸øwindow¡£·ÀÖ¹º¯ÊýÖØÈë
+                    _sendRequest(option);   
+                }catch(e){
+                    //alert(e);
+                }
+            }
+        };
+    }();
+    
+    
+    
+    var _jsErrCahche = [];
+    window.onerror = function(sMsg,sUrl,sLine,columnNumber,errorObj){
+        if( sLine < 1 || typeof sMsg != 'string' || sMsg.length < 1 ){
+            return;
+        }
+        
+        var log = "Error:" + sMsg + ";Line:" + sLine + ";Url:" + sUrl;
+        var alertLog = "Error:"+sMsg+"\n" + "Line:" + sLine + "\n" + "Url:" + sUrl + "\n";
+        var encodeUrl = function (url){
+            return typeof url === "undefined" ? "" : encodeURIComponent(url);
+        };
+        
+        var ajax = true;
+        var obj = { 'm' : sMsg, 'u' : sUrl, 'l' : sLine };
+        for( var i = 0; i < _jsErrCahche.length; i ++ ){
+            if( _jsErrCahche[i].m == obj.m && _jsErrCahche[i].u == obj.u && _jsErrCahche[i].l == obj.l  ){
+                ajax = false;
+                break;
+            }
+        }
+        
+        if( ajax ){
+            _jsErrCahche.push( obj );
+            _faiAjax.ajax({
+                type    : "post",
+                url     : "//hd.faisco.cn/ajax/logJsErr_h.jsp?cmd=jsErr",
+                data    : 'msg='+ encodeUrl(log)
+            });
+        }
+        if(false){
+            alert( alertLog );
+        }
         HdGame.tlog("错误信息：" , sMsg);
         HdGame.tlog("出错文件：" , sUrl);
         HdGame.tlog("出错行号：" , sLine);
         HdGame.tlog("出错列号：" , columnNumber);
         HdGame.tlog("错误详情：" , errorObj);
-	};
+    };
 
-	$.ajaxSettings.errorCall.push(function(callbackContext, status, error){
-		
-		//ajaxÊ§°Ü£¬ÉÏ±¨log¡£µ«²»ÄÜµ÷ÓÃ $.ajax¡£ÒòÎª$.ajaxÊ§°ÜÈ»ºóÉÏ±¨logÔÙµ÷ÓÃ$.ajaxµÄ»°£¬»áÔì³Éº¯ÊýÖØÈë£¬¼ÙÈçÉÏ±¨logµÄajaxÓÖÊ§°ÜµÄ»°£¬¾Í»áÔÙÉÏ±¨£¬ËÀÑ­»·Ò»Ö±Õ¼ÓÃä¯ÀÀÆ÷×ÊÔ´¡£
-		// var faiAjax = top._faiAjax || Fai.top._faiAjax;
-		// if( faiAjax ){
-		// 	faiAjax.ajax({
-		// 		type	: "post",
-		// 		url		: "//hd.faisco.cn/ajax/logAjaxErr_h.jsp?cmd=ajaxErr&error="+error+"&status="+status,
-		// 		data	: 'msg=' + HdGame.encodeHtml('ajaxUrl='+HdGame.encodeUrl(callbackContext.url)+';refer='+HdGame.encodeUrl(top.location.href))
-		// 	});
-		// }
-	});
+    $.ajaxSettings.errorCall.push(function(callbackContext, status, error){
+        
+        //ajaxÊ§°Ü£¬ÉÏ±¨log¡£µ«²»ÄÜµ÷ÓÃ $.ajax¡£ÒòÎª$.ajaxÊ§°ÜÈ»ºóÉÏ±¨logÔÙµ÷ÓÃ$.ajaxµÄ»°£¬»áÔì³Éº¯ÊýÖØÈë£¬¼ÙÈçÉÏ±¨logµÄajaxÓÖÊ§°ÜµÄ»°£¬¾Í»áÔÙÉÏ±¨£¬ËÀÑ­»·Ò»Ö±Õ¼ÓÃä¯ÀÀÆ÷×ÊÔ´¡£
+        // var faiAjax = top._faiAjax || Fai.top._faiAjax;
+        // if( faiAjax ){
+        //  faiAjax.ajax({
+        //      type    : "post",
+        //      url     : "//hd.faisco.cn/ajax/logAjaxErr_h.jsp?cmd=ajaxErr&error="+error+"&status="+status,
+        //      data    : 'msg=' + HdGame.encodeHtml('ajaxUrl='+HdGame.encodeUrl(callbackContext.url)+';refer='+HdGame.encodeUrl(top.location.href))
+        //  });
+        // }
+    });
 
 </script>
 </body>
