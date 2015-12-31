@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>旋转吧大宝剑</title>
+    <meta name="viewport" content="width=device-width,user-scalable=no"/>
+    <base href="http://wx.vlegend.cn/dbj/" />
+    <meta charset="utf-8"/>
+    <meta name="author" content="tg"/>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+</head>
+<style>
+
+    html, body { background-color:#191919;margin:0; padding:0;width:100%;height:100%; text-align: center}
+    #loadicon{margin-top: 250px; }
+
+    #orient{margin-top:50px;}
+    p{color:#FFFFFF; font-size: 24}
+</style>
+<script src="js/Base64Images_min.js"></script>
+<body  onload="complete();">
+
+<div class="orient" id="orient"><p>请在竖屏情况下使用</p></div>
+<div id="loadicon"><img id="img1"/><br/><img id="img2"/><br/><img id="img3"/></div>
+<canvas id="gameCanvas" width="445" height="700"></canvas>
+<!--<div id="cou" style="width:320px;margin: 0 auto;"></div>3C2F3C" #191919  -->
+
+<script type="text/javascript">
+    window.conf ={
+        "link":"http://wx.vlegend.cn/sdgs.html?id="
+    };
+    wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: '{$data.appId}', // 必填，公众号的唯一标识
+        timestamp: {$data.timestamp}, // 必填，生成签名的时间戳
+        nonceStr:'{$data.nonceStr}', // 必填，生成签名的随机串
+        signature:'{$data.signature}',// 必填，签名，见附录1
+        jsApiList: ['checkJsApi',
+                    'onMenuShareTimeline',
+                    'onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+    });
+    wx.ready(function(){
+        //var id =getQueryString("id");
+        wx.onMenuShareAppMessage({
+            title: "大爷，来玩我呀！",
+            desc: "玩我有奖的喔~★★★     大爷你能坚持几秒哟？      就喜欢你们来玩的呢",
+            link: window.conf["link"],
+            imgUrl: 'http://wx.vlegend.cn/Public/logo.jpg',
+            trigger: function (res) {
+              //alert('用户点击发送给朋友');
+            },
+            success: function (res) {
+              //alert('已分享');
+              
+                // var userId = $("#userId").val();
+                // xmlhttp=new XMLHttpRequest();
+                // xmlhttp.open("GET","http://wx.vlegend.cn/share?userid="+userId,true);
+                // xmlhttp.send(null);
+            },
+            cancel: function (res) {
+              //alert('已取消');
+            },
+            fail: function (res) {
+              alert(JSON.stringify(res));
+            }
+        });
+    
+        wx.onMenuShareTimeline({
+            title: "大爷，来玩我呀！",
+            link: window.conf["link"],
+            imgUrl: 'http://wx.vlegend.cn/Public/logo.jpg',
+            trigger: function (res) {
+            //alert('用户点击分享到朋友圈');
+            },
+            success: function (res) {
+            //alert('已分享');
+                // var userId = $("#userId").val();
+                // xmlhttp=new XMLHttpRequest();
+                // xmlhttp.open("GET","http://wx.vlegend.cn/share?userid="+userId,true);
+                // xmlhttp.send(null);            
+            },
+            cancel: function (res) {
+            //alert('已取消');
+            },
+            fail: function (res) {
+            alert(JSON.stringify(res));
+            }
+        });
+    });
+wx.error(function(res){
+    // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+});
+</script>
+<script>
+if(typeof(pgvMain) == 'function') pgvMain();
+    //横屏提示
+
+    function orientationChange(){
+        if(window.orientation==90||window.orientation==-90){
+            document.getElementById("gameCanvas").style.display="none"
+            document.getElementById("orient").style.display="block"
+        }else{
+             document.getElementById("gameCanvas").style.display="block"
+            document.getElementById("orient").style.display="none"
+        }
+    }
+ document.getElementById("orient").style.display="none"
+    orientationChange();
+    window.addEventListener("onorientationchange" in window ? "orientationchange" : "resize", orientationChange, false);
+    function trace(v){
+    //  console.log(v)
+    }
+ var ccConfig={
+        "debugMode" : 0,
+        "showFPS" : false,
+        "frameRate" : 36,
+        "id" : "gameCanvas",
+        "renderMode" : 1,
+        "engineDir":"./../",
+        "modules" : ["cocos2d"],
+        "jsList" : [
+        ]
+    }
+document["ccConfig"]=ccConfig;
+//document.getElementById("img1").src=cc._loaderImage;
+document.getElementById("img2").src=cc._loadingImage;
+document.getElementById("img3").src=cc.tgideasLogo;
+var GD={}
+GD.GETNUM=0;
+ GD.SCORE=0;
+GD.MAXHITUM=0;
+GD.SHARE="我在守护水晶时失败了，你来试试~";
+
+ GD.MAXTIME=60;
+GD.SOUND = false;
+GD.USETIME=0;
+function complete(){
+    orientationChange();
+ document.getElementById("loadicon").style.display="none";
+ cc.game.run();
+}
+</script>
+<script src="js/cocos2dtgme.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
