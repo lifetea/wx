@@ -1013,6 +1013,7 @@ var GameOverLayer = cc.Layer.extend({
             // });
             // window.open("http://tgideas.qq.com/weixin/works/game.shtml",
             //     "_blank")
+            location.href = "http://wx.vlegend.cn/top";
         },
         onShare: function() {
             // pgvSendClick && "function" == typeof pgvSendClick && pgvSendClick({

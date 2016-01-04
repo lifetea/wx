@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>旋转吧大宝剑</title>
+    <title>吼！德玛西亚</title>
     <meta name="viewport" content="width=device-width,user-scalable=no"/>
     <base href="http://wx.vlegend.cn/dbj/" />
     <meta charset="utf-8"/>
@@ -26,7 +26,7 @@
 
 <script type="text/javascript">
     window.conf ={
-        "link":"http://wx.vlegend.cn/sdgs.html?id="
+        "link":"http://wx.vlegend.cn/dbj.html?id="
     };
     wx.config({
         debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -41,10 +41,10 @@
     wx.ready(function(){
         //var id =getQueryString("id");
         wx.onMenuShareAppMessage({
-            title: "大爷，来玩我呀！",
-            desc: "玩我有奖的喔~★★★     大爷你能坚持几秒哟？      就喜欢你们来玩的呢",
+            title: "吼！德玛西亚",
+            desc: "无限技能、无限蓝，守卫德邦！let's go!",
             link: window.conf["link"],
-            imgUrl: 'http://wx.vlegend.cn/Public/logo.jpg',
+            imgUrl: 'http://wx.vlegend.cn/dbj/share.jpg',
             trigger: function (res) {
               //alert('用户点击发送给朋友');
             },
@@ -65,9 +65,9 @@
         });
     
         wx.onMenuShareTimeline({
-            title: "大爷，来玩我呀！",
+            title: "吼！德玛西亚",
             link: window.conf["link"],
-            imgUrl: 'http://wx.vlegend.cn/Public/logo.jpg',
+            imgUrl: 'http://wx.vlegend.cn/dbj/share.jpg',
             trigger: function (res) {
             //alert('用户点击分享到朋友圈');
             },

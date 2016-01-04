@@ -431,11 +431,10 @@
             success: function (res) {
               //alert('已分享');
               
-            var userId = $("#userId").val();
-            xmlhttp=new XMLHttpRequest();
-            xmlhttp.open("GET","http://wx.vlegend.cn/doYdShare?userid="+userId,true);
-            xmlhttp.send(null);
-            location.href="http://wx.vlegend.cn/yd.html?v=1213";
+                var userId = $("#userId").val();
+                $.get("http://wx.vlegend.cn/doYdShare?userid="+userId, function(result){
+                    location.href="http://wx.vlegend.cn/yd.html?v=1213";
+                  });
               //Game9GUtils.prototype.hideShare();
             },
             cancel: function (res) {
@@ -455,10 +454,13 @@
             },
             success: function (res) {
                 var userId = $("#userId").val();
-                xmlhttp=new XMLHttpRequest();
-                xmlhttp.open("GET","http://wx.vlegend.cn/doYdShare?userid="+userId,true);
-                xmlhttp.send(null);
-                location.href="http://wx.vlegend.cn/yd.html?v=1213";
+                $.get("http://wx.vlegend.cn/doYdShare?userid="+userId, function(result){
+                    location.href="http://wx.vlegend.cn/yd.html?v=1213";
+                  });
+                // xmlhttp=new XMLHttpRequest();
+                // xmlhttp.open("GET","http://wx.vlegend.cn/doYdShare?userid="+userId,true);
+                // xmlhttp.send(null);
+                // location.href="http://wx.vlegend.cn/yd.html?v=1213";
             },
             cancel: function (res) {
             //alert('已取消');

@@ -4,6 +4,26 @@ return array(
 	//
 	'SRC'=>"http://wx.vlegend.cn/Public",
 	//微信菜单
+			    // {
+		     //    	"type":"click",
+		     //        "name":"准备中",
+		     //        "key":"zhunbei"
+		     //    },	
+
+			           //  {
+		            //     "type":"view",
+		            //     "name":"个人主页",
+		            //     "url":"http://wx.vlegend.cn/ji?self=1"
+		            // },	
+
+
+		            // {
+		            //     "type":"view",
+		            //     "name":"游戏排名",
+		            //     "url":"http://wx.vlegend.cn/best"
+		            // },
+
+
 			           //  {
 		            //    "type":"view",
 		            //    "name":"违章查询",
@@ -36,11 +56,11 @@ return array(
 		               "url":"http://wx.vlegend.cn/soft"
 		            }]
 		       },
-			    {
-		        	"type":"click",
-		            "name":"准备中",
-		            "key":"zhunbei"
-		        },		       
+		       {
+				"type":"view",
+				"name":"游戏中心",
+				"url":"http://wx.vlegend.cn/dbj.html"
+		       },		       
 		       {
 		           "name":"积分兑换",
 		           "sub_button":[
@@ -54,16 +74,17 @@ return array(
 		                "name":"积分排名",
 		                "url":"http://wx.vlegend.cn/top"
 		            },
-		            {
-		                "type":"view",
-		                "name":"游戏排名",
-		                "url":"http://wx.vlegend.cn/best"
-		            },
-		            {
+
+			        {
 		                "type":"view",
 		                "name":"个人主页",
 		                "url":"http://wx.vlegend.cn/ji?self=1"
-		            },			            	            
+		            },		            
+			        {
+		               "type":"click",
+		               "name":"每日签到",
+		               "key":"qiandao"
+		            },		            	            
 					{
 		                "type":"view",
 		                "name":"兑换奖品",
