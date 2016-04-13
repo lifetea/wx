@@ -60,13 +60,51 @@ class WeChat
     private function receiveText($object)
     {
         $funcFlag = 0;
-
-        
-        $contentStr = "你发送的内容为：".$object->Content;
-        $resultStr = $this->transmitText($object, $contentStr, $funcFlag);
+        // $contentStr = "你发送的内容为：".$object->Content;
+        // $resultStr = $this->transmitText($object, $contentStr, $funcFlag);
+        // return $resultStr;
+        $contentStr     = trim($object->Content);
+        if($contentStr == "时间" || $contentStr == "测试"){
+            $contentStr = $object->FromUserName;
+            $resultStr  = $this->transmitText($object, $contentStr, $funcFlag);
+        }elseif($contentStr == "投票"){
+            $this->bindId($object);
+            //$openId     = $object->FromUserName;
+            //$str        = "openId";
+            $content[]  = array("Title" =>"点击进入", 
+            "Description" =>"车侣威擎 你选轮毂 我就送!", 
+            "PicUrl" =>"http://wx.vlegend.cn/Public/tp/banner.jpg", 
+            "Url" =>"http://wx.vlegend.cn/tp");//?{$str}={$openId}
+            $resultStr = $this->transmitNews($object, $content,$funcFlag);
+        }else{
+            //触发多客服模式
+            $resultStr = $this->transmitService($object, $contentStr, $funcFlag);
+        }
         return $resultStr;
     }
-    
+
+    private function bindId($object)
+    {
+        $openId     = $object->FromUserName;
+        $sdk        = new Util\JSSDK();
+        $res        = $sdk->getUserId($openId);
+        $uniondId   = $res["unionid"];
+        $sql        = "unionid ='$uniondId'";
+        $arr        = array('openid2' =>"{$openId}");
+        $hRes       = M("User")->where($sql)->save($arr);
+    }
+ 
+    private function unbindId($object)
+    {
+        $openId     = $object->FromUserName;
+        $sdk        = new Util\JSSDK();
+        $res        = $sdk->getUserId($openId);
+        $uniondId   = trim($res["unionid"]);
+        $sql        = "unionid ='$uniondId'";
+        $arr        = array('openid2' =>"");
+        $hRes       = M("User")->where($sql)->save($arr);
+    }
+
     private function receiveEvent($object)
     {
         $contentStr = "";
@@ -74,15 +112,28 @@ class WeChat
         {
             case "subscribe":
                 //关注后发送的消息
-                $contentStr = "点击下面 来玩我 玩游戏 赢大奖 ↓↓↓↓↓↓↓↓↓";
+                $contentStr = "回复 【投票】 你选轮毂 我就送!";
+                //$contentStr ="OAuth2.0网页授权演示 <a href=\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85eea0cbf0d30d65&redirect_uri=http://wx.vlegend.cn&response_type=code&scope=snsapi_base&state=1&component_appid=wxef28dc4fa8885658#wechat_redirect\">点击这里体验</a>技术支持 车侣威擎";
+                $this->bindId($object);
+                //$contentStr ="OAuth2.0网页授权演示 <a href=\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85eea0cbf0d30d65&redirect_uri=http://wx.vlegend.cn/oauth2&response_type=code&scope=snsapi_base&state=1#wechat_redirect\">点击这里体验</a>技术支持 车侣威擎"; 
+                        
+                //$this->bindOpenId($object);
+
                 $object["funcFlag"] = 1;
             case "unsubscribe":
+                $this->unbindId($object);
                 break;
             case "CLICK":
                 switch ($object->EventKey)
                 {
                     case "hongbao":
                         $contentStr ="OAuth2.0网页授权演示 <a href=\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd2e82d66cc76016c&redirect_uri=http://wx.vlegend.cn/oauth2FuWu&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect\">点击这里体验</a>技术支持 车侣威擎"; 
+                        break;
+                    case "vote":
+                        $contentStr[]  = array("Title" =>"点击进入", 
+                            "Description" =>"车侣威擎 你选轮毂 我就送!", 
+                            "PicUrl" =>"http://wx.vlegend.cn/Public/tp/banner.jpg", 
+                            "Url" =>"http://wx.vlegend.cn/tp");//?{$str}={$openId}
                         break;
                     case "qiandao":
                         //$str = "";
@@ -100,7 +151,7 @@ class WeChat
                             if(!$result){
                                 //$contentStr ="您已签到{$userResult}";
                                 $id = $userResult["id"];
-                                $credit = 5;
+                                $credit = 50;
                                 $arr = array("score"=>$credit,"userid"=>$id,"event"=>"qiandao");
                                 M("Log")->where("userid = {id}")->data($arr)->add();
                                 $arr = array("stamp"=>$stamp);
@@ -113,7 +164,7 @@ class WeChat
                             if(!$result){
                                 $arr = array("stamp"=>$stamp);
                                 M("sgin")->data($arr)->add();
-                                $contentStr ="签到成功 <a href=\"http://wx.vlegend.cn/top?openId={$openId}\">点击领取5点积分</a>"; 
+                                $contentStr ="签到成功 <a href=\"http://wx.vlegend.cn/top?openId={$openId}\">点击领取50点积分</a>"; 
                             }else{
                                 $contentStr ="您已签到";
                             }                            
@@ -124,9 +175,10 @@ class WeChat
                         //cookie('test','111');
                         break;
                     case "zhunbei":
-                         $contentStr ="准备新游戏中";
-                         $object["funcFlag"] = 1;
-                         break;                              
+
+                        $contentStr ="准备新游戏中";
+                        $object["funcFlag"] = 1;
+                        break;                              
                     case "company":
                         $contentStr[] = array("Title" =>"公司简介", 
                         "Description" =>"车侣威擎提供移动互联网相关的产品及服务", 
@@ -167,7 +219,22 @@ class WeChat
 
     private function transmitText($object, $content, $funcFlag = 0)
     {
+        $textTpl = "<xml>
+            <ToUserName><![CDATA[%s]]></ToUserName>
+            <FromUserName><![CDATA[%s]]></FromUserName>
+            <CreateTime>%s</CreateTime>
+            <MsgType><![CDATA[text]]></MsgType>
+            <Content><![CDATA[%s]]></Content>
+            <FuncFlag>%d</FuncFlag>
+            </xml>";
+           
+        $resultStr = sprintf($textTpl, $object->FromUserName, $object->ToUserName, time(), $content, $funcFlag);
+        return $resultStr;
+    }
 
+    //回复多客服消息
+    private function transmitService($object, $content, $funcFlag = 0)
+    {
         $textTpl = "<xml>
             <ToUserName><![CDATA[%s]]></ToUserName>
             <FromUserName><![CDATA[%s]]></FromUserName>
@@ -176,19 +243,11 @@ class WeChat
             <Content><![CDATA[%s]]></Content>
             <FuncFlag>%d</FuncFlag>
             </xml>";
-        if (!empty($object["funcFlag"])) {
-            $textTpl = "<xml>
-            <ToUserName><![CDATA[%s]]></ToUserName>
-            <FromUserName><![CDATA[%s]]></FromUserName>
-            <CreateTime>%s</CreateTime>
-            <MsgType><![CDATA[text]]></MsgType>
-            <Content><![CDATA[%s]]></Content>
-            <FuncFlag>%d</FuncFlag>
-            </xml>";
-        }    
         $resultStr = sprintf($textTpl, $object->FromUserName, $object->ToUserName, time(), $content, $funcFlag);
         return $resultStr;
     }
+    
+
 
     private function transmitNews($object, $arr_item, $funcFlag = 0)
     {

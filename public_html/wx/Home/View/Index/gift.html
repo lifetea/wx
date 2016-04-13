@@ -3,6 +3,7 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>积分兑换|车侣威擎</title>
+<meta content="telephone=no" name="format-detection" />
 <style type="text/css">
 /* 
 html5doctor.com Reset Stylesheet
@@ -27,7 +28,7 @@ time, mark, audio, video {
     padding:0;
     border:0;
     outline:0;
-    font-size:100%;
+    font-size:98%;
     vertical-align:baseline;
     background:transparent;
 }
@@ -107,12 +108,12 @@ hr {
 input, select {
     vertical-align:middle;
 }
+.hide{display: none}
 </style>
 
 <style type="text/css">
-    html,body,.main{height: 100%;}
-    body{
-        background:#ffc446;;
+    html,body,.main{
+        background:#ffc446;
     }
     img {border:none;} 
     ul{list-style: none;}
@@ -194,7 +195,13 @@ input, select {
         #padding: 6px 18px 6px 18px;
     }
     .red {color:#d44950}
-
+    .tab{display: block;width: 49.99%;float: left;text-align: center;vertical-align: middle;font-family: "微软雅黑";font-size: 26px;color:white;}
+    .tab img{width: 100%}
+    .menu{border-bottom: 1px solid #d1a13a;}
+    .menu .first{border-right: 1px solid #d1a13a;}
+    .bottom{border-bottom: 1px solid #d1a13a;}
+    .menu a:visited{background: #e95704;text-decoration: none;}
+    img.erwei{width: 100%;}
 </style>
 <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -202,6 +209,20 @@ input, select {
     <div class="main">
         <div class="header">
             <img src="{$Think.config.SRC}/gift-h.jpg">
+        </div>
+        <div class="menu">
+            <a class="tab bottom" href="http://wx.vlegend.cn/ji?self=1">
+                <img src="http://wx.vlegend.cn/Public/tab-1.png">
+            </a>
+            <a class="tab bottom" href="http://wx.vlegend.cn/cj.html">
+                <img src="http://wx.vlegend.cn/Public/tab-2.png">
+            </a>
+            <a class="tab" href="http://wx.vlegend.cn/bird.html">
+                <img src="http://wx.vlegend.cn/Public/tab-3.png">
+            </a>
+            <a class="tab" href="http://wx.vlegend.cn/rule.html">
+                <img src="http://wx.vlegend.cn/Public/tab-4.png">
+            </a>
         </div>
         <ul class="list">
             <volist name="gift" id="vo">
@@ -216,16 +237,19 @@ input, select {
                                
                         </p>
                         <p>
-                            <span class="count">数量:{$vo.count}</span> 
+                                <span class="count">数量:{$vo.count}</span> 
+                            
                         </p>
                     </div>
                     <div class="exchange left">
-                        <a class="btn btn-success btn-click" data-score="{$vo.credit}" data-id="{$vo.id}" data-count="{$vo.count}" href="javascript:">兑换</a>
+                                <a class="btn btn-success btn-click" data-score="{$vo.credit}" data-id="{$vo.id}" data-type="{$vo.type}" data-count="3" href="javascript:">兑换</a>
                     </div>                
                 </li>
             </volist>
         </ul>
     </div>
+
+
 
 
     <!-- 模态框（Modal） -->
@@ -243,21 +267,21 @@ input, select {
              </div>
              <div class="modal-body">
                 <form id="form" class="form-horizontal" method="post" action="exchange">
-                    <div class="form-group">
-                        <label for="username" class="col-xs-2 control-label">姓名</label>
-                        <div class="col-xs-10">
+                    <div id="userGroup" class="form-group">
+                        <label id="forUser" for="username" class="col-xs-3 control-label">姓名</label>
+                        <div class="col-xs-9">
                           <input type="text" name="username" class="form-control" id="username" placeholder="收货人">
                         </div>
                     </div> 
-                    <div class="form-group">
-                        <label for="addr" class="col-xs-2 control-label">地址</label>
-                        <div class="col-xs-10">
+                    <div id="addrGroup" class="form-group">
+                        <label for="addr" class="col-xs-3 control-label">地&nbsp;&nbsp;&nbsp;址</label>
+                        <div class="col-xs-9">
                           <input type="text" name="addr" class="form-control" id="addr" placeholder="收货地址">
                         </div>
                     </div> 
                     <div class="form-group">
-                        <label for="phone" class="col-xs-2 control-label">手机</label>
-                        <div class="col-xs-10">
+                        <label for="phone" class="col-xs-3 control-label">手&nbsp;&nbsp;&nbsp;机</label>
+                        <div class="col-xs-9">
                           <input type="text" name="phone" class="form-control" id="phone" placeholder="您的手机">
                         </div>
                     </div> 
@@ -268,7 +292,8 @@ input, select {
                     <div class="form-group">
                         <label id="error" class="control-label left pl10 red" ></label>
                         
-                    </div>                                          <input id="userId" name="userid" type="hidden" value="{$id}" />
+                    </div>
+                    <input id="userId" name="userid" type="hidden" value="{$id}" />
                     <input id="userScore" name="score" type="hidden" value="{$user.sum}" />
                     <input id="giftId" name="giftid" type="hidden" value="" />       
                 </form> 
@@ -311,19 +336,19 @@ input, select {
                 var winH = window.innerHeight;
                 var winW = document.body.clientWidth||window.innerWidth;
                 var colH = parseInt(winH*0.8/4);
-                var pW   = parseInt(winW*0.28);
+                var pW   = parseInt(winW*0.27);
                 if(pW >= colH){
                     colH = parseInt(pW*1.1); 
                 }            
                 var pH   = parseInt(colH*0.40);
                 var aH   = parseInt(colH*0.28);
                 
-                var sW   = parseInt(winW*0.32);
+                var sW   = parseInt(winW*0.33);
                 var wW   = parseInt(winW*0.4*0.3);
                 var tH   = (colH - pW)/2;
 
                 // var pt20 = parseInt(colH*0.25);
-                var cssNode = document.createTextNode(".list li{height:"+colH+"px;overflow:hidden;} .pic{width:"+pW+"px;padding-top:"+tH+"px;padding-left:"+tH+"px;} .score{width:"+sW+"px;padding-top:"+tH+"px;} .exchange{padding-top:"+pH+"px;padding-left:"+wW+"px;"); 
+                var cssNode = document.createTextNode(".list li{height:"+colH+"px;overflow:hidden;} .pic{width:"+pW+"px;padding-top:"+tH+"px;padding-left:"+tH+"px;} .score{width:"+sW+"px;padding-top:"+tH+"px;} .exchange{padding-top:"+pH+"px;padding-left:"+wW+"px;} .menu{width:100%;height:"+colH+"px;} .tab{line-height:"+colH/2+"px;height:"+colH/2+"px;}"); 
                 //}
                 var style = document.createElement("style"); 
                 style.type = "text/css"; 
@@ -342,27 +367,56 @@ input, select {
                 var credit = parseInt($("#userScore").val()) || 0;
                 var userId = $("#userId").val();
                 var needScore = parseInt($(this).attr("data-score"));
+                var gifttype = $(this).attr("data-type");
                 var count  = parseInt($(this).attr("data-count"));
                 var giftId =$(this).attr("data-id");
-                // alert(count);
+                if (gifttype == "hb") {
+                    var currTime = new Date();
+                    var hour = currTime.getHours();
+                    var minute = currTime.getMinutes();
+                    if (hour == 14 && minute <= 30) {
+
+                    }else{
+                        $("#mContent").html("<p>红包活动还没开始哟！</p><p>只在每天14:00-14:30开启!</p>只有关注了才能领取奖品哟!<img class=\"erwei\" src=\"http://wx.vlegend.cn/Public/ji/guanzhu.png\">");
+                        $("#alert").modal('show');
+                        return false;                          
+                    }
+
+                }
                 if (count <= 0) {
                     $("#mContent").text("该奖品已经被抢完，请关注下期活动吧!");
                     $("#alert").modal('show');
                     return false;
                 }
                 if(needScore > credit){
-                    $("#mContent").text("积分不足,赶快去玩游戏赚取积分吧!");
+                    $("#mContent").html("<p>积分不足,赶快去助威赚积分吧!只有关注了才能领取奖品哟!</p><img class=\"erwei\" src=\"http://wx.vlegend.cn/Public/ji/guanzhu.png\">");
                     $("#alert").modal('show');
                     return false;
                 }else{
                     $("#giftId").val(giftId);
                     $("#mNeed").text("需要:"+needScore);
                     $("#mOwn").text("拥有:"+credit);
-                    $("#myModal").modal('show');
+                    if (gifttype == "hb") {
+                        $.get("http://wx.vlegend.cn/checkHB",function(data,status){
+                            if(data == 0){
+                                $("#mContent").text("您已经换过红包了哟!");
+                                $("#alert").modal('show');
+                            }else{
+                                $("#addrGroup").addClass("hide");
+                                $("#forUser").text("支付宝");
+                                $("#myModal").modal('show');                                
+                            }
+                        });
+
+                    }else{
+                        $("#myModal").modal('show');
+                    }
+                    
                 }
             });
 
-            $("#submit").click(function(){
+            $("#submit").click(function(event){
+                event.preventDefault();
                 var phone = $("#phone").val();
                 var addr  = $("#addr").val();
                 var userName  = $("#username").val();
@@ -374,8 +428,11 @@ input, select {
                 }
                 if(!userName){
                     $("#error").text("请填写收货人姓名");
+                }
+                if(!!phone && !!userName){
+                    $("#form").submit();
                 }                
-                $("#form").submit();             
+                             
             });
        //  $('#myModal').modal({
        //    keyboard: true

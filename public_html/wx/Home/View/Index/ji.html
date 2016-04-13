@@ -142,6 +142,14 @@ input, select {
         border-radius: 50% 50% 50% 50%;
         overflow: hidden;
     }
+    .share{
+        position: absolute;
+        top:0px;
+        right: 0px;
+    }
+    .share img{
+        width: 100%;
+    }
     .small-avatar img{
         width: 100%;
         border-radius: 50% 50% 50% 50%;
@@ -195,14 +203,40 @@ input, select {
         width: 100%;
         display: inline-block;
         height: 100%;
-        background: url("http://wx.vlegend.cn/Public/ji/btn-up.png");
-        background-size: 100% auto;
     }
-    .btn a:active{
+    .zhu a{
+       background: url("http://wx.vlegend.cn/Public/ji/btn-up.png");
+       background-size: 100% auto;
+       background-repeat: no-repeat;
+    }
+    .wo a{
+       background: url("http://wx.vlegend.cn/Public/ji/wo-up.png");
+       background-size: 100% auto;
+       background-repeat: no-repeat;
+    }
+    .cj a{
+       background: url("http://wx.vlegend.cn/Public/ji/cj-up.png");
+       background-size: 100% auto;
+       background-repeat: no-repeat;
+    }    
+    .zhu a:active{
         background: url("http://wx.vlegend.cn/Public/ji/btn-down.png");
         background-size: 100% auto;
         background-repeat: no-repeat;
     }
+  
+    .wo a:active{
+        background: url("http://wx.vlegend.cn/Public/ji/wo-down.png");
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+    }
+
+    .cj a:active{
+        background: url("http://wx.vlegend.cn/Public/ji/cj-down.png");
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+    }
+
     .fire{
         background: url("http://wx.vlegend.cn/Public/ji/fire.jpg");
         background-repeat: repeat-x;
@@ -230,7 +264,12 @@ input, select {
 	<div class="main">
         <div class="avatar">
             <img src="{$user.headimgurl}">
+
         </div>
+        <div class="share">
+            <img src="http://wx.vlegend.cn/Public/ji/share.png">
+        </div>
+        
         <div class="nichen">
             <span>{$user.nickname}</span>
         </div>
@@ -238,9 +277,9 @@ input, select {
             <span id="jifen">{$user.sum}</span>
         </div> 
         <div class="percent">
-            <span>(
-                <em id="num">{$count*10}</em>
-                /100)</span>
+            <span>(每个助威可获得50分 | 
+                <em id="num">{$count*50}</em>
+                /???)</span>
         </div>
         <div class="paodao">
             <div id="fire" class="fire">
@@ -251,16 +290,29 @@ input, select {
             <volist name="list" id="vo" key="k" >
                 <li>
                     <div class="small-avatar">
-                        <img src="{$vo.headimgurl}">
+                        <a href="http://wx.vlegend.cn/ji.html?id={$vo.id}">
+                            <img src="{$vo.headimgurl}">
+                        </a>
                     </div>
                 </li>
             </volist>
         </ul>
-        <div class="btn">
+        <div class="btn zhu left">
             <a href="javascript:void" id="btn">
-                
             </a>
-        </div>          
+        </div>
+        <div class="btn wo left">
+            <if condition="$friendId eq $userId ">
+                <a href="javascript:(0)" ></a>
+            <else />
+                <a href="http://wx.vlegend.cn/ji.html?id={$friendId}" ></a>
+            </if>           
+            
+        </div>
+        <div class="btn cj left">
+            <a href="http://wx.vlegend.cn/cj.html" >
+            </a>
+        </div>                
 	</div>
 
 <!-- system modal start -->
@@ -271,7 +323,7 @@ input, select {
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
             <h5 class="modal-title h4">
                 <i class="fa fa-exclamation-circle"></i>
-                <span id="mTitle">助威成功 关注我们一起玩游戏哦！</span>
+                <span id="mTitle">助威成功 2万元红包在等你，还不快来？！</span>
             </h5>
           </div>
           <div class="modal-body">
@@ -292,7 +344,13 @@ input, select {
     <script src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         window.conf ={
-            "link":"http://wx.vlegend.cn/ji.html?id="+$("#friendId").val()
+
+            <if condition="$friendId eq $userId ">
+                "link":"http://wx.vlegend.cn/ji.html?id={$friendId}"
+            <else />
+                "link":"http://wx.vlegend.cn/ji.html?id={$userId}"
+            </if>
+            
         };
         wx.config({
             debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -308,9 +366,9 @@ input, select {
             //var id =getQueryString("id");
             wx.onMenuShareAppMessage({
                 title: "一只穿云箭,千军万马来相见！",
-                desc: "一秒钟的时间有多长？一秒钟的理解有多深？又怎么度过这一秒钟？朋友我需要你的助威",
+                desc: "我要抢现金红包,需要朋友们帮助！",
                 link: window.conf["link"],
-                imgUrl: 'http://wx.vlegend.cn/Public/ji/arrow.jpg',
+                imgUrl: "{$user.headimgurl}",
                 trigger: function (res) {
                   //alert('用户点击发送给朋友');
                 },
@@ -329,7 +387,7 @@ input, select {
             wx.onMenuShareTimeline({
                 title: "一只穿云箭,千军万马来相见！",
                 link: window.conf["link"],
-                imgUrl: 'http://wx.vlegend.cn/Public/ji/arrow.jpg',
+                imgUrl: "{$user.headimgurl}",
                 trigger: function (res) {
                 //alert('用户点击分享到朋友圈');
                 },
@@ -354,8 +412,11 @@ input, select {
             V.init = function(){
                 var winH = $(document).height() || window.innerHeight;
                 var winW = document.body.clientWidth||window.innerWidth;
-                var aML  = parseInt(winW/640*184); 
-                var aW   = parseInt(winW/640*314);
+                //头像
+                var aML  = parseInt(winW/640*60); 
+                var aW   = parseInt(winW/640*200);
+                //分享
+                var sW   = parseInt(winW/640*260);
 
                 //昵称
                 var nW   = parseInt(winW/640*377);
@@ -379,12 +440,15 @@ input, select {
                 //列表
                 var saW   = parseInt(nW/377*56);
                 //按钮
-                var btnW  = parseInt(winW/640*331);
-                var btnH  = parseInt(nW/377*127);
-                var btnPL  = parseInt(winW/640*160);
+                var btnW  = parseInt(winW/640*190);
+                var btnH  = parseInt(nW/377*90);
+                var btnPL  = parseInt(winW/640*5);
                 var btnPT   = parseInt(nW/377*60);
+
+                var wbtnW  = parseInt(winW/640*220);
+                var wbtnH  = parseInt(nW/377*100);
                 
-                var cssNode = document.createTextNode(".avatar{margin-left:"+aML+"px;width:"+aW+"px;height:"+aW+"px} .nichen{width:"+nW+"px;height:"+nH+"px;margin-left:"+nML+"px;margin-top:"+nMT+"px;} .nichen span{line-height:"+nH+"px;} .jifen span{line-height:"+nH+"px;} .jifen{width:"+jW+"px;height:"+jH+"px;margin-left:"+jML+"px;margin-top:"+jMT+"px;} .percent{margin-top:"+pMT+"px;} .paodao{height:"+pH+"px;} .small-avatar{width:"+saW+"px} .btn{width:"+btnW+"px;margin-left:"+btnPL+"px;margin-top:"+btnPT+"px;height:"+btnH+"px;} .fire{height:"+fH+"px;margin-top:"+fMT+"px;width:"+planeW+"px;} .fire img{height:"+fH+"px}"); 
+                var cssNode = document.createTextNode(".avatar{margin-left:"+aML+"px;width:"+aW+"px;height:"+aW+"px} .share{width:"+sW+"px;} .nichen{width:"+nW+"px;height:"+nH+"px;margin-left:"+nML+"px;margin-top:"+nMT+"px;} .nichen span{line-height:"+nH+"px;} .jifen span{line-height:"+nH+"px;} .jifen{width:"+jW+"px;height:"+jH+"px;margin-left:"+jML+"px;margin-top:"+jMT+"px;} .percent{margin-top:"+pMT+"px;} .paodao{height:"+pH+"px;} .small-avatar{width:"+saW+"px} .btn{width:"+btnW+"px;margin-left:"+btnPL+"px;margin-top:"+btnPT+"px;height:"+btnH+"px;} .wo{width:"+wbtnW+"px;height:"+wbtnH+"px;} .fire{height:"+fH+"px;margin-top:"+fMT+"px;width:"+planeW+"px;} .fire img{height:"+fH+"px}"); 
                 var style = document.createElement("style"); 
                 style.type = "text/css"; 
                 style.appendChild(cssNode);
@@ -397,10 +461,13 @@ input, select {
                 V.fire();
             });
             V.fire = function(){
-                var count = $("#count").val();
+                var count = parseInt($("#count").val());
+                if (count>=100) {
+                    count = 100;
+                }
                 var winW = document.body.clientWidth||window.innerWidth;
                 var planeW = parseInt(winW/640*161);
-                var width = parseInt((winW-planeW)/10*count)+planeW; 
+                var width = parseInt((winW-planeW)/100*count)+planeW; 
                 $("#fire").animate({width:width+"px"});                
             }
             V.fire();
@@ -417,10 +484,10 @@ input, select {
                    if (data == "1") {
                     　  var count = parseInt($("#count").val())+1;
                         $("#count").val(count);
-                        $("#num").text(count*10);
+                        $("#num").text(count*50);
                         $("#count").val(count);
                         var jifen = $("#jifen").text();
-                        $("#jifen").text(parseInt(jifen)+10);
+                        $("#jifen").text(parseInt(jifen)+50);
                         V.fire(); 
                         var img = $("#headPic").val();
                         var li = document.createElement("li");
@@ -429,7 +496,7 @@ input, select {
                         $("#alert").modal('show');
                     }else{
                         $("#mTitle").text("提示");
-                        $("#mContent").text("已经点过赞了,明天再继续");
+                        $("#mContent").html("已经点过赞了,明天再继续。只有关注了才能领取奖品哟<img src=\"http://wx.vlegend.cn/Public/ji/guanzhu.png\">");
                         $("#alert").modal('show');
                     }
                 });
