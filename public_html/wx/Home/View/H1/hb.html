@@ -1,0 +1,759 @@
+<html lang="zh-CN">
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta charset="UTF-8" />
+  <title>车侣威擎科技 最具人气轮毂评选活动</title>
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+  <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+  <meta content="no-cache,must-revalidate" http-equiv="Cache-Control" />
+  <meta content="no-cache" http-equiv="pragma" />
+  <meta content="0" http-equiv="expires" />
+  <meta content="telephone=no, address=no" name="format-detection" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  
+  <link href="__PUBLIC__/css/hb/main.css" rel="stylesheet">
+  <link href="__PUBLIC__/css/hb/weui.min.css" rel="stylesheet">
+ </head>
+ <body>
+  <div class="hide" id="hbWrap">
+      <img src="__PUBLIC__/images/hb/banner.png">
+      <img class="redPacket" src="__PUBLIC__/images/hb/hongbao.png">
+  </div>
+  <div id="myWrap">
+      <img src="__PUBLIC__/images/hb/help.png">
+      <div class="fTip">
+          <span>已有</span>
+          <span>3</span>
+          <span>位朋友帮忙了，还差</span>
+          <span>2</span>
+          <span>位！</span>
+      </div>
+      <div class="fTitle">
+          <span>伙伴</span>
+          <span class="force">"给力"</span>
+          <span>榜</span>
+      </div>
+      <ul class="fList">
+          <li class="first"></li>
+          <li class="first"></li>
+          <li class="first"></li>
+          <li class="second"></li>
+          <li class="first"></li>
+      </ul>
+  </div>
+  <div id="content" style="max-width: 640px;margin: 0 auto;display: none">
+   <!--<ul id="count" style="margin:0;">-->
+    <!--<li class="lf"><p>参与选手</p><p style="padding:0"><span id="vCount">39</span></p></li>-->
+    <!--<li class="ls" style="width:34%"><p>累计投票</p><p style="padding:0"><span id="acount">{$voteCount}</span></p></li>-->
+    <!--<li style="width:33%"><p>访问量</p><p style="padding:0"><span>{$visitCount}</span></p></li>-->
+   <!--</ul>-->
+   <div id="time_conter">
+    <p style="">距活动结束还有：</p>
+    <div id="timejs" style="">
+     <span id="day" class="day time_td">26</span>
+     <small>天</small>
+     <span id="hour" class="hour time_td">04</span>
+     <small>时</small>
+     <span id="mini" class="time_td mini ml5">48</span>
+     <small>分</small>
+     <span id="sec" class="sec time_td">24</span>
+     <small>秒</small>
+     <span id="hm" class="hm time_td">537</span>
+    </div>
+   </div>
+
+  <div id="Toplist" class="masonry hide" style="margin: 0px auto; padding-left: 12px;padding-right:12px;"> 
+    <ul>
+
+      <volist name="topList" id="vo">
+          <li data="{$vo.id}">
+            <a class="showcase">
+              <img class="small"  src="http://wx.vlegend.cn/Public/tp/{$vo.pic}"/>
+            </a>
+            <div class="model" style="">
+               型号：{$vo.model}
+            </div>
+            <div class="row">
+              <div class="col-md-6"><div>
+                <div class="btn-wrap">
+                  <div class="btg"></div>
+                  <button onclick="vote(this)" data-hubid="{$vo.hubid}" data-voterid="{$vo.id}" class="btn-1" type="button">投票</button>
+                  <span class="count">{$vo.count}</span>
+                  <span class="p">票</span>
+                </div>
+                </div>
+              </div>
+              <div class="col-md-6"><div>
+                  <div class="btn-wrap">
+                      <span>{$vo.id} {$vo.username}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </li>
+      </volist>
+    </ul>
+  </div>
+
+
+  </div>
+
+  <div style="display:none">
+   <img src="http://219.156.138.124:81/c2/images/d.png" />
+  </div>
+  <div class="dzpwrap" style="display:none">
+   <article>
+    <header class="dzptit">
+     添加我们后,回复【投票】参与活动
+    </header>
+    <section class="dzpwrapcont dzpwrapcontent">
+     <a href="http://mp.weixin.qq.com/s?__biz=MzI5NjEwNTU2Ng==&amp;mid=400872595&amp;idx=1&amp;sn=f179767cd9ef327aeb282fc8d00207d1#rd" class="btndzp btnRed">如何添加我们 ?</a>
+     <a id="dzpclose" class="btndzp btnRed" onclick="$('#plug').trigger('click');">取消,继续浏览</a>
+    </section>
+   </article>
+  </div>
+  <div style="display:none">
+   <input id="dialogJ_hid" type="hidden" />
+  </div>
+  
+  <div id="sharemcover" onclick="document.getElementById('sharemcover').style.display='';" style=" display:none">
+   <img src="" />
+  </div>
+  <div class="top_bar" style="-webkit-transform:translate3d(0,0,0)">
+    <nav>
+      <ul id="top_menu" class="top_menu">
+        <li>
+          <a class="tabhome" href="http://wx.vlegend.cn/tp?id={$userId}"><label>我的</label></a>
+      <ul id="menu_list0" class="menu_font" style=" display:none"></ul></li>
+        <li> 
+          <a class="tabtel" id="apply" href="javascript:(0)">
+          <label>报名</label>
+      </a> 
+      <ul id="menu_list0" class="menu_font" style=" display:none"></ul></li>
+     <li class="home"><a href="javascript:(0)" id="sou"></a></li>
+     <li> <a class="tabtoplist" id="paihang" href="javascript:(0)"><label>排行</label></a>
+      <ul id="menu_list0" class="menu_font" style=" display:none"></ul></li>
+      <li>
+        <a class="tabshare" id="shareTab" onclick="">
+          <label>提现</label>
+        </a>
+        <ul id="menu_list0" class="menu_font" style=" display:none"></ul>
+      </li>
+    </ul>
+   </nav>
+  </div>
+  <div id="plug-wrap" onclick="closeall()" style="display: none;"></div>
+
+  <div style="display:none" id="userc">
+   6
+  </div>
+  <div id="cboxOverlay" style="display: none;"></div>
+  <div id="colorbox" class="" role="dialog" tabindex="-1" style="display: none;">
+   <div id="cboxWrapper">
+    <div>
+     <div id="cboxTopLeft" style="float: left;"></div>
+     <div id="cboxTopCenter" style="float: left;"></div>
+     <div id="cboxTopRight" style="float: left;"></div>
+    </div>
+    <div style="clear: left;">
+     <div id="cboxMiddleLeft" style="float: left;"></div>
+     <div id="cboxContent" style="float: left;">
+      <div id="cboxTitle" style="float: left;"></div>
+      <div id="cboxCurrent" style="float: left;"></div>
+      <button type="button" id="cboxPrevious"></button>
+      <button type="button" id="cboxNext"></button>
+      <button id="cboxSlideshow"></button>
+      <div id="cboxLoadingOverlay" style="float: left;"></div>
+      <div id="cboxLoadingGraphic" style="float: left;"></div>
+     </div>
+     <div id="cboxMiddleRight" style="float: left;"></div>
+    </div>
+    <div style="clear: left;">
+     <div id="cboxBottomLeft" style="float: left;"></div>
+     <div id="cboxBottomCenter" style="float: left;"></div>
+     <div id="cboxBottomRight" style="float: left;"></div>
+    </div>
+   </div>
+   <div style="position: absolute; width: 9999px; visibility: hidden; display: none; max-width: none;"></div>
+  </div>
+  <ul class="ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all" id="ui-id-1" tabindex="0" style="z-index: 100000000; display: none;"></ul>
+
+
+  <!-- 活动介绍 -->
+    <div id="alert" class="modal">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h5 class="modal-title h4"><i class="fa fa-exclamation-circle"></i>活动介绍</h5>
+          </div>
+          <div class="modal-body small">
+            <p>
+              <img style="width:100%" src="http://wx.vlegend.cn/Public/tp/intro1.jpg">
+              <img style="width:100%" src="http://wx.vlegend.cn/Public/tp/intro2.jpg">
+            </p>
+            <p class="h5">
+              【报名对象】所有汽车爱好者　支持《车侣威擎网》的朋友
+            </p>
+            <p class="h5">【报名方式】点击“报名”，选定您支持的轮毂，填写相关个人信息即可完成报名（每人只能选定一款您支持的轮毂，确定之后不能更改）
+            </p>
+            <p class="h5">【网投规则】本次网络评选活动旨在健康推广，希望所有参赛者理智拉票，杜绝非正常手段拉票！每24小时限投一票，相识其实是一种缘分，参与也是一种宣传！请每位参赛者本着对自己负责，对他人公平的态度，积极参与，主张友谊第一，比赛第二！</p>
+            <p class="h5">
+              1、参选者将“个人页”助力拉票，投票者选择要投票的参选者，点击“投票”关注《车侣威擎网》微信公众号之后即可完成有效投票！每位参选者当日最高投票数额有限制，望健康推广！严禁使用舞弊手段拉票，一经发现，将强制限制投票数量直至取消资格。
+              2、本次网络评选活动投票系统每位参赛者拉票时间为限定为30天（从3月15——4月15），到期后不能再继续投票，以结束当天的个人总票数为最终票数进行排名。
+            </p>
+            <p class="h5">
+                【统计方法】
+                参赛者选定一款自己支持的轮毂 拉拢您身边的好友为您投票 得票最多者为赛事特等奖  以此类推 </p>
+            <p class="h5">    特等奖1名（个人得票数≥2000票）</p>
+            <p class="h5">   一等奖1名（个人得票数≥1000票）</p>
+            <p class="h5">    二等奖1名（个人得票数≥500票）</p>
+            <p class="h5">    三等奖88名（个人得票数≥168票）</p>
+            <p class="h5">    活动结束后 《车侣威擎网》官方微信公众号秉承赛事公平公正原则，公布获奖者名单以及服务器后台详细票数数据截图 </p>
+            <p class="h5">   【奖品设置】</p>
+            <p class="h5">   特等奖：车侣威擎高端原厂轮毂一套（价值8000元，所选即所得）</p>
+            <p class="h5">    一等奖：车侣威擎高端原厂3D汽车坐垫一套（价值2500元）</p>
+            <p class="h5">    二等奖：车侣威擎高端原厂汽车坐垫一套（价值2000元）</p>
+            <p class="h5">    三等奖：车侣威擎专属定制汽车礼包一份（50元）</p>
+                【奖品发送】
+                4月15号 投票结束公布结果之后 《车侣威擎网》官方客服 将与获奖者确认收货地址
+                4月17号 奖品开始发送 具体到货时间以物流快递时效性为准
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- 活动介绍 -->
+
+  <!-- 报名 -->
+    <div id="applyContainer" class="modal">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h5 class="modal-title h4"><i class="fa fa-exclamation-circle"></i>选择一款轮毂</h5>
+          </div>
+          <div class="modal-body small">
+            <ul class="applyList">
+              <volist name="hubs" id="vo">
+                <label for="{$vo.model}">
+                  <li for="{$vo.model}">
+                    <a class="showcase">
+                      <img class="small"  src="http://wx.vlegend.cn/Public/tp/{$vo.pic}"/>
+                    </a>
+                    <div class="model" style="">
+                      
+                      <input id="{$vo.model}" hubId="{$vo.id}" data="{$vo.model}" name="model" type="radio">
+                      <span> 型号：{$vo.model}</span>
+                      
+                    </div>
+                  </li>
+                </label>
+              </volist>
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <span id="applyError" class="error left"></span>
+            <button id="applyNext" type="button" class="btn btn-primary">
+               下一步
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  <!-- 报名 -->
+
+  <!-- 报名2 -->
+    <div id="userContainer" class="modal">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h5 class="modal-title h4"><i class="fa fa-exclamation-circle"></i>填写信息</h5>
+          </div>
+          <div class="modal-body small">
+                <form id="userForm" class="form-horizontal" method="post" action="exchange">
+                    <div id="userGroup" class="form-group">
+                        <label id="forUser" for="username" class="col-xs-3 control-label">姓名</label>
+                        <div class="col-xs-9">
+                          <input type="text" name="username" class="form-control" id="username" placeholder="姓名">
+                        </div>
+                    </div> 
+                    <div id="addrGroup" class="form-group">
+                        <label for="addr" class="col-xs-3 control-label">地&nbsp;&nbsp;&nbsp;址</label>
+                        <div class="col-xs-9">
+                          <input type="text" name="addr" class="form-control" id="addr" placeholder="收货地址">
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label for="phone" class="col-xs-3 control-label">手&nbsp;&nbsp;&nbsp;机</label>
+                        <div class="col-xs-9">
+                          <input type="text" name="phone" class="form-control" id="phone" placeholder="您的手机">
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label id="error" class="control-label left pl10 red" ></label>
+                        
+                    </div>
+                    <input id="userId" name="userid" type="hidden" value="{$userId}" />
+                    <input id="voterStatus" type="hidden" value="{$votersStatus}" />
+                    <input id="hubId" name="hubid" type="hidden" value="" />
+                    <input id="hubModel" value="" type="hidden" >   
+                </form> 
+          </div>
+          <div class="modal-footer">
+            <span id="userError" class="error left"></span>
+            <button id="userSure" type="button" class="btn btn-primary">
+               完成
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  <!-- 报名2 -->
+<div id="toast" style="display: none;">
+        <div class="weui_mask_transparent"></div>
+        <div class="weui_toast">
+            <i class="weui_icon_toast"></i>
+            <p id="toastText" class="weui_toast_content">已完成</p>
+        </div>
+</div>
+
+<!-- 投票 -->
+    <div id="voteContainer" class="modal">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h5 class="modal-title h4">
+                <i class="fa fa-exclamation-circle"></i>
+                <span id="mTitle">投票</span>
+            </h5>
+          </div>
+          <div class="modal-body">
+            <img class="small" src="http://wx.vlegend.cn/Public/tp/173.png">
+          <div class="row">
+            <div class="col-md-6"><div>
+              <div class="btn-wrap">
+                <div class="btg"></div>
+                <button onclick="vote(this)" data-hubid="1" data-voterid="1027" class="btn-1" type="button">投票</button>
+                <span id="voteViewCount" class="count"></span>
+                <span class="p">票</span>
+              </div>
+              </div>
+            </div>
+            <div class="col-md-6"><div>
+              <span id="voteUserInfo"></span>
+              </div>
+            </div>
+              </li>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- system modal end -->  
+
+<!-- 投票 -->
+
+
+  <div id="voteNotice" class="modal">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h5 class="modal-title h4">
+                <i class="fa fa-exclamation-circle"></i>
+                <span >关注我们后,回复【投票】参与活动</span>
+            </h5>
+          </div>
+          <div class="modal-body">
+            <img class="small" src="http://wx.vlegend.cn/Public/tp/notice.png">
+        </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default left" 
+                   data-dismiss="modal">放弃</button>
+            <button id="goFollow" type="button" class="btn btn-primary">
+               前往
+            </button>
+          </div>
+      </div>
+    </div>
+  </div>
+  <!-- system modal end -->  
+  <!-- hidden input -->
+<input id="subscribe" value="{$subscribe|default='0'}" type="hidden" >
+
+<input id="vId" value="{$vId}" type="hidden" >
+  <!-- hidden input -->
+<input id="votersCount" value="{$count}" type="hidden" >
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="http://cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    window.conf ={
+        "link":"http://wx.vlegend.cn/tp.html?id={$userId}"
+    };
+    wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: '{$data.appId}', // 必填，公众号的唯一标识
+        timestamp: {$data.timestamp}, // 必填，生成签名的时间戳
+        nonceStr:'{$data.nonceStr}', // 必填，生成签名的随机串
+        signature:'{$data.signature}',// 必填，签名，见附录1
+        jsApiList: ['checkJsApi',
+                    'onMenuShareTimeline',
+                    'onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+    });
+    wx.ready(function(){
+        //var id =getQueryString("id");
+        wx.onMenuShareAppMessage({
+            title: "我在参加《车侣威擎网》最佳人气轮毂评选活动 快来帮我助力",
+            desc: "车侣威擎科技 最具人气轮毂评选活动!",
+            link: window.conf["link"],
+            imgUrl: 'http://wx.vlegend.cn/Public/tp/banner.jpg',
+            trigger: function (res) {
+              //alert('用户点击发送给朋友');
+            },
+            success: function (res) {
+              //alert('已分享');
+              
+                // var userId = $("#userId").val();
+                // xmlhttp=new XMLHttpRequest();
+                // xmlhttp.open("GET","http://wx.vlegend.cn/share?userid="+userId,true);
+                // xmlhttp.send(null);
+            },
+            cancel: function (res) {
+              //alert('已取消');
+            },
+            fail: function (res) {
+              alert(JSON.stringify(res));
+            }
+        });
+    
+        wx.onMenuShareTimeline({
+            title: "我在参加《车侣威擎网》最佳人气轮毂评选活动 快来帮我助力",
+            link: window.conf["link"],
+            imgUrl: 'http://wx.vlegend.cn/Public/tp/banner.jpg',
+            trigger: function (res) {
+            //alert('用户点击分享到朋友圈');
+            },
+            success: function (res) {
+            //alert('已分享');
+                // var userId = $("#userId").val();
+                // xmlhttp=new XMLHttpRequest();
+                // xmlhttp.open("GET","http://wx.vlegend.cn/share?userid="+userId,true);
+                // xmlhttp.send(null);            
+            },
+            cancel: function (res) {
+            //alert('已取消');
+            },
+            fail: function (res) {
+            alert(JSON.stringify(res));
+            }
+        });
+    });
+wx.error(function(res){
+    // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+});
+</script>
+  <script>
+
+      $(document).ready(function(){
+          var V = {};
+          V.init = function(){
+              var winH  = window.innerHeight;
+              var winW  = document.body.clientWidth||window.innerWidth;
+              var fW    = parseInt(winW/640*120);
+              var fM    = parseInt((winW-(3*fW))/6);
+              var sMR   = parseInt(winW/640*64);
+              var sML   = parseInt((winW-sMR-2*fW)/2);
+              //console.log(winW-(3*fW));
+              var cssNode = document.createTextNode(".fList li{width:"+fW+
+                      "px;height:"+fW+"px;} .fList .first{margin:10px "+fM+
+                      "px} .fList .second{margin-left: "+sML+"px;margin-right:"+sMR+"px;}");
+              var style = document.createElement("style");
+              style.type = "text/css";
+              style.appendChild(cssNode);
+              document.head.appendChild(style);
+          }
+          V.init();
+          $(window).resize(function(){
+              V.init();
+          });
+      })
+  </script>
+<script type="text/javascript">
+  $(function(){
+
+      $("#vCount").text($("#votersCount").val()) ;
+      function resetTab(){
+          $("#topTab").removeClass("active");
+          $("#hubTab").removeClass("active");
+          $("#selfTab").removeClass("active");
+          $("#thumbs").addClass('hide');
+          $("#Toplist").addClass('hide');
+          $("#userList").addClass('hide');
+      }
+      var vId = $("#vId").val();
+      if (!!vId) {
+          resetTab();
+          $("#selfTab").addClass("active");
+          $("#userList").removeClass('hide');
+      }
+      $("#shareTab").click(function(){
+        toast("点击右上角发到朋友圈");
+      });
+      $("#hubTab").click(function(){
+          resetTab();
+          $("#thumbs").removeClass('hide');
+          $("#hubTab").addClass("active");
+      });
+      $("#selfTab").click(function(){
+          resetTab();
+          $("#selfTab").addClass("active");
+          $("#userList").removeClass('hide');
+      });
+      $("#shareTab").click(function(){
+
+
+      });
+      $("#topTab").click(function(){
+          resetTab();
+          $("#thumbs").addClass('hide');
+          $("#Toplist").removeClass('hide');
+          $("#hubTab").removeClass("active");
+          $("#topTab").addClass("active");        
+      });      
+      $("#paihang").click(function(){
+          resetTab();
+          $("#thumbs").addClass('hide');
+          $("#Toplist").removeClass('hide');
+          var list = $(".sorts a");
+          $(list[0]).removeClass("active");
+          $(list[1]).addClass("active");
+      });
+
+      $("#sou").click(function(){
+          $("#plug").removeClass("hide");
+          $("#soso").removeClass("hide");
+      });
+
+      $("#plug").click(function(){
+          $("#plug").addClass("hide");
+          $("#soso").addClass("hide");
+          $("#searchList").addClass("hide");
+      });
+      
+      $("#goFollow").click(function(){
+          window.location.href = "http://mp.weixin.qq.com/s?__biz=MzI0MDA5OTY1NA==&mid=402621433&idx=1&sn=20ea6b6e84c2a997cbd60287e4cf01d1&scene=1";
+      });
+
+      $("#soso").click(function(){
+          $("#searchList").addClass("hide");
+      });
+
+      $("#searchText").keyup(function(){
+          $("#searchList").removeClass("hide");
+          var userId   = $(this).val();
+          var url      = "http://wx.vlegend.cn/searchVoter?id="+userId;
+         // list.empty();
+          if (userId.length >0 ) {
+            $.get(url, function(result){
+                var obj = jQuery.parseJSON(result);
+                var list     = $("#searchList");
+                list.empty();
+                for (var i = 0; i < obj.length; i++) {
+                   var item =  $("<li class=\"ui-menu-item\" role=\"presentation\"><a data-hubid='"+obj[i]["hubid"]+"' data-voterid='"+obj[i]["id"]+"'  data-username='"+obj[i]["username"]+"' onclick='voteView(this)' class=\"ui-corner-all\" tabindex=\"-1\">"+obj[i]["id"]+obj[i]["username"]+"</a> </li>");
+                    list.append(item);
+                };
+            });   
+          };
+       
+      });      
+
+
+      $("#apply").click(function(){
+          var status = $("#voterStatus").val();
+          if (status == "1") {
+            toast("已报名");
+          }else{
+            $("#applyContainer").modal('show');
+          } 
+      });
+
+
+      setTimeout(function(){
+        $("#thumbs li").each(function(index,element){
+          var i           = index;
+          var ele         = element;
+          var hubId       = $(ele).attr("data");
+
+          (function(){
+            var url = "http://wx.vlegend.cn/getHub?id="+hubId;
+            $.get(url, function(result){
+                var obj = jQuery.parseJSON(result);
+                var load = $(ele).find(".load-wrap")[0];
+                $(load).addClass("hide");
+                var row         = $("<div class='row'></div>");
+                for (var i = 0; i < obj.length; i++) {
+                    var div     = $("<div class='col-md-6'><div><span class='namec'>"+obj[i]["voterid"]+" "+obj[i]["username"]+"</span><div class='btn-wrap'><div class='btg'></div><button onclick='vote(this)' data-hubid='"+obj[i]["hubid"]+"' data-voterid='"+obj[i]["voterid"]+"' class='btn-1' type='button'>投票</button><span class='count'>"+obj[i]["count"]+"</span><span class='p'>票</span></div></div></div>");
+                    // var button  =$(div).find("button")[0];
+                    // $(button).click(function(){
+
+                    // });
+                    row.append(div);
+                };
+                
+                $(ele).append(row);
+            });
+          })();  
+        });
+      },400);
+
+
+      //报名
+      $("#applyNext").click(function(){
+            var arr = $(".applyList :checked");
+            if (arr.length >= 1) {
+              var hubModel = $(arr[0]).attr("data");
+              var hubId = $(arr[0]).attr("hubId");
+              $("#hubModel").val(hubModel);
+              $("#hubId").val(hubId);
+              $("#applyContainer").modal('hide');
+              $("#userContainer").modal('show');
+            }else{
+              $("#applyError").text("请选择一款轮毂");
+            }
+      });
+      //提交信息
+      $("#userSure").click(function(){
+          var userName = $("#username").val();
+          var addr     = $("#addr").val();
+          var phone    = $("#phone").val();
+          var userId   = $("#userId").val();
+          var hubId    = $("#hubId").val();
+          if (!userName || !addr || !phone) {
+              $("#userError").text("请完善资料");
+            }else{
+              var url = "http://wx.vlegend.cn/voters?userId="+userId+"&userName="+userName+"&addr="+addr+"&phone="+phone+"&hubId="+hubId;
+              $.get(url, function(result){
+                  $("#voterStatus").val("1");
+                  if (result == "1") {
+                     //console.log(result);
+                    $("#voterStatus").val("1");
+                    toast("报名成功");                    
+                  };
+              });
+              $("#userContainer").modal('hide');
+
+
+          }
+      });
+
+      //剩余时间
+      setInterval(function(){
+        var end     = new Date(2016,03,15);
+        var start   = new Date();
+        var time    = end.getTime() - start.getTime();
+        var day     = parseInt(time/1000/60/60/24);
+        var hour    = parseInt(time/1000/60/60 - day*24);
+        var mini  = parseInt(time/1000/60 - day*24*60- hour*60);
+        var sec  = parseInt((time/1000 -day*24*60*60 -hour*60*60 -mini*60));
+        var ms      = parseInt((time -day*24*60*60*1000 -hour*60*60*1000 -mini*60*1000 - sec*1000));
+        $("#day").text(day);
+        $("#hour").text(hour);
+        $("#mini").text(mini);
+        $("#hm").text(ms);
+        $("#sec").text(sec);
+      },93);
+
+      $("#intro").click(function(){
+         $("#alert").modal('show');
+      });
+
+  });
+
+  function vote(ele){
+    var status    = $("#subscribe").val();
+    if (status != 0) {
+        var voterId   = $(ele).attr("data-voterid");
+        var hubId     = $(ele).attr("data-hubid");
+        var userId    = $("#userId").val();
+        var url = "http://wx.vlegend.cn/vote?userid="+userId+"&voterid="+voterId+"&hubid="+hubId;
+        $.get(url, function(result){
+          // console.log(result);
+            if (result == 1) {
+              toast("投票成功");
+              var span = $(ele).next();
+              $(span).text(parseInt($(span).text())+1);
+            };
+            if (result == 2) {
+              toast("今日已投票");
+            };        
+        });
+    }else{
+        $("#voteNotice").modal('show');
+    }
+    
+
+       
+  }
+  //投票页
+  function voteView(ele){
+    //console.log(ele);
+    $("#plug").addClass("hide");
+    $("#soso").addClass("hide");
+    $("#searchList").addClass("hide");
+    var voterId    = $(ele).attr("data-voterid");
+    var hubId    = $(ele).attr("data-hubid");
+    var username   = $(ele).attr("data-username");
+    var userId     = $("#userId").val();
+    //voteViewCount
+    
+    var button     = $("#voteContainer").find("button.btn-1")[0];
+    $(button).attr("data-voterid",voterId);
+    $(button).attr("data-hubid",hubId);
+    var url = "http://wx.vlegend.cn/getVoter?userId="+voterId+"&hubid="+hubId;
+    $.get(url, function(result){
+      
+      var obj = jQuery.parseJSON(result);
+      var img     = $("#voteContainer").find("img.small")[0];
+      $(img).attr("src","http://wx.vlegend.cn/Public/tp/"+obj["pic"]);
+      $("#voteUserInfo").text(voterId+" "+username);
+      $("#voteViewCount").text(obj["count"]);
+      $("#voteContainer").modal('show'); 
+    });
+      
+  }
+  
+
+   //提示
+  function toast(text){
+      var $toast = $('#toast');
+      if ($toast.css('display') != 'none') {
+          return;
+      }
+      $("#toastText").text(text);
+      $toast.show();    
+      //发送
+      setTimeout(function () {
+          $toast.hide();
+      }, 2000); 
+  } 
+</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?21c35957a4aa6e61705f4e85d5762c2e";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+ </body>
+</html>
