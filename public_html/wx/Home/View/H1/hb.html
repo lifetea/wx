@@ -19,6 +19,7 @@
   </head>
   <body>
     <div class="mainWrap">
+        <button id="rule" >规则</button>
         <div class="hide" id="hbWrap">
             <img src="__PUBLIC__/images/hb/banner.png">
 
@@ -53,64 +54,59 @@
 
             </ul>
         </div>
-        <div class="" id="withdrawWrap">
+        <div class="hide" id="withdrawWrap">
             <div class="withdrawTab clearfix">
                 <div class="pic left">
                     <img src="__PUBLIC__/images/hb/5.png">
                 </div>
                 <div class="num left">
                     <p>
-                        <span class="credit">可兑:444元</span>
+                        <span class="credit">可兑:{$player.money}元</span>
+                        <a id="detail" href="javascript:(0)">详情</a>
                     </p>
                     <p>
-                        <span class="count">数量:50/100</span>
+                        <span class="count">数量:{$giftCount}/100</span>
                     </p>
                 </div>
                 <div class="exchange left">
-                    <a class="btn btn-success btn-click" data-score="{$vo.credit}" data-id="{$vo.id}" data-type="{$vo.type}" data-count="3" href="javascript:">抢兑</a>
+                    <a class="btn btn-success btn-click"  id="exchange" href="javascript:">抢兑</a>
                 </div>
             </div>
             <ul class="wdLog">
-                <li>
-                    <span>麻糍</span>
-                    <span>兑换了五元</span>
-                    <span>8:13</span>
-                </li>
-                <li>
-                    <span>麻糍</span>
-                    <span>兑换了五元</span>
-                    <span>8:13</span>
-                </li>
+                <volist name="moneyLog" id="vo">
+                    <li>
+                        <if condition="$vo.money lt 0">
+                            <span>兑换了{$vo.money}元</span>
+                        <else />
+                            <span>获得了{$vo.money}元</span>
+                        </if>
+
+                        <span>{$vo.time}</span>
+                    </li>
+                </volist>
             </ul>
         </div>
-        <div class="" id="topWrap">
+        <div class="hide" id="topWrap">
             <div class="withdrawTab clearfix">
-                <div class="pic left">
-                    <img src="__PUBLIC__/images/hb/5.png">
-                </div>
-                <div class="num left">
-                    <p>
-                        <span class="credit">可兑:444元</span>
-                    </p>
-                    <p>
-                        <span class="count">数量:50/100</span>
-                    </p>
-                </div>
-                <div class="exchange left">
-                    <a class="btn btn-success btn-click" data-score="{$vo.credit}" data-id="{$vo.id}" data-type="{$vo.type}" data-count="3" href="javascript:">抢兑</a>
-                </div>
+
             </div>
             <ul class="wdLog">
-                <li>
-                    <span>麻糍</span>
-                    <span>兑换了五元</span>
-                    <span>8:13</span>
-                </li>
-                <li>
-                    <span>麻糍</span>
-                    <span>兑换了五元</span>
-                    <span>8:13</span>
-                </li>
+                <volist name="topList" id="vo">
+                    <li>
+                    <li>
+                        <span>{$vo.id}累计了</span>
+                        <span>{$vo.sum}</span>
+                        <span></span>
+                    </li>
+                    </li>
+                </volist>
+            </ul>
+        </div>
+
+        <div class="hide" id="detailWrap">
+            <ul class="wdLog">
+
+
             </ul>
         </div>
         <div class="top_bar" style="-webkit-transform:translate3d(0,0,0)">
@@ -380,7 +376,7 @@ wx.error(function(res){
           $("#myWrap").addClass("hide");
           $("#withdrawWrap").addClass("hide");
           $("#topWrap").addClass("hide");
-
+          $("#detailWrap").addClass("hide");
           $(".top_menu a").each(function () {
               $(this).removeClass("active");
           })
@@ -425,13 +421,46 @@ wx.error(function(res){
           var url = "./zu?userId="+userId+"&fId="+fId;
           $.get(url, function(result){
               if (result == "1") {
-                  toast("成功助力");
+                  toast("解锁成功");
               }else{
-                  toast("已经助力过了");
+                  toast("已经解锁过了");
               }
           });
       });
       //打开红包
+      $("#open").click(function () {
+          var userId   = $("#userId").val();
+          var fId   = $("#fId").val();
+          var url = "./open?userId="+userId;
+          $.get(url, function(result){
+              if (result != "0") {
+                  toast("获得"+result+'元');
+              }else{
+                  toast("没有红包 赶紧解锁吧");
+              }
+          });
+      });
+      //查看详情
+      $("#detail").click(function () {
+
+      });
+
+      //兑换
+      $("#exchange").click(function () {
+          console.log("ha");
+          var userId   = $("#userId").val();
+          var fId   = $("#fId").val();
+          var url = "./withdraw?userId="+userId;
+          $.get(url, function(result){
+              if (result == "1") {
+                  toast("提现成功,隔天打款");
+              }else if(result == "-1"){
+                  toast("未满五元");
+              }else{
+                  toast("兑换失败");
+              }
+          });
+      });
 /**
       setTimeout(function(){
         $("#thumbs li").each(function(index,element){

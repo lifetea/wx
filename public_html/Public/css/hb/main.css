@@ -712,6 +712,7 @@ ul,li {
 }
     .withdrawTab .pic img{
         width: 100%;
+        height: 100px;
     }
 .withdrawTab .num{
     width: 43.3%;
@@ -736,4 +737,7 @@ ul,li {
 .clearfix:after{clear:both;}
 .clearfix{
     *zoom:1;/*IE/7/6*/
+}
+#rule{
+    position: absolute;
 }
