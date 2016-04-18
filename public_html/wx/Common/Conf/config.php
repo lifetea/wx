@@ -91,8 +91,8 @@ return array(
 						},
 						{
 							"type":"click",
-							"name":"投票活动",
-							"key":"vote"
+							"name":"红包活动",
+							"key":"hb"
 						}
 		            ]
 		       },

@@ -17,45 +17,84 @@ class H1Controller extends  Controller
         $this->display();
     }
     public function hb(){
-        $userId      = 1443;//cookie('userId');
-
-        $player     = M("Player")->where("userid = {$userId}")->find();
-        if(!empty($player)){
-            $this->assign('playerStatus',1);
+        $fId = I("get.id");
+        if(!empty($fId)){
+            cookie("fId",$fId);
         }
-        $count = M("Zu_log")->where("userid ={$userId}")->count();
-        $have = (int)$count % 5;
-        $need = 5 - $have;
-//        if ($have == 0){
+        $userId = cookie('userId');
+        if (empty($userId)) {
+            header('Location: https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd2e82d66cc76016c&redirect_uri=http://wx.vlegend.cn/oauth2FuWu?t=hb&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect');
+        }
+        if(!empty($userId)){
+            $player     = M("Player")->where("userid = {$userId}")->find();
+            if(!empty($player)){
+                $this->assign('playerStatus',1);
+            }
+            $this->assign('player',$player);
+
+            $count = M("Zu_log")->where("userid ={$userId}")->count();
+            $have = (int)$count % 5;
+            $need = 5 - $have;
+            $this->assign('have',$have);
+            $this->assign('need',$need);
+
+            //        if ($have == 0){
 //            $zuList = array();
 //        }else{
-            $zuList   = D("playerView")->where("userid={$userId}")->limit($have)->select();
+            $zuList   = D("playerView")->where("userid={$userId}")->order("id asc")->limit($have)->select();
 //        }
+            $this->assign('zuList',$zuList);
+
+            //moneylog
+            $moneyLog = M("money_log")->where("uid = {$userId}")->order("id desc")->limit(8)->select();
+            $this->assign('moneyLog',$moneyLog);
+            //排行榜
+            $topList = M("money_log")->field("SUM(money) as sum")->where("money > 0")->group("uid")->select();
+            $this->assign('topList',$topList);
+
+            //获取礼品数
+            $gift      = M("gift")->where("id = 18")->find();
+            $giftcount = $gift["count"];
+            $this->assign('giftCount',$giftcount);
+
+            //关注状态
+            $uRes        = M("User")->where("id = {$userId}")->find();
+            if (!!$uRes && !!$uRes["openid2"]) {
+                $this->assign("subscribe","1");
+            }
+
+            $this->assign('userId',$userId);
+        }
+
+
+
 
 //        while(count($zuList)<5){
 //            array_push($zuList,array());
 //        }
-        //moneylog
-        $moneyLog = M("money_log")->where("uid = {$userId}")->limit(10)->select();
 
-        //排行榜
-        $topList = M("money_log")->field("SUM(money) as sum")->where("money > 0")->group("uid")->select();
-        //获取礼品数
-        $gift      = M("gift")->where("id = 18")->find();
-        $giftcount = $gift["count"];
 
 
         $jssdk       = new Util\JSSDK();
         $signPackage = $jssdk->getSignPackage();
         $this->assign('data',$signPackage);
-        $this->assign('have',$have);
-        $this->assign('need',$need);
-        $this->assign('userId',$userId);
-        $this->assign('zuList',$zuList);
-        $this->assign('giftCount',$giftcount);
-        $this->assign('player',$player);
-        $this->assign('moneyLog',$moneyLog);
-        $this->assign('topList',$topList);
+        //fId
+
+        $fId = cookie('fId');
+        if(!empty($fId)){
+            $this->assign('fId',$fId);
+            $count = M("Zu_log")->where("userid ={$fId}")->count();
+            $fhave = (int)$count % 5;
+            $fneed = 5 - $have;
+            $this->assign('fhave',$fhave);
+            $this->assign('fneed',$fneed);
+            $friend = M("user")->where("id = $fId")->find();
+            $fzuList   = D("playerView")->where("userid={$fId}")->limit($have)->select();
+
+            $this->assign('fzuList',$fzuList);
+
+            $this->assign('friend',$friend);
+        }
 
         $this->display();
     }
@@ -112,7 +151,7 @@ class H1Controller extends  Controller
         if((int)$playerRes["zu"]>0){
             $money=rand(40,130)/100;
             echo $money;
-            $stamp     = date('Y-m-d');
+            $stamp     = date('m-d h:i');
             $data = array("uid"=>$userId,"money"=>$money,"time"=>$stamp);
             M("money_log")->data($data)->add();
             $player = M("Player")->where("userid = {$userId}")->find();
@@ -141,7 +180,7 @@ class H1Controller extends  Controller
         $player    = M("Player")->where("userid = $userId")->find();
         if ((int)$count > 0 && ((float)$player["money"] >=5) ){
             //添加提现记录
-            $stamp     = date('Y-m-d');
+            $stamp     = date('m-d h:i');
             $moneyData = array("money"=>-5,"uid"=>$userId,"time"=>$stamp);
             M("money_log")->data($moneyData)->add();
             //更新用户money

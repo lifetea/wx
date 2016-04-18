@@ -137,6 +137,8 @@ class IndexController extends Controller
             header("Location: http://wx.vlegend.cn/bird.html");
           }elseif ($t == "tp"){
             header("Location: http://wx.vlegend.cn/tp.html");
+          }elseif($t == "hb"){
+              header("Location: http://wx.vlegend.cn/index.php/Home/H1/hb.html");
           }
           
           $userId = cookie("userId");

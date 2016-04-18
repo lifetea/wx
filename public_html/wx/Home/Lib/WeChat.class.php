@@ -69,12 +69,17 @@ class WeChat
             $resultStr  = $this->transmitText($object, $contentStr, $funcFlag);
         }elseif($contentStr == "投票"){
             $this->bindId($object);
-            //$openId     = $object->FromUserName;
-            //$str        = "openId";
-            $content[]  = array("Title" =>"点击进入", 
-            "Description" =>"车侣威擎 你选轮毂 我就送!", 
-            "PicUrl" =>"http://wx.vlegend.cn/Public/tp/banner.jpg", 
-            "Url" =>"http://wx.vlegend.cn/tp");//?{$str}={$openId}
+            $content[]  = array("Title" =>"快去抢红包吧",
+                "Description" =>"车侣威擎 红包活动",
+                "PicUrl" =>"http://wx.vlegend.cn/Public/tp/banner.jpg",
+                "Url" =>"http://wx.vlegend.cn/index.php/Home/H1/hb");//?{$str}={$openId}
+            $resultStr = $this->transmitNews($object, $content,$funcFlag);
+        }elseif($contentStr == "红包"){
+            $this->bindId($object);
+            $content[]  = array("Title" =>"快去抢红包吧",
+                "Description" =>"车侣威擎 红包活动",
+                "PicUrl" =>"http://wx.vlegend.cn/Public/images/hongbao.png",
+                "Url" =>"http://wx.vlegend.cn/index.php/Home/H1/hb");//?{$str}={$openId}
             $resultStr = $this->transmitNews($object, $content,$funcFlag);
         }else{
             //触发多客服模式
@@ -134,6 +139,12 @@ class WeChat
                             "Description" =>"车侣威擎 你选轮毂 我就送!", 
                             "PicUrl" =>"http://wx.vlegend.cn/Public/tp/banner.jpg", 
                             "Url" =>"http://wx.vlegend.cn/tp");//?{$str}={$openId}
+                        break;
+                    case "hb":
+                        $contentStr[]  = array("Title" =>"快去抢红包吧",
+                            "Description" =>"车侣威擎 红包活动",
+                            "PicUrl" =>"http://wx.vlegend.cn/Public/images/hongbao.png",
+                            "Url" =>"http://wx.vlegend.cn/index.php/Home/H1/hb");//?{$str}={$openId}
                         break;
                     case "qiandao":
                         //$str = "";

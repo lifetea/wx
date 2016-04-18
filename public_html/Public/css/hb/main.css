@@ -658,12 +658,18 @@ ul,li {
 }
 #myWrap{
     position: relative;
-    padding-top: 5em;
+    padding-top: 4em;
+}
+#friendWrap{
+    position: relative;
+    padding-top: 4em;
 }
 #hbWrap img ,#myWrap img{
     width: 100%;
 }
-
+.fList img{
+    width: 100%
+}
 .fList{
     padding-top: 2em;
     background: none;
@@ -700,7 +706,7 @@ ul,li {
 }
 .fTip .num{
     color:#fff000;
-    font-size: 170%;
+    font-size: 160%;
 }
 #withdrawWrap{
     padding-top: 6em;
@@ -714,17 +720,13 @@ ul,li {
 .withdrawTab .num{
     width: 43.3%;
     font-size: 140%;
-    padding-left: 2em;
+    padding-left: 1em;
     padding-top: 0.6em;
 }
 .exchange {
     width: 33.3%;
     padding-left: 2em;
     padding-top: 1.3em;
-}
-.wdLog{
-    padding-top: 2em;
-    padding-left: 2em;
 }
 
 .clearfix:before,.clearfix:after{
@@ -744,13 +746,74 @@ ul,li {
     top:0;
     z-index: 3;
 }
+#friend{
+    position: absolute;
+    left: 0;
+    top:0;
+    z-index: 3;
+}
 .helpWrap{
     background: url("../../images/hb/help.png");
     background-size: 100% auto;
 }
-
+.fhelpWrap{
+    background: url("../../images/hb/fhelp.png");
+    background-size: 100% auto;
+}
 .redPacket{
     margin-top: 2em;
     background: url("../../images/hb/hongbao.png");
     background-size: 100% auto;
+    position: relative;
+}
+#open{
+    height: 62px;
+    width: 62px;
+    background: #ffe066;
+    line-height: 62px;
+    display: block;
+    border-radius: 50%;
+    border: 1px solid #b09f99;
+    text-align: center;
+    font-size: 180%;
+    font-weight: bold;
+    margin: 0 auto;
+    color: black;
+    text-decoration: none;
+}
+
+.zu{
+    display: block;
+    background: url("../../images/hb/zu.png");
+    margin: 0 auto;
+    color: white;
+    text-align: center;
+    font-family:"Microsoft Yahei";
+}
+a.zu:focus, a.zu:hover{
+    color: white;
+    text-underline: none;
+}
+#withdrawWrap td{
+    border-top: 1px solid transparent;
+}
+#topWrap{
+    padding-top: 4em;
+}
+.hbTip{
+    text-align: center;
+}
+.hbTip span{
+    color: #ffe066;
+    font-size: 140%;
+    font-family: 微软雅黑;
+}
+.avatar{
+    width: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+}
+.avatar img{
+    width: 100%;
 }

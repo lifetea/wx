@@ -14,7 +14,7 @@
 
   <link href="__PUBLIC__/css/hb/main.css" rel="stylesheet">
   <link href="__PUBLIC__/css/hb/weui.min.css" rel="stylesheet">
-  <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  <link href="__PUBLIC__/css/hb/bootstrap.min.css" rel="stylesheet">
 
   </head>
   <body>
@@ -22,16 +22,26 @@
         <a id="rule" >
             <img src="__PUBLIC__/images/hb/rule.png"/>
         </a>
+        <if condition="$fId neq ''">
+            <a id="friend" >
+                <img src="__PUBLIC__/images/hb/friend.png"/>
+            </a>
+        </if>
+
         <div class="hide" id="hbWrap">
             <img src="__PUBLIC__/images/hb/banner.png">
             <div class="redPacket">
+                <div class="hbTip">
+                    <span></span>
+                    <span id="zuCount">{$player.zu|default=0}</span>
+                    <span>个红包 还未打开</span>
+                </div>
                 <a href="javascript:(0)" id="open">開</a>
             </div>
-
         </div>
         <div class="hide" id="myWrap">
             <div class="helpWrap">
-                <a id="zu" href="javascript:(0)">帮他</a>
+                <a class="zu" href="javascript:(0)">求帮助</a>
             </div>
             <div class="fTip">
                 <span>已有</span>
@@ -58,6 +68,39 @@
 
             </ul>
         </div>
+        <!--朋友-->
+        <div class="hide" id="friendWrap">
+            <div class="fhelpWrap">
+                <div class="avatar">
+                    <img src="{$friend.headimgurl}"/>
+                </div>
+                <a class="zu" id="zu" href="javascript:(0)">帮他解锁</a>
+            </div>
+            <div class="fTip">
+                <span>已有</span>
+                <span class="num">{$fhave}</span>
+                <span>位朋友帮忙了，还差</span>
+                <span class="num">{$fneed}</span>
+                <span>位！</span>
+            </div>
+            <div class="fTitle">
+                <span>伙伴</span>
+                <span class="force">"给力"</span>
+                <span>榜</span>
+            </div>
+            <ul class="fList">
+                <volist name="fzuList" id="vo" key="k">
+                    <if condition="$k eq 4">
+                        <li class="second">
+                            <else />
+                        <li class="first">
+                    </if>
+                    <img src="{$vo.headimgurl}">
+                    </li>
+                </volist>
+
+            </ul>
+        </div>
         <div class="hide" id="withdrawWrap">
             <div class="withdrawTab clearfix">
                 <div class="pic left">
@@ -66,7 +109,6 @@
                 <div class="num left">
                     <p>
                         <span class="credit">可兑:{$player.money}元</span>
-                        <a id="detail" href="javascript:(0)">详情</a>
                     </p>
                     <p>
                         <span class="count">数量:{$giftCount}/100</span>
@@ -76,37 +118,38 @@
                     <a class="btn btn-success btn-click"  id="exchange" href="javascript:">抢兑</a>
                 </div>
             </div>
-            <ul class="wdLog">
+            <table class="table">
                 <volist name="moneyLog" id="vo">
-                    <li>
+                    <tr>
                         <if condition="$vo.money lt 0">
-                            <span>兑换了{$vo.money}元</span>
+                            <td class="">兑换了</td>
+                            <td class="money">{$vo.money}元</td>
                         <else />
-                            <span>获得了{$vo.money}元</span>
+                            <td>获得了</td>
+                            <td class="money">{$vo.money}元</td>
                         </if>
 
-                        <span>{$vo.time}</span>
-                    </li>
+                        <td>{$vo.time}</td>
+                    </tr>
                 </volist>
-            </ul>
+            </table>
         </div>
         <div class="hide" id="topWrap">
-            <ul class="wdLog">
+            <table class="table">
                 <volist name="topList" id="vo">
-                    <li>
-                    <li>
-                        <span>{$vo.id}累计了</span>
-                        <span>{$vo.sum}</span>
-                        <span></span>
-                    </li>
+
+                    <tr>
+                        <td>{$vo.id}累计了</td>
+                        <td>{$vo.sum}</td>
+                        <td></td>
+                    </tr>
                     </li>
                 </volist>
-            </ul>
+            </table>
         </div>
 
         <div class="hide" id="detailWrap">
             <ul class="wdLog">
-
 
             </ul>
         </div>
@@ -114,7 +157,7 @@
             <nav>
                 <ul id="top_menu" class="top_menu">
                     <li>
-                        <a class="tabhome" href="#">
+                        <a class="tabhome" href="javascript:(0)">
                             <label>我的</label>
                         </a>
                     </li>
@@ -190,17 +233,14 @@
                     <div class="form-group">
                         <label for="wchat" class="col-xs-3 control-label">微&nbsp;&nbsp;&nbsp;信</label>
                         <div class="col-xs-9">
-                          <input type="text" name="wchat" class="form-control" id="wchat" placeholder="微信账号">
+                          <input type="text" name="wchat" class="form-control" id="wchat" placeholder="微信号">
                         </div>
                     </div>
                     <div class="form-group">
                         <label id="error" class="control-label left pl10 red" ></label>
 
                     </div>
-                    <input id="userId" name="userid" type="hidden" value="{$userId}" />
-                    <input id="playerStatus" type="hidden" value="{$playerStatus}" />
-                    <input id="hubId" name="hubid" type="hidden" value="" />
-                    <input id="hubModel" value="" type="hidden" >
+
                 </form>
           </div>
           <div class="modal-footer">
@@ -215,7 +255,32 @@
     </div>
   <!-- 报名 -->
 
+<!--关注-->
+    <div id="focusNotice" class="modal">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h5 class="modal-title h4">
+                        <i class="fa fa-exclamation-circle"></i>
+                        <span >关注我们后,回复【红包】参与活动</span>
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <img class="small" src="http://wx.vlegend.cn/Public/tp/notice.png">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default left"
+                            data-dismiss="modal">放弃</button>
+                    <button id="goFollow" type="button" class="btn btn-primary">
+                        前往
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!--通知-->
     <div id="toast" style="display: none;">
             <div class="weui_mask_transparent"></div>
             <div class="weui_toast">
@@ -252,16 +317,22 @@
   <!-- system modal end -->
   <!-- hidden input -->
 <input id="subscribe" value="{$subscribe|default='0'}" type="hidden" >
-<input id="fId"  type="hidden" value="1443" />
+<input id="fId"  type="hidden" value="{$fId}" />
 <input id="vId" value="{$vId}" type="hidden" >
+<input id="userId" name="userid" type="hidden" value="{$userId}" />
+<input id="playerStatus" type="hidden" value="{$playerStatus}" />
   <!-- hidden input -->
 <input id="votersCount" value="{$count}" type="hidden" >
+
+<input id="subscribe" value="{$subscribe|default='0'}" type="hidden" >
+
+
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-<script src="http://cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
-<script src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/js/hb/jquery.min.js"></script>
+<script src="__PUBLIC__/js/hb/bootstrap.min.js"></script>
 <script type="text/javascript">
     window.conf ={
-        "link":"http://wx.vlegend.cn/tp.html?id={$userId}"
+        "link":"http://wx.vlegend.cn/index.php/Home/H1/hb.html?id={$userId}"
     };
     wx.config({
         debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -274,10 +345,9 @@
                     'onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
     });
     wx.ready(function(){
-        //var id =getQueryString("id");
         wx.onMenuShareAppMessage({
-            title: "我在参加《车侣威擎网》最佳人气轮毂评选活动 快来帮我助力",
-            desc: "车侣威擎科技 最具人气轮毂评选活动!",
+            title: "我在参加《车侣威擎网》抢红包活动 快来帮我助力",
+            desc: "车侣威擎科技 疯狂抢红包!",
             link: window.conf["link"],
             imgUrl: 'http://wx.vlegend.cn/Public/tp/banner.jpg',
             trigger: function (res) {
@@ -300,7 +370,7 @@
         });
 
         wx.onMenuShareTimeline({
-            title: "我在参加《车侣威擎网》最佳人气轮毂评选活动 快来帮我助力",
+            title: "我在参加《车侣威擎网》抢红包活动 快来帮我助力",
             link: window.conf["link"],
             imgUrl: 'http://wx.vlegend.cn/Public/tp/banner.jpg',
             trigger: function (res) {
