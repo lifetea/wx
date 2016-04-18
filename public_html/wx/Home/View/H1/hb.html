@@ -2,7 +2,7 @@
   <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta charset="UTF-8" />
-  <title>车侣威擎科技 最具人气拆红包活动</title>
+  <title>车侣威擎抢红包了</title>
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
   <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
   <meta content="no-cache,must-revalidate" http-equiv="Cache-Control" />
@@ -19,15 +19,20 @@
   </head>
   <body>
     <div class="mainWrap">
+        <a id="rule" >
+            <img src="__PUBLIC__/images/hb/rule.png"/>
+        </a>
         <div class="hide" id="hbWrap">
             <img src="__PUBLIC__/images/hb/banner.png">
+            <div class="redPacket">
+                <a href="javascript:(0)" id="open">開</a>
+            </div>
 
-            <img class="redPacket" src="__PUBLIC__/images/hb/hongbao.png">
-            <button id="open">打开红包</button>
         </div>
         <div class="hide" id="myWrap">
-            <img src="__PUBLIC__/images/hb/help.png">
-            <button id="zu">帮他</button>
+            <div class="helpWrap">
+                <a id="zu" href="javascript:(0)">帮他</a>
+            </div>
             <div class="fTip">
                 <span>已有</span>
                 <span class="num">{$have}</span>
@@ -53,64 +58,56 @@
 
             </ul>
         </div>
-        <div class="" id="withdrawWrap">
+        <div class="hide" id="withdrawWrap">
             <div class="withdrawTab clearfix">
                 <div class="pic left">
                     <img src="__PUBLIC__/images/hb/5.png">
                 </div>
                 <div class="num left">
                     <p>
-                        <span class="credit">可兑:444元</span>
+                        <span class="credit">可兑:{$player.money}元</span>
+                        <a id="detail" href="javascript:(0)">详情</a>
                     </p>
                     <p>
-                        <span class="count">数量:50/100</span>
+                        <span class="count">数量:{$giftCount}/100</span>
                     </p>
                 </div>
                 <div class="exchange left">
-                    <a class="btn btn-success btn-click" data-score="{$vo.credit}" data-id="{$vo.id}" data-type="{$vo.type}" data-count="3" href="javascript:">抢兑</a>
+                    <a class="btn btn-success btn-click"  id="exchange" href="javascript:">抢兑</a>
                 </div>
             </div>
             <ul class="wdLog">
-                <li>
-                    <span>麻糍</span>
-                    <span>兑换了五元</span>
-                    <span>8:13</span>
-                </li>
-                <li>
-                    <span>麻糍</span>
-                    <span>兑换了五元</span>
-                    <span>8:13</span>
-                </li>
+                <volist name="moneyLog" id="vo">
+                    <li>
+                        <if condition="$vo.money lt 0">
+                            <span>兑换了{$vo.money}元</span>
+                        <else />
+                            <span>获得了{$vo.money}元</span>
+                        </if>
+
+                        <span>{$vo.time}</span>
+                    </li>
+                </volist>
             </ul>
         </div>
-        <div class="" id="topWrap">
-            <div class="withdrawTab clearfix">
-                <div class="pic left">
-                    <img src="__PUBLIC__/images/hb/5.png">
-                </div>
-                <div class="num left">
-                    <p>
-                        <span class="credit">可兑:444元</span>
-                    </p>
-                    <p>
-                        <span class="count">数量:50/100</span>
-                    </p>
-                </div>
-                <div class="exchange left">
-                    <a class="btn btn-success btn-click" data-score="{$vo.credit}" data-id="{$vo.id}" data-type="{$vo.type}" data-count="3" href="javascript:">抢兑</a>
-                </div>
-            </div>
+        <div class="hide" id="topWrap">
             <ul class="wdLog">
-                <li>
-                    <span>麻糍</span>
-                    <span>兑换了五元</span>
-                    <span>8:13</span>
-                </li>
-                <li>
-                    <span>麻糍</span>
-                    <span>兑换了五元</span>
-                    <span>8:13</span>
-                </li>
+                <volist name="topList" id="vo">
+                    <li>
+                    <li>
+                        <span>{$vo.id}累计了</span>
+                        <span>{$vo.sum}</span>
+                        <span></span>
+                    </li>
+                    </li>
+                </volist>
+            </ul>
+        </div>
+
+        <div class="hide" id="detailWrap">
+            <ul class="wdLog">
+
+
             </ul>
         </div>
         <div class="top_bar" style="-webkit-transform:translate3d(0,0,0)">
@@ -140,44 +137,26 @@
     </div>
 
   <!-- 活动介绍 -->
-    <div id="alert" class="modal">
+    <div id="ruleContainer" class="modal">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-            <h5 class="modal-title h4"><i class="fa fa-exclamation-circle"></i>活动介绍</h5>
+            <h5 class="modal-title h4"><i class="fa fa-exclamation-circle"></i>活动说明</h5>
           </div>
-          <div class="modal-body small">
-            <p>
-              <img style="width:100%" src="http://wx.vlegend.cn/Public/tp/intro1.jpg">
-              <img style="width:100%" src="http://wx.vlegend.cn/Public/tp/intro2.jpg">
-            </p>
+          <div class="modal-body small rule-list">
+            <p class="h5">一等奖：1000元现金红包（累积获得红包金额最多者）</p>
+            <p class="h5">二等奖：10元红包（每天派送30个）（累积获得红包金额第二者）</p>
+            <p class="h5">三等奖：5元红包（每天派送50个）（累积获得红包金额第三者）</p>
+            <p class="h5">四等奖：车侣威擎抵现积分</p>
+            <p class="h5">参与奖：参与活动即可获得500积分（可抵现消费）</p>
+            <p class="h5">活动时间：2016年4月18日—2016年5月18日</p>
+            <p class="h5">主办单位：</p>
+            <p class="h5">浙江威擎网络科技有限公司</p>
+            <p class="h5">兑奖说明：</p>
             <p class="h5">
-              【报名对象】所有汽车爱好者　支持《车侣威擎网》的朋友
-            </p>
-            <p class="h5">【报名方式】点击“报名”，选定您支持的轮毂，填写相关个人信息即可完成报名（每人只能选定一款您支持的轮毂，确定之后不能更改）
-            </p>
-            <p class="h5">【网投规则】本次网络评选活动旨在健康推广，希望所有参赛者理智拉票，杜绝非正常手段拉票！每24小时限投一票，相识其实是一种缘分，参与也是一种宣传！请每位参赛者本着对自己负责，对他人公平的态度，积极参与，主张友谊第一，比赛第二！</p>
-            <p class="h5">
-              1、参选者将“个人页”助力拉票，投票者选择要投票的参选者，点击“投票”关注《车侣威擎网》微信公众号之后即可完成有效投票！每位参选者当日最高投票数额有限制，望健康推广！严禁使用舞弊手段拉票，一经发现，将强制限制投票数量直至取消资格。
-              2、本次网络评选活动投票系统每位参赛者拉票时间为限定为30天（从3月15——4月15），到期后不能再继续投票，以结束当天的个人总票数为最终票数进行排名。
-            </p>
-            <p class="h5">
-                【统计方法】
-                参赛者选定一款自己支持的轮毂 拉拢您身边的好友为您投票 得票最多者为赛事特等奖  以此类推 </p>
-            <p class="h5">    特等奖1名（个人得票数≥2000票）</p>
-            <p class="h5">   一等奖1名（个人得票数≥1000票）</p>
-            <p class="h5">    二等奖1名（个人得票数≥500票）</p>
-            <p class="h5">    三等奖88名（个人得票数≥168票）</p>
-            <p class="h5">    活动结束后 《车侣威擎网》官方微信公众号秉承赛事公平公正原则，公布获奖者名单以及服务器后台详细票数数据截图 </p>
-            <p class="h5">   【奖品设置】</p>
-            <p class="h5">   特等奖：车侣威擎高端原厂轮毂一套（价值8000元，所选即所得）</p>
-            <p class="h5">    一等奖：车侣威擎高端原厂3D汽车坐垫一套（价值2500元）</p>
-            <p class="h5">    二等奖：车侣威擎高端原厂汽车坐垫一套（价值2000元）</p>
-            <p class="h5">    三等奖：车侣威擎专属定制汽车礼包一份（50元）</p>
-                【奖品发送】
-                4月15号 投票结束公布结果之后 《车侣威擎网》官方客服 将与获奖者确认收货地址
-                4月17号 奖品开始发送 具体到货时间以物流快递时效性为准
+                <span>每日下午四点派送红包（周日获奖的红包累积到周一派送）</span>
+                <span>每人每日可拆红包一次 可邀请五个好友助力</span>
             </p>
           </div>
         </div>
@@ -346,246 +325,8 @@ wx.error(function(res){
     // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
 });
 </script>
-  <script>
-
-      $(document).ready(function(){
-          var V = {};
-          V.init = function(){
-              var winH  = window.innerHeight;
-              var winW  = document.body.clientWidth||window.innerWidth;
-              var fW    = parseInt(winW/640*120);
-              var fM    = parseInt((winW-(3*fW))/6);
-              var sMR   = parseInt(winW/640*64);
-              var sML   = parseInt((winW-sMR-2*fW)/2);
-              //console.log(winW-(3*fW));
-              var cssNode = document.createTextNode(".fList li{width:"+fW+
-                      "px;height:"+fW+"px;} .fList .first{margin:10px "+fM+
-                      "px} .fList .second{margin-left: "+sML+"px;margin-right:"+sMR+"px;}");
-              var style = document.createElement("style");
-              style.type = "text/css";
-              style.appendChild(cssNode);
-              document.head.appendChild(style);
-          }
-          V.init();
-          $(window).resize(function(){
-              V.init();
-          });
-      })
-  </script>
-<script type="text/javascript">
-  $(function(){
-     // (separate)
-      function resetWrap(){
-          $("#hbWrap").addClass("hide");
-          $("#myWrap").addClass("hide");
-          $("#withdrawWrap").addClass("hide");
-          $("#topWrap").addClass("hide");
-
-          $(".top_menu a").each(function () {
-              $(this).removeClass("active");
-          })
-      }
-
-      $("#separate").click(function(){
-          resetWrap();
-          $(this).addClass("active");
-          $("#hbWrap").removeClass("hide");
-      });
-
-      $(".tabhome").click(function(){
-          resetWrap();
-          $(this).addClass("active");
-          $("#myWrap").removeClass("hide");
-      });
-      //排行
-      $("#paihang").click(function(){
-          resetWrap();
-          $(this).addClass("active");
-          $("#topWrap").removeClass("hide");
-      });
-      //提现
-      $("#withdraw").click(function(){
-          resetWrap();
-          $(this).addClass("active");
-          $("#withdrawWrap").removeClass("hide");
-      });
-      //报名
-      $("#apply").click(function(){
-          var status = $("#playerStatus").val();
-          if (status == "1") {
-            toast("已报名");
-          }else{
-            $("#applyContainer").modal('show');
-          }
-      });
-      //助力
-      $("#zu").click(function(){
-          var userId   = $("#userId").val();
-          var fId   = $("#fId").val();
-          var url = "./zu?userId="+userId+"&fId="+fId;
-          $.get(url, function(result){
-              if (result == "1") {
-                  toast("成功助力");
-              }else{
-                  toast("已经助力过了");
-              }
-          });
-      });
-      //打开红包
-/**
-      setTimeout(function(){
-        $("#thumbs li").each(function(index,element){
-          var i           = index;
-          var ele         = element;
-          var hubId       = $(ele).attr("data");
-
-          (function(){
-            var url = "http://wx.vlegend.cn/getHub?id="+hubId;
-            $.get(url, function(result){
-                var obj = jQuery.parseJSON(result);
-                var load = $(ele).find(".load-wrap")[0];
-                $(load).addClass("hide");
-                var row         = $("<div class='row'></div>");
-                for (var i = 0; i < obj.length; i++) {
-                    var div     = $("<div class='col-md-6'><div><span class='namec'>"+obj[i]["voterid"]+" "+obj[i]["username"]+"</span><div class='btn-wrap'><div class='btg'></div><button onclick='vote(this)' data-hubid='"+obj[i]["hubid"]+"' data-voterid='"+obj[i]["voterid"]+"' class='btn-1' type='button'>投票</button><span class='count'>"+obj[i]["count"]+"</span><span class='p'>票</span></div></div></div>");
-                    // var button  =$(div).find("button")[0];
-                    // $(button).click(function(){
-
-                    // });
-                    row.append(div);
-                };
-
-                $(ele).append(row);
-            });
-          })();
-        });
-      },400);
-**/
+<script src="__PUBLIC__/js/hb/app.js"></script>
 
 
-      //报名提交信息
-      $("#userSure").click(function(){
-          var userName = $("#username").val();
-          var wchat     = $("#wchat").val();
-          var phone    = $("#phone").val();
-          var userId   = $("#userId").val();
-          //var hubId    = $("#hubId").val();
-          if (!userName || !wchat || !phone) {
-              $("#userError").text("请完善资料");
-            }else{
-
-              var url = "./voters?userId="+userId+"&userName="+userName+"&wchat="+wchat+"&phone="+phone;
-              $.get(url, function(result){
-                  $("#playerStatus").val("1");
-                  if (result == "1") {
-                      toast("报名成功");
-                  };
-              });
-              $("#applyContainer").modal('hide');
-
-
-          }
-      });
-
-      //剩余时间
-      setInterval(function(){
-        var end     = new Date(2016,03,15);
-        var start   = new Date();
-        var time    = end.getTime() - start.getTime();
-        var day     = parseInt(time/1000/60/60/24);
-        var hour    = parseInt(time/1000/60/60 - day*24);
-        var mini  = parseInt(time/1000/60 - day*24*60- hour*60);
-        var sec  = parseInt((time/1000 -day*24*60*60 -hour*60*60 -mini*60));
-        var ms      = parseInt((time -day*24*60*60*1000 -hour*60*60*1000 -mini*60*1000 - sec*1000));
-        $("#day").text(day);
-        $("#hour").text(hour);
-        $("#mini").text(mini);
-        $("#hm").text(ms);
-        $("#sec").text(sec);
-      },93);
-
-      $("#intro").click(function(){
-         $("#alert").modal('show');
-      });
-
-  });
-
-  function vote(ele){
-    var status    = $("#subscribe").val();
-    if (status != 0) {
-        var voterId   = $(ele).attr("data-voterid");
-        var hubId     = $(ele).attr("data-hubid");
-        var userId    = $("#userId").val();
-        var url = "http://wx.vlegend.cn/vote?userid="+userId+"&voterid="+voterId+"&hubid="+hubId;
-        $.get(url, function(result){
-          // console.log(result);
-            if (result == 1) {
-              toast("投票成功");
-              var span = $(ele).next();
-              $(span).text(parseInt($(span).text())+1);
-            };
-            if (result == 2) {
-              toast("今日已投票");
-            };
-        });
-    }else{
-        $("#voteNotice").modal('show');
-    }
-
-
-
-  }
-  //投票页
-  function voteView(ele){
-    //console.log(ele);
-    $("#plug").addClass("hide");
-    $("#soso").addClass("hide");
-    $("#searchList").addClass("hide");
-    var voterId    = $(ele).attr("data-voterid");
-    var hubId    = $(ele).attr("data-hubid");
-    var username   = $(ele).attr("data-username");
-    var userId     = $("#userId").val();
-    //voteViewCount
-
-    var button     = $("#voteContainer").find("button.btn-1")[0];
-    $(button).attr("data-voterid",voterId);
-    $(button).attr("data-hubid",hubId);
-    var url = "http://wx.vlegend.cn/getVoter?userId="+voterId+"&hubid="+hubId;
-    $.get(url, function(result){
-
-      var obj = jQuery.parseJSON(result);
-      var img     = $("#voteContainer").find("img.small")[0];
-      $(img).attr("src","http://wx.vlegend.cn/Public/tp/"+obj["pic"]);
-      $("#voteUserInfo").text(voterId+" "+username);
-      $("#voteViewCount").text(obj["count"]);
-      $("#voteContainer").modal('show');
-    });
-
-  }
-
-
-   //提示
-  function toast(text){
-      var $toast = $('#toast');
-      if ($toast.css('display') != 'none') {
-          return;
-      }
-      $("#toastText").text(text);
-      $toast.show();
-      //发送
-      setTimeout(function () {
-          $toast.hide();
-      }, 2000);
-  }
-</script>
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?21c35957a4aa6e61705f4e85d5762c2e";
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
  </body>
 </html>

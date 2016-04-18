@@ -663,9 +663,7 @@ ul,li {
 #hbWrap img ,#myWrap img{
     width: 100%;
 }
-.redPacket{
-    padding-top: 2em;
-}
+
 .fList{
     padding-top: 2em;
     background: none;
@@ -736,4 +734,23 @@ ul,li {
 .clearfix:after{clear:both;}
 .clearfix{
     *zoom:1;/*IE/7/6*/
+}
+.rule-list p{
+    line-height: 2;
+}
+#rule{
+    position: absolute;
+    right: 0;
+    top:0;
+    z-index: 3;
+}
+.helpWrap{
+    background: url("../../images/hb/help.png");
+    background-size: 100% auto;
+}
+
+.redPacket{
+    margin-top: 2em;
+    background: url("../../images/hb/hongbao.png");
+    background-size: 100% auto;
 }
