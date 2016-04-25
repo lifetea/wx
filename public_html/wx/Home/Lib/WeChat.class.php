@@ -94,8 +94,9 @@ class WeChat
         $sdk        = new Util\JSSDK();
         $res        = $sdk->getUserId($openId);
         $uniondId   = $res["unionid"];
+        $headimgurl = $res["headimgurl"];
         $sql        = "unionid ='$uniondId'";
-        $arr        = array('openid2' =>"{$openId}");
+        $arr        = array('openid2' =>"{$openId}",'headimgurl'=>"{$headimgurl}");
         $hRes       = M("User")->where($sql)->save($arr);
     }
  
@@ -117,7 +118,7 @@ class WeChat
         {
             case "subscribe":
                 //关注后发送的消息
-                $contentStr = "回复 【投票】 你选轮毂 我就送!";
+                $contentStr = "回复 【红包】 一起来拆红包吧!";
                 //$contentStr ="OAuth2.0网页授权演示 <a href=\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85eea0cbf0d30d65&redirect_uri=http://wx.vlegend.cn&response_type=code&scope=snsapi_base&state=1&component_appid=wxef28dc4fa8885658#wechat_redirect\">点击这里体验</a>技术支持 车侣威擎";
                 $this->bindId($object);
                 //$contentStr ="OAuth2.0网页授权演示 <a href=\"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx85eea0cbf0d30d65&redirect_uri=http://wx.vlegend.cn/oauth2&response_type=code&scope=snsapi_base&state=1#wechat_redirect\">点击这里体验</a>技术支持 车侣威擎"; 

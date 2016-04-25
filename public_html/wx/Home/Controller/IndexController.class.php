@@ -109,7 +109,7 @@ class IndexController extends Controller
           }else{
             cookie('userId',$result["id"]);
             session('userId',$result["id"]);
-            // $userId = $result["id"];
+            $user->save(array("headimgurl"=>$arr["headimgurl"]));
             // $logArr = array("userid" => $userId,"score"=>0,"event"=>"init");
             // M("Log")->data($arr)->add();            
           }
@@ -139,6 +139,8 @@ class IndexController extends Controller
             header("Location: http://wx.vlegend.cn/tp.html");
           }elseif($t == "hb"){
               header("Location: http://wx.vlegend.cn/index.php/Home/H1/hb.html");
+          }elseif($t == "shake"){
+              header("Location: http://wx.vlegend.cn/index.php/Home/shake/index.html");
           }
           
           $userId = cookie("userId");

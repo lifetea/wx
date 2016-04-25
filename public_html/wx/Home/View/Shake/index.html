@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>不要问我亲不亲红包代表我的心</title>
+    <link href="__PUBLIC__/css/shake/main.css" rel="stylesheet">
+</head>
+<body>
+<p>用力摇一摇你手机</p>
+<audio class="hide" id="musicBox" preload="metadata" controls src="__PUBLIC__/audio/shake/5018.mp3" autostart="0">
+</audio>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<!--<script src="__PUBLIC__/js/hb/jquery.min.js"></script>-->
+<!--<script src="__PUBLIC__/js/hb/bootstrap.min.js"></script>-->
+<script type="text/javascript">
+    window.conf ={
+        "link":"http://wx.vlegend.cn/index.php/Home/H1/hb.html?id={$userId}"
+    };
+    wx.config({
+                debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                appId: '{$data.appId}', // 必填，公众号的唯一标识
+                timestamp: {$data.timestamp}, // 必填，生成签名的时间戳
+            nonceStr:'{$data.nonceStr}', // 必填，生成签名的随机串
+            signature:'{$data.signature}',// 必填，签名，见附录1
+            jsApiList: ['checkJsApi',
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+    });
+    wx.ready(function(){
+        wx.onMenuShareAppMessage({
+            title: "我在参加《车侣威擎网》抢红包活动 快来帮我助力",
+            desc: "车侣威擎科技 疯狂抢红包!",
+            link: window.conf["link"],
+            imgUrl: 'http://wx.vlegend.cn/Public/images/hongbao.png',
+            trigger: function (res) {
+                //alert('用户点击发送给朋友');
+            },
+            success: function (res) {
+                //alert('已分享');
+
+                // var userId = $("#userId").val();
+                // xmlhttp=new XMLHttpRequest();
+                // xmlhttp.open("GET","http://wx.vlegend.cn/share?userid="+userId,true);
+                // xmlhttp.send(null);
+            },
+            cancel: function (res) {
+                //alert('已取消');
+            },
+            fail: function (res) {
+                alert(JSON.stringify(res));
+            }
+        });
+
+        wx.onMenuShareTimeline({
+            title: "我在参加《车侣威擎网》抢红包活动 快来帮我助力",
+            link: window.conf["link"],
+            imgUrl: 'http://wx.vlegend.cn/Public/images/hongbao.png',
+            trigger: function (res) {
+                //alert('用户点击分享到朋友圈');
+            },
+            success: function (res) {
+                //alert('已分享');
+                // var userId = $("#userId").val();
+                // xmlhttp=new XMLHttpRequest();
+                // xmlhttp.open("GET","http://wx.vlegend.cn/share?userid="+userId,true);
+                // xmlhttp.send(null);
+            },
+            cancel: function (res) {
+                //alert('已取消');
+            },
+            fail: function (res) {
+                alert(JSON.stringify(res));
+            }
+        });
+    });
+    wx.error(function(res){
+        // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+    });
+</script>
+<script src="__PUBLIC__/js/jquery/jquery.min.js"></script>
+<script src="__PUBLIC__/js/shake/app.js"></script>
+
+</body>
+</html>

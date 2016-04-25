@@ -84,7 +84,15 @@ class JSSDKFuWu {
     }
     return $token;
   }
-
+  public function getUserId($openId) {
+    $token = S('access_token_fuwu');
+    $url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token={$token}&openid={$openId}&lang=zh_CN";
+    $res = file_get_contents($url);
+    $res = json_decode($res, true);
+    //$token = $res['access_token'];
+    return $res;
+    //S('access_token', $token, 7000);
+  }
   public function getUserAccessToken($code) {
     //$token = S('access_token');
     $appId = $this->appId;

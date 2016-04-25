@@ -40,7 +40,23 @@ return array(
 	//    "name":"每日签到",
 	//    "key":"qiandao"
 	// },
+//						{
+//							"type":"click",
+//						"name":"准备中",
+//						"key":"zhunbei"
+//						},
 
+//		            {
+//						"type":"view",
+//		                "name":"积分排名",
+//		                "url":"http://wx.vlegend.cn/top"
+//		            },
+//
+//			        {
+//						"type":"view",
+//		                "name":"快速刷分",
+//		                "url":"http://wx.vlegend.cn/ji?self=1"
+//		            },
 	// "button":[
 	// {
 	//      "name":"关于爱车",
@@ -84,11 +100,7 @@ return array(
 		       {
 		           "name":"礼品派送",
 		           "sub_button":[
-						{
-						"type":"click",
-						"name":"准备中",
-						"key":"zhunbei"
-						},
+
 						{
 							"type":"click",
 							"name":"红包活动",
@@ -104,17 +116,7 @@ return array(
 		               "name":"积分规则",
 		               "url":"http://t.cn/RUsifc2"
 		            },
-		            {
-		                "type":"view",
-		                "name":"积分排名",
-		                "url":"http://wx.vlegend.cn/top"
-		            },
 
-			        {
-		                "type":"view",
-		                "name":"快速刷分",
-		                "url":"http://wx.vlegend.cn/ji?self=1"
-		            },
 			        {
 		               "type":"click",
 		               "name":"每日签到",

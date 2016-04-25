@@ -709,7 +709,13 @@ ul,li {
     font-size: 160%;
 }
 #withdrawWrap{
-    padding-top: 6em;
+    padding-top: 0em;
+    padding-left: 1em;
+    height: 100%;
+}
+
+.withdrawTab{
+    padding:4px 10px;
 }
 .withdrawTab .pic{
     width: 23.3%;
@@ -719,8 +725,8 @@ ul,li {
     }
 .withdrawTab .num{
     width: 43.3%;
-    font-size: 140%;
-    padding-left: 1em;
+    font-size: 120%;
+    padding-left: 2em;
     padding-top: 0.6em;
 }
 .exchange {
@@ -798,7 +804,8 @@ a.zu:focus, a.zu:hover{
     border-top: 1px solid transparent;
 }
 #topWrap{
-    padding-top: 4em;
+    padding-top: 6em;
+    padding-left: 1.5em;
 }
 .hbTip{
     text-align: center;
@@ -816,4 +823,11 @@ a.zu:focus, a.zu:hover{
 }
 .avatar img{
     width: 100%;
+    max-height: 100px;
+}
+#focusNotice img{
+    width: 100%;
+}
+.withdrawTab .info{
+    text-align: center;
 }

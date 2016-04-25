@@ -56,11 +56,16 @@ $(function(){
 
     if(!!fId && !!userId && fId != userId){
         $("#friendWrap").removeClass("hide");
+    }else if(!!userId){
+        $(".tabhome").addClass("active");
+        $("#myWrap").removeClass("hide");
     }
+
+
     //红包
     $("#separate").click(function(){
         resetWrap();
-        $(this).addClass("active");
+        $("#separate").addClass("active");
         $("#hbWrap").removeClass("hide");
     });
     //friend
@@ -87,9 +92,27 @@ $(function(){
     });
     //提现
     $("#withdraw").click(function(){
-        resetWrap();
-        $(this).addClass("active");
-        $("#withdrawWrap").removeClass("hide");
+        var userId   = $("#userId").val();
+        var url = "./getWithdraw?userId="+userId;
+        $.get(url, function(result){
+            if (!!result) {
+                resetWrap();
+                $("#withdraw").addClass("active");
+                $("#withdrawWrap").removeClass("hide");
+                $("#giftCount").text(result.giftcount);
+                $("#withdrawLog").empty();
+                var arr = result.moneyLog;
+                $(".credit").text(result.money);
+                for(var i=0;i<arr.length;i++){
+                    var str = arr[i].money>0 ? "获得了":"提现了";
+                    var tr  = $("<tr><td>"+str+"</td><td>"+arr[i].money+
+                        "元</td><td>"+arr[i].time+"</td></tr>");
+                    $("#withdrawLog").append(tr);
+                }
+            }else{
+                toast("好像出了点问题");
+            }
+        });
     });
     //报名
     $("#apply").click(function(){
@@ -100,24 +123,41 @@ $(function(){
             $("#applyContainer").modal('show');
         }
     });
+    //need
+    $("#needHelp").click(function(){
+        toast("分享出去让朋友帮忙");
+    });
     //助力
     $("#zu").click(function(){
         var subscribe = $("#subscribe").val();
-        if(subscribe == "1"){
-            var userId   = $("#userId").val();
-            var fId   = $("#fId").val();
-            var url = "./zu?userId="+userId+"&fId="+fId;
-            $.get(url, function(result){
-                if (result == "1") {
-                    toast("解锁成功");
-                }else{
-                    toast("已经解锁过了");
-                }
-            });
+        if(subscribe == "1") {
+            doZu();
         }else{
             $("#focusNotice").modal('show');
         }
+
+
     });
+    $(".close-overlay").click(function(){
+        doZu();
+    });
+
+    function doZu(){
+        var userId   = $("#userId").val();
+        var fId   = $("#fId").val();
+        var url = "./zu?userId="+userId+"&fId="+fId;
+        $.get(url, function(result){
+            if (result.msg == "1") {
+                toast("拆红包成功");
+                var len = $("#fList").length;
+                var str = len == 3? "first":"second";
+                var ele = $("<li class='"+str+"'><img src='"+result.headimgurl+"'/></li>");
+                $("#fList").append(ele);
+            }else{
+                toast("已经拆过红包过了");
+            }
+        });
+    }
     $("#goFollow").click(function(){
         window.location.href = "http://mp.weixin.qq.com/s?__biz=MzI0MDA5OTY1NA==&mid=402621433&idx=1&sn=20ea6b6e84c2a997cbd60287e4cf01d1";
     });
@@ -132,7 +172,7 @@ $(function(){
                 $("#zuCount").text(parseInt($("#zuCount").text())-1);
 
             }else{
-                toast("没有红包 赶紧解锁吧");
+                toast("没有红包 赶紧让人来拆红包吧");
             }
         });
     });
@@ -169,7 +209,8 @@ $(function(){
             $.get(url, function(result){
                 $("#playerStatus").val("1");
                 if (result == "1") {
-                    toast("报名成功");
+                    toast("报名成功,获得两个红包");
+                    $("#zuCount").text(parseInt($("#zuCount").text())+2);
                 };
             });
             $("#applyContainer").modal('hide');
@@ -178,22 +219,6 @@ $(function(){
         }
     });
 
-    //剩余时间
-    setInterval(function(){
-        var end     = new Date(2016,03,15);
-        var start   = new Date();
-        var time    = end.getTime() - start.getTime();
-        var day     = parseInt(time/1000/60/60/24);
-        var hour    = parseInt(time/1000/60/60 - day*24);
-        var mini  = parseInt(time/1000/60 - day*24*60- hour*60);
-        var sec  = parseInt((time/1000 -day*24*60*60 -hour*60*60 -mini*60));
-        var ms      = parseInt((time -day*24*60*60*1000 -hour*60*60*1000 -mini*60*1000 - sec*1000));
-        $("#day").text(day);
-        $("#hour").text(hour);
-        $("#mini").text(mini);
-        $("#hm").text(ms);
-        $("#sec").text(sec);
-    },93);
 
     $("#rule").click(function(){
         $("#ruleContainer").modal('show');
@@ -201,58 +226,6 @@ $(function(){
 
 });
 
-function vote(ele){
-    var status    = $("#subscribe").val();
-    if (status != 0) {
-        var voterId   = $(ele).attr("data-voterid");
-        var hubId     = $(ele).attr("data-hubid");
-        var userId    = $("#userId").val();
-        var url = "http://wx.vlegend.cn/vote?userid="+userId+"&voterid="+voterId+"&hubid="+hubId;
-        $.get(url, function(result){
-            // console.log(result);
-            if (result == 1) {
-                toast("投票成功");
-                var span = $(ele).next();
-                $(span).text(parseInt($(span).text())+1);
-            };
-            if (result == 2) {
-                toast("今日已投票");
-            };
-        });
-    }else{
-        $("#voteNotice").modal('show');
-    }
-
-
-
-}
-//投票页
-function voteView(ele){
-    //console.log(ele);
-    $("#plug").addClass("hide");
-    $("#soso").addClass("hide");
-    $("#searchList").addClass("hide");
-    var voterId    = $(ele).attr("data-voterid");
-    var hubId    = $(ele).attr("data-hubid");
-    var username   = $(ele).attr("data-username");
-    var userId     = $("#userId").val();
-    //voteViewCount
-
-    var button     = $("#voteContainer").find("button.btn-1")[0];
-    $(button).attr("data-voterid",voterId);
-    $(button).attr("data-hubid",hubId);
-    var url = "http://wx.vlegend.cn/getVoter?userId="+voterId+"&hubid="+hubId;
-    $.get(url, function(result){
-
-        var obj = jQuery.parseJSON(result);
-        var img     = $("#voteContainer").find("img.small")[0];
-        $(img).attr("src","http://wx.vlegend.cn/Public/tp/"+obj["pic"]);
-        $("#voteUserInfo").text(voterId+" "+username);
-        $("#voteViewCount").text(obj["count"]);
-        $("#voteContainer").modal('show');
-    });
-
-}
 
 
 //提示

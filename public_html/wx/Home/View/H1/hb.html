@@ -17,6 +17,7 @@
   <link href="__PUBLIC__/css/hb/bootstrap.min.css" rel="stylesheet">
 
   </head>
+  <?php require_once 'cs.php';echo '<img src="'._cnzzTrackPageView(1258456037).'" width="0" height="0"/>';?>
   <body>
     <div class="mainWrap">
         <a id="rule" >
@@ -41,7 +42,7 @@
         </div>
         <div class="hide" id="myWrap">
             <div class="helpWrap">
-                <a class="zu" href="javascript:(0)">求帮助</a>
+                <a class="zu" id="needHelp" href="javascript:(0)">求帮助</a>
             </div>
             <div class="fTip">
                 <span>已有</span>
@@ -74,7 +75,7 @@
                 <div class="avatar">
                     <img src="{$friend.headimgurl}"/>
                 </div>
-                <a class="zu" id="zu" href="javascript:(0)">帮他解锁</a>
+                <a class="zu" id="zu" href="javascript:(0)">帮他拆红包</a>
             </div>
             <div class="fTip">
                 <span>已有</span>
@@ -88,7 +89,7 @@
                 <span class="force">"给力"</span>
                 <span>榜</span>
             </div>
-            <ul class="fList">
+            <ul id="fList" class="fList">
                 <volist name="fzuList" id="vo" key="k">
                     <if condition="$k eq 4">
                         <li class="second">
@@ -103,45 +104,48 @@
         </div>
         <div class="hide" id="withdrawWrap">
             <div class="withdrawTab clearfix">
+                <div class="info">
+                    <div class="avatar">
+                        <img src="{$user.headimgurl}"/>
+                    </div>
+                    <p class="h5">
+                        <span>{$user.id}</span>
+                        <span>{$user.nickname}</span>
+                    </p>
+                </div>
+
                 <div class="pic left">
                     <img src="__PUBLIC__/images/hb/5.png">
                 </div>
                 <div class="num left">
                     <p>
-                        <span class="credit">可兑:{$player.money}元</span>
+                        <span>可兑:</span>
+                        <span class="credit">{$player.money}元</span>
                     </p>
                     <p>
-                        <span class="count">数量:{$giftCount}/100</span>
+                        <span>数量:</span>
+                        <span id="giftCount" class="count">{$giftCount}</span>
+                        <span>/100</span>
                     </p>
                 </div>
                 <div class="exchange left">
                     <a class="btn btn-success btn-click"  id="exchange" href="javascript:">抢兑</a>
                 </div>
             </div>
-            <table class="table">
-                <volist name="moneyLog" id="vo">
-                    <tr>
-                        <if condition="$vo.money lt 0">
-                            <td class="">兑换了</td>
-                            <td class="money">{$vo.money}元</td>
-                        <else />
-                            <td>获得了</td>
-                            <td class="money">{$vo.money}元</td>
-                        </if>
+            <p class="h5">提示：每天15点开发100个五元红包 一定要抢哟</p>
+            <table id="withdrawLog" class="table">
 
-                        <td>{$vo.time}</td>
-                    </tr>
-                </volist>
             </table>
         </div>
         <div class="hide" id="topWrap">
             <table class="table">
-                <volist name="topList" id="vo">
+                <volist name="topList" id="vo" key="k">
 
                     <tr>
-                        <td>{$vo.id}累计了</td>
-                        <td>{$vo.sum}</td>
-                        <td></td>
+                        <td>{$k}</td>
+                        <td>{$vo.nickname}</td>
+                        <td>累计了{$vo.sum|round=###,2}元</td>
+
                     </tr>
                     </li>
                 </volist>
@@ -189,18 +193,16 @@
           </div>
           <div class="modal-body small rule-list">
             <p class="h5">一等奖：1000元现金红包（累积获得红包金额最多者）</p>
-            <p class="h5">二等奖：10元红包（每天派送30个）（累积获得红包金额第二者）</p>
-            <p class="h5">三等奖：5元红包（每天派送50个）（累积获得红包金额第三者）</p>
-            <p class="h5">四等奖：车侣威擎抵现积分</p>
-            <p class="h5">参与奖：参与活动即可获得500积分（可抵现消费）</p>
-            <p class="h5">活动时间：2016年4月18日—2016年5月18日</p>
-            <p class="h5">主办单位：</p>
-            <p class="h5">浙江威擎网络科技有限公司</p>
+            <p class="h5">参与奖：参与活动即可获得2份红包</p>
+            <p class="h5">活动时间：2016年4月20日—2016年5月5日</p>
+            <p class="h5">主办单位：浙江威擎网络科技有限公司</p>
             <p class="h5">兑奖说明：</p>
-            <p class="h5">
-                <span>每日下午四点派送红包（周日获奖的红包累积到周一派送）</span>
-                <span>每人每日可拆红包一次 可邀请五个好友助力</span>
-            </p>
+              <p class="h5">每日下午三点 开放100个五元红包</p>
+            <p class="h5">每日下午四点派送红包（周日获奖的红包累积到周一派送）</p>
+            <p class="h5">每人可以拆无限个红包 每邀请五个好友助力可才一次红包</p>
+            <p class="h5">关注后 回复  红包即可参与活动</p>
+             <p class="h5">作弊者取消资格</p>
+            <p class="h5">本次活动最终解释权归本公司所有</p>
           </div>
         </div>
       </div>
@@ -260,17 +262,17 @@
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <button type="button" class="close close-overlay" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
                     <h5 class="modal-title h4">
                         <i class="fa fa-exclamation-circle"></i>
                         <span >关注我们后,回复【红包】参与活动</span>
                     </h5>
                 </div>
                 <div class="modal-body">
-                    <img class="small" src="http://wx.vlegend.cn/Public/tp/notice.png">
+                    <img class="small" src="http://wx.vlegend.cn/Public/images/hb/notice.jpg">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default left"
+                    <button type="button" class="close-overlay btn btn-default left"
                             data-dismiss="modal">放弃</button>
                     <button id="goFollow" type="button" class="btn btn-primary">
                         前往
@@ -302,7 +304,7 @@
             </h5>
           </div>
           <div class="modal-body">
-            <img class="small" src="http://wx.vlegend.cn/Public/tp/notice.png">
+            <img class="small" src="http://wx.vlegend.cn/Public/images/hb/notice.jpg">
         </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default left"
@@ -349,7 +351,7 @@
             title: "我在参加《车侣威擎网》抢红包活动 快来帮我助力",
             desc: "车侣威擎科技 疯狂抢红包!",
             link: window.conf["link"],
-            imgUrl: 'http://wx.vlegend.cn/Public/tp/banner.jpg',
+            imgUrl: 'http://wx.vlegend.cn/Public/images/hongbao.png',
             trigger: function (res) {
               //alert('用户点击发送给朋友');
             },
@@ -372,7 +374,7 @@
         wx.onMenuShareTimeline({
             title: "我在参加《车侣威擎网》抢红包活动 快来帮我助力",
             link: window.conf["link"],
-            imgUrl: 'http://wx.vlegend.cn/Public/tp/banner.jpg',
+            imgUrl: 'http://wx.vlegend.cn/Public/images/hongbao.png',
             trigger: function (res) {
             //alert('用户点击分享到朋友圈');
             },
@@ -395,7 +397,6 @@ wx.error(function(res){
     // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
 });
 </script>
-<script src="__PUBLIC__/js/hb/app.js"></script>
 
 
  </body>
